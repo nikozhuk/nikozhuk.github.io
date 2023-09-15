@@ -1,0 +1,8 @@
+---
+title: "Post With Code"
+author: "Nikolai Zhukov"
+date: "2023-09-15"
+categories: [news, code, analysis]
+---
+
+This is a post with executable code.
