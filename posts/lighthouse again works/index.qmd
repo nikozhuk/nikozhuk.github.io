@@ -1,0 +1,8 @@
+---
+title: "Dance with curiosity again"
+author: "Nikolai Zhukov"
+date: "2023-09-15"
+categories: [code]
+---
+
+This is a post with executable code.
