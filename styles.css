@@ -8,3 +8,7 @@
 .navbar {
   min-height: 100px !important;
 }
+                                     
+  .quarto-post .thumbnail {
+    max-width: 150px;                                                               
+  }  
