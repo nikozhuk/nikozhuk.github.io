@@ -11,7 +11,7 @@
     "href": "posts/lighthouse again works/index.html",
     "title": "Dance with curiosity again",
     "section": "",
-    "text": "This is a post with executable code."
+    "text": "This is a post with executable code.\nimport pandas as pd\ndf = pd.DataFrame({‘x’: [1, 2, 3], ‘y’: [4, 5, 6]}) df\nQuarto will execute the code and show the output when rendering.\nRequirements — make sure you have Jupyter installed:\n```bash\npip install jupyter"
   },
   {
     "objectID": "index.html",
