@@ -12,3 +12,10 @@
   .quarto-post .thumbnail {
     max-width: 150px;                                                               
   }  
+  
+ .quarto-title-banner {                                                            
+    min-height: 300px !important;
+    background-size: contain !important;
+    background-repeat: no-repeat;                                                   
+    background-position: center;
+  }

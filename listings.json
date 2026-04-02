@@ -2,8 +2,9 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/welcome/index.html",
       "/posts/lighthouse again works/index.html",
-      "/posts/welcome/index.html"
+      "/posts/transcedent_learning/index.html"
     ]
   }
 ]

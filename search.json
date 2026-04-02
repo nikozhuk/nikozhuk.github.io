@@ -7,24 +7,52 @@
     "text": "Selected projects I did."
   },
   {
-    "objectID": "posts/lighthouse again works/index.html",
-    "href": "posts/lighthouse again works/index.html",
-    "title": "Dance with curiosity again",
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Hello World 👀!",
     "section": "",
-    "text": "Word2vec explained.\nThanks to Jiří Materna.\n\nWord2vec\nImplement a simple word2vec estimator using Gensim. Use the small Wikipedia corpus from ‘enlang1.txt’.\nSource: Word2vec"
+    "text": "💻🏓🎨 🔦"
+  },
+  {
+    "objectID": "books.html",
+    "href": "books.html",
+    "title": "Books",
+    "section": "",
+    "text": "Machine Learning, Zhi-Hua Zhou (2021)\nA compact mathematical explanation of the ML basics.\nAI and Machine Learning for Coders, Laurence Moroney (2020)\nA great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.\nDesigning Machine Learning Systems, Chip Huyen (2022)\nJust a very useful for ML- practitioners in industry.\nDeep Learning with Python, François Chollet (2nd edition 2021)\nThe most understandable explanation of concepts in textual format, which is interesting to read.\nDeep Learning, Jan Goodfellow (2016)\nComprehensive mathematical and conceptual explanation, insights for the open research fields.\nDeep Learning for Vision Systems, Mohamed Elgendy (2020)\nDetailed explanation for baseline’s Computer Vision backbones/architectures.\nDeep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)\nA view on Deep Learning from practitioners. Practical Data Ethics!\nDeep Learning: A Visual Approach, Andrew-Glassner (2021)\nAdditional dimension for concept’s understanding.\nComputer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)\nConstantly updated meta-survey.\nInterpretable Machine Learning, Christoph Molnar (2019)\nSurvey, good starting point on the topic. Shapley Values."
+  },
+  {
+    "objectID": "books.html#mldl",
+    "href": "books.html#mldl",
+    "title": "Books",
+    "section": "",
+    "text": "Machine Learning, Zhi-Hua Zhou (2021)\nA compact mathematical explanation of the ML basics.\nAI and Machine Learning for Coders, Laurence Moroney (2020)\nA great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.\nDesigning Machine Learning Systems, Chip Huyen (2022)\nJust a very useful for ML- practitioners in industry.\nDeep Learning with Python, François Chollet (2nd edition 2021)\nThe most understandable explanation of concepts in textual format, which is interesting to read.\nDeep Learning, Jan Goodfellow (2016)\nComprehensive mathematical and conceptual explanation, insights for the open research fields.\nDeep Learning for Vision Systems, Mohamed Elgendy (2020)\nDetailed explanation for baseline’s Computer Vision backbones/architectures.\nDeep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)\nA view on Deep Learning from practitioners. Practical Data Ethics!\nDeep Learning: A Visual Approach, Andrew-Glassner (2021)\nAdditional dimension for concept’s understanding.\nComputer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)\nConstantly updated meta-survey.\nInterpretable Machine Learning, Christoph Molnar (2019)\nSurvey, good starting point on the topic. Shapley Values."
+  },
+  {
+    "objectID": "books.html#gnns-books-and-courses",
+    "href": "books.html#gnns-books-and-courses",
+    "title": "Books",
+    "section": "GNNs 📘books and 🖥️courses:",
+    "text": "GNNs 📘books and 🖥️courses:\n\n🖥️ Introduction to Graph Neural Networks by Zak Jost\n\n📘 Deep learning with graph-structured representations by Thomas Kipf 2020\n📘 Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges by Michael Bronstein et al., 2021\n🎨 Graph Neural Networks for Novice Math Fanatic"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Nikolai Zhukov",
     "section": "",
-    "text": "Dance with curiosity again\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nApr 1, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\nNo matching items"
+    "text": "Hello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nDance with curiosity again\n\n\n\ncode\n\narchive\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Hello World 👀!",
+    "objectID": "posts/lighthouse again works/index.html",
+    "href": "posts/lighthouse again works/index.html",
+    "title": "Dance with curiosity again",
     "section": "",
-    "text": "💻🏓🎨 🔦"
+    "text": "Word2vec explained.\nThanks to Jiří Materna for Machine Learning College in Prague.\n\nWord2vec\nImplement a simple word2vec estimator using Gensim. Use the small Wikipedia corpus from ‘enlang1.txt’.\nSource: Word2vec"
+  },
+  {
+    "objectID": "posts/transcedent_learning/index.html",
+    "href": "posts/transcedent_learning/index.html",
+    "title": "Transcendental learning",
+    "section": "",
+    "text": "Inspired by the course Leading teams in the Digital Age by Hyperisland ❤️ 🇸🇪"
   }
 ]

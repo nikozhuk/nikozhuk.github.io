@@ -2,18 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://nikozhuk.github.io/about.html</loc>
-    <lastmod>2026-04-01T11:22:55.924Z</lastmod>
+    <lastmod>2026-04-02T17:55:06.294Z</lastmod>
   </url>
   <url>
-    <loc>https://nikozhuk.github.io/posts/lighthouse again works/index.html</loc>
-    <lastmod>2026-04-02T16:46:52.839Z</lastmod>
+    <loc>https://nikozhuk.github.io/posts/welcome/index.html</loc>
+    <lastmod>2026-04-01T13:16:43.400Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/books.html</loc>
+    <lastmod>2026-04-02T19:50:02.959Z</lastmod>
   </url>
   <url>
     <loc>https://nikozhuk.github.io/index.html</loc>
     <lastmod>2026-03-20T10:36:37.713Z</lastmod>
   </url>
   <url>
-    <loc>https://nikozhuk.github.io/posts/welcome/index.html</loc>
-    <lastmod>2026-04-01T13:16:43.400Z</lastmod>
+    <loc>https://nikozhuk.github.io/posts/lighthouse again works/index.html</loc>
+    <lastmod>2026-04-02T19:08:30.585Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/transcedent_learning/index.html</loc>
+    <lastmod>2026-04-02T19:18:46.741Z</lastmod>
   </url>
 </urlset>
