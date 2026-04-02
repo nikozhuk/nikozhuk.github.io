@@ -11,7 +11,7 @@
     "href": "posts/lighthouse again works/index.html",
     "title": "Dance with curiosity again",
     "section": "",
-    "text": "Word2vec explained.\n\nWord2vec\nImplement a simple word2vec estimator using Gensim. Use the small Wikipedia corpus from ‘enlang1.txt’.\nSource: Word2vec"
+    "text": "Word2vec explained.\nThanks to Jiří Materna.\n\nWord2vec\nImplement a simple word2vec estimator using Gensim. Use the small Wikipedia corpus from ‘enlang1.txt’.\nSource: Word2vec"
   },
   {
     "objectID": "index.html",
