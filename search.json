@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "Hi, there 🤲",
     "section": "",
-    "text": "Selected projects I did."
+    "text": "Selected projects I did.\nDance with curiosity."
   },
   {
     "objectID": "posts/welcome/index.html",
@@ -39,12 +39,12 @@
     "href": "index.html",
     "title": "Nikolai Zhukov",
     "section": "",
-    "text": "Hello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nDance with curiosity again\n\n\n\ncode\n\narchive\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
+    "text": "Hello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWord2Vec\n\n\n\ncode\n\narchive\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/lighthouse again works/index.html",
     "href": "posts/lighthouse again works/index.html",
-    "title": "Dance with curiosity again",
+    "title": "Word2Vec",
     "section": "",
     "text": "Word2vec explained.\nThanks to Jiří Materna for Machine Learning College in Prague.\n\nWord2vec\nImplement a simple word2vec estimator using Gensim. Use the small Wikipedia corpus from ‘enlang1.txt’.\nSource: Word2vec"
   },
