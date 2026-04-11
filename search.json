@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "Hi, there 🤲",
     "section": "",
-    "text": "Selected projects I did.\nDance with curiosity."
+    "text": "I’m human,\nwho did these projects\nby dancing with curiosity."
   },
   {
     "objectID": "posts/welcome/index.html",
@@ -12,6 +12,20 @@
     "title": "Hello World 👀!",
     "section": "",
     "text": "💻🏓🎨 🔦"
+  },
+  {
+    "objectID": "posts/lighthouse again works/index.html",
+    "href": "posts/lighthouse again works/index.html",
+    "title": "Word2Vec",
+    "section": "",
+    "text": "Word2vec explained.\n\nThanks to Jiří Materna for Machine Learning College in Prague.\nOriginal paper T.Mikolov, K.Chen, G.Corrado, J.Dean Efficient Estimation of Word Representations in Vector Space\n\n\nword_vectors.most_similar(positive=['Paris', 'Spain'], negative=['France'])\n\n[('Madrid', 0.8625079989433289),\n ('Barcelona', 0.7637037634849548),\n ('Sevilla', 0.6874054074287415),\n ('Seville', 0.6747831106185913),\n ('Malaga', 0.6494932174682617),\n ('Zaragoza', 0.6459373831748962),\n ('Valencia', 0.6383104920387268),\n ('Alicante', 0.6115807890892029),\n ('Salamanca', 0.6041630506515503),\n ('Murcia', 0.6019026041030884)]\n\n\nSource: Word2vec"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Nikolai Zhukov",
+    "section": "",
+    "text": "Understanding Zero-like Reinforcement Learning method.\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJan 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWord2Vec\n\n\n\ncode\n\narchive\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "books.html",
@@ -35,18 +49,11 @@
     "text": "GNNs 📘books and 🖥️courses:\n\n🖥️ Introduction to Graph Neural Networks by Zak Jost\n\n📘 Deep learning with graph-structured representations by Thomas Kipf 2020\n📘 Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges by Michael Bronstein et al., 2021\n🎨 Graph Neural Networks for Novice Math Fanatic by Rishabh Anand"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Nikolai Zhukov",
+    "objectID": "posts/hexapawn_rnf/index.html",
+    "href": "posts/hexapawn_rnf/index.html",
+    "title": "Understanding Zero-like Reinforcement Learning method.",
     "section": "",
-    "text": "Hello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWord2Vec\n\n\n\ncode\n\narchive\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "posts/lighthouse again works/index.html",
-    "href": "posts/lighthouse again works/index.html",
-    "title": "Word2Vec",
-    "section": "",
-    "text": "Word2vec explained.\nThanks to Jiří Materna for Machine Learning College in Prague.\n\nWord2vec\nImplement a simple word2vec estimator using Gensim. Use the small Wikipedia corpus from ‘enlang1.txt’.\nSource: Word2vec"
+    "text": "High-level training loop of the zero-like reinforcement learning pipeline\n\nThank you Dominik Klein and his book “Neural Networks for Chess”"
   },
   {
     "objectID": "posts/transcedent_learning/index.html",

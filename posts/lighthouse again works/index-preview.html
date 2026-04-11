@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-    <title>index</title>
+    <title>Word2vec</title>
     <style>
       /* Default styles provided by pandoc.
       ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -156,6 +156,7 @@
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../../nzlogo.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -225,13 +226,17 @@
     <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">Hi, there 🤲</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../books.html"> 
+<span class="menu-text">Books</span></a>
+  </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://bsky.app/profile/nikozhuk.bsky.social"> <i class="bi bi-bluesky" role="img">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://bsky.app/profile/nikozhuk.bsky.social"> <i class="bi bi-bluesky" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -248,15 +253,30 @@
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block"><h1 class="title display-7">Word2vec</h1></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Word2vec</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#word2vec" id="toc-word2vec" class="nav-link active" data-scroll-target="#word2vec">Word2vec</a></li>
-  <li><a href="#import-better-models" id="toc-import-better-models" class="nav-link" data-scroll-target="#import-better-models">Import better models</a></li>
+  <li><a href="#import-better-models" id="toc-import-better-models" class="nav-link active" data-scroll-target="#import-better-models">Import better models</a></li>
   </ul>
 </nav>
 </nav>
@@ -265,19 +285,17 @@
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">      <div id="cell-key-chart" class="cell markdown">
-<section id="word2vec" class="level1">
-
+<main class="content quarto-banner-title-block" id="quarto-document-content">      
+     <div id="cell-1" class="cell markdown">
 <p>Implement a simple word2vec estimator using <a href="https://radimrehurek.com/gensim/">Gensim</a>. Use the small Wikipedia corpus from ‘enlang1.txt’.</p>
-</section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div id="cell-1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="203ab32a-118c-47bf-9e07-4d014cca7ed6">
+<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div id="cell-2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="203ab32a-118c-47bf-9e07-4d014cca7ed6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>raw.githubusercontent.com<span class="op">/</span>mlcollege<span class="op">/</span>natural<span class="op">-</span>language<span class="op">-</span>processing<span class="op">/</span>master<span class="op">/</span>data<span class="op">/</span>corpora<span class="op">/</span>enlang1.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div id="cell-2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="2ec2f8e8-843d-42ea-e3af-50ff0c87ce0a">
+<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div id="cell-3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="2ec2f8e8-843d-42ea-e3af-50ff0c87ce0a">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install gensim</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-3" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-4" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gensim, logging</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>logging.basicConfig(<span class="bu">format</span><span class="op">=</span><span class="st">'</span><span class="sc">%(asctime)s</span><span class="st"> : </span><span class="sc">%(levelname)s</span><span class="st"> : </span><span class="sc">%(message)s</span><span class="st">'</span>, level<span class="op">=</span>logging.INFO)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -288,53 +306,57 @@
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> gensim.models.Word2Vec(sentences, vector_size<span class="op">=</span> <span class="dv">50</span>, min_count<span class="op">=</span><span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="cell-4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="68c77946-1739-443a-cb3b-778bf69c46b6">
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="cell-5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="68c77946-1739-443a-cb3b-778bf69c46b6" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.wv[<span class="st">'car'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[ 0.25380543  2.2000291   1.367798   -0.569554    0.3376848   1.5383941
- -1.3774745   2.152659    1.3292775  -1.2528269  -0.28500044  1.7286334
-  1.2105423  -1.6834241  -2.2477934   0.4191201   0.37879175 -2.0610175
-  0.931628   -2.453535    1.5690073   0.5084671  -0.68400437 -0.522053
-  0.12157407 -1.7667948  -0.5087015   2.9266999  -1.9037722  -1.5266621
- -1.4404894  -0.61455035 -0.81956065  1.5224134  -1.1805165   0.47556373
-  1.1151832  -0.15660442 -0.7176002  -1.1208314   0.34085685  2.4798238
-  0.90931803 -2.895613    1.3991601  -0.7281918   3.8189287   0.74121726
-  0.21085529  0.99234027]</code></pre>
+<pre><code>[-0.6982817   2.3581364   0.5011609  -0.60018486 -0.33697867  1.502611
+ -0.86960953  3.356093    1.2783765  -2.485869   -1.2212014   1.2542228
+  1.51994    -2.1035402  -0.6679091  -0.31157556  0.14391106 -1.7851443
+  1.3146995  -3.0246205  -0.75486225  1.2262667  -0.6552876  -0.36967877
+  0.57343364 -0.86407775 -0.15070374  2.1927333   1.3338499  -0.62077355
+ -1.0623326  -0.47078207  0.20871846  2.0925546  -1.8752809   0.90823495
+  1.0370363  -0.1633322   0.3681553   1.3255799   1.4786295   1.6821818
+  0.9131644  -3.1880014   0.55028105 -1.6433401   3.763089   -0.00381869
+ -0.0066908   0.6364674 ]</code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="580adcf7-8283-43f7-8685-c34db4a754f1">
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="580adcf7-8283-43f7-8685-c34db4a754f1" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model.wv.most_similar(positive<span class="op">=</span>[<span class="st">'cars'</span>, <span class="st">'bus'</span>], negative<span class="op">=</span>[<span class="st">'car'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>[('buses', 0.8908661603927612),
- ('routes', 0.8561773300170898),
- ('platforms', 0.8227992057800293),
- ('roads', 0.8107088804244995),
- ('rail', 0.7899814248085022),
- ('trains', 0.7866082191467285),
- ('intercity', 0.7749472260475159),
- ('transport', 0.7704628705978394),
- ('footbridge', 0.7700438499450684),
- ('commuter', 0.7693094611167908)]</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>[('buses', 0.8990582227706909),
+ ('routes', 0.8619767427444458),
+ ('roads', 0.8201125860214233),
+ ('intercity', 0.819900393486023),
+ ('platforms', 0.8192744255065918),
+ ('trains', 0.8124856352806091),
+ ('rail', 0.806613028049469),
+ ('freight', 0.8052050471305847),
+ ('stations', 0.7834478616714478),
+ ('transport', 0.7786622047424316)]</code></pre>
 </div>
 </div></div>
-<div id="cell-6" class="cell markdown">
+<div id="cell-7" class="cell markdown">
 <section id="import-better-models" class="level1">
 <h1>Import better models</h1>
 <p>Import word vectors trained on <a href="https://fasttext.cc/docs/en/english-vectors.html">Common Crawl</a> corpus (600 B tokens) and play with it.</p>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="cell-7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="8a21590e-201e-445c-91c6-7d214bfaa2e3">
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="8a21590e-201e-445c-91c6-7d214bfaa2e3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U <span class="op">--</span>no<span class="op">-</span>cache<span class="op">-</span><span class="bu">dir</span> gdown <span class="op">--</span>pre</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>gdown https:<span class="op">//</span>drive.google.com<span class="op">/</span>uc?<span class="bu">id</span><span class="op">=</span><span class="dv">1</span><span class="er">pt_yxrbRIRG4bHufCyIf6POayH3gE6f4</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>bunzip2 crawl<span class="op">-</span><span class="fl">300.</span><span class="er">vec</span>.bz2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-8" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="cell-9" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models.keyedvectors <span class="im">import</span> KeyedVectors</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>word_vectors <span class="op">=</span> KeyedVectors.load_word2vec_format(<span class="st">'crawl-300.vec'</span>, binary<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>2026-04-11 12:38:57,920 : INFO : loading projection weights from crawl-300.vec
+2026-04-11 12:43:40,981 : INFO : KeyedVectors lifecycle event {'msg': 'loaded (500000, 300) matrix of type float32 from crawl-300.vec', 'binary': False, 'encoding': 'utf8', 'datetime': '2026-04-11T12:43:40.981210', 'gensim': '4.4.0', 'python': '3.12.3 (main, Dec 16 2024, 17:30:55) [GCC 11.4.0]', 'platform': 'Linux-6.5.0-41-generic-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}</code></pre>
+</div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="7a861574-f8cd-4677-ba6a-daaff858fcae">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>word_vectors.most_similar(positive<span class="op">=</span>[<span class="st">'kings'</span>, <span class="st">'queen'</span>], negative<span class="op">=</span>[<span class="st">'king'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-10" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="7a861574-f8cd-4677-ba6a-daaff858fcae" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>word_vectors.most_similar(positive<span class="op">=</span>[<span class="st">'kings'</span>, <span class="st">'queen'</span>], negative<span class="op">=</span>[<span class="st">'king'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>[('queens', 0.8387579917907715),
  ('queen.', 0.6004167199134827),
  ('monarchs', 0.5899762511253357),
@@ -347,9 +369,9 @@
  ('royal', 0.5232110023498535)]</code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-10" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="86bec497-e42c-4aa2-82d7-d71eaf659179">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>word_vectors.most_similar(positive<span class="op">=</span>[<span class="st">'woman'</span>, <span class="st">'husband'</span>], negative<span class="op">=</span>[<span class="st">'man'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-11" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="86bec497-e42c-4aa2-82d7-d71eaf659179" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>word_vectors.most_similar(positive<span class="op">=</span>[<span class="st">'woman'</span>, <span class="st">'husband'</span>], negative<span class="op">=</span>[<span class="st">'man'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>[('wife', 0.7529045343399048),
  ('daughter', 0.6500851511955261),
  ('mother-in-law', 0.6470040082931519),
@@ -362,9 +384,9 @@
  ('daughters', 0.5600825548171997)]</code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-11" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="58fc818f-d3f6-4bf8-bf18-a8797d16c526">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>word_vectors.most_similar(positive<span class="op">=</span>[<span class="st">'Paris'</span>, <span class="st">'Spain'</span>], negative<span class="op">=</span>[<span class="st">'France'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-key-chart" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="58fc818f-d3f6-4bf8-bf18-a8797d16c526" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>word_vectors.most_similar(positive<span class="op">=</span>[<span class="st">'Paris'</span>, <span class="st">'Spain'</span>], negative<span class="op">=</span>[<span class="st">'France'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="key-chart" class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>[('Madrid', 0.8625079989433289),
  ('Barcelona', 0.7637037634849548),
  ('Sevilla', 0.6874054074287415),
@@ -377,9 +399,9 @@
  ('Murcia', 0.6019026041030884)]</code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="cell-12" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="cd3d1f56-6d7c-4a35-8bcf-eaaab1dfed6c">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>word_vectors.most_similar(positive<span class="op">=</span>[<span class="st">'Macron'</span>, <span class="st">'France'</span>], negative<span class="op">=</span>[<span class="st">'Ptugal'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="27">
+<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-13" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="cd3d1f56-6d7c-4a35-8bcf-eaaab1dfed6c" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>word_vectors.most_similar(positive<span class="op">=</span>[<span class="st">'Macron'</span>, <span class="st">'France'</span>], negative<span class="op">=</span>[<span class="st">'Portugal'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>[('Hollande', 0.6321580410003662),
  ('Sarkozy', 0.5803262591362),
  ('Chirac', 0.5736144781112671),
