@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://nikozhuk.github.io/about.html</loc>
-    <lastmod>2026-04-11T12:22:03.661Z</lastmod>
-  </url>
-  <url>
     <loc>https://nikozhuk.github.io/posts/welcome/index.html</loc>
     <lastmod>2026-04-11T12:22:03.677Z</lastmod>
   </url>
@@ -17,12 +13,16 @@
     <lastmod>2026-04-11T12:21:53.195Z</lastmod>
   </url>
   <url>
+    <loc>https://nikozhuk.github.io/about.html</loc>
+    <lastmod>2026-04-11T12:22:03.661Z</lastmod>
+  </url>
+  <url>
     <loc>https://nikozhuk.github.io/books.html</loc>
     <lastmod>2026-04-02T20:04:29.032Z</lastmod>
   </url>
   <url>
     <loc>https://nikozhuk.github.io/posts/hexapawn_rnf/index.html</loc>
-    <lastmod>2026-04-11T10:39:25.013Z</lastmod>
+    <lastmod>2026-04-12T17:24:26.779Z</lastmod>
   </url>
   <url>
     <loc>https://nikozhuk.github.io/posts/transcedent_learning/index.html</loc>
