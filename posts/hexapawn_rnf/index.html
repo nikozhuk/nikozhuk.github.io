@@ -8,7 +8,7 @@
 
 <meta name="author" content="">
 
-<title>Zero-like Reinforcement Learning method</title>
+<title>Zero-like Reinforcement Learning, Monte Carlo Tree Search methods</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,7 +27,7 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -45,6 +45,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-0c5b8d9bab999a3ff132141154df1dbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="../../site_libs/quarto-contrib/videojs/video-js.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,15 +74,12 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -104,7 +103,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../books.html"> 
-<span class="menu-text">Books</span></a>
+<span class="menu-text">ML/GNN 📚</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
@@ -132,7 +131,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Zero-like Reinforcement Learning method</h1>
+      <h1 class="title">Zero-like Reinforcement Learning, Monte Carlo Tree Search methods</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">visualisation</div>
                 <div class="quarto-category">code</div>
@@ -158,9 +157,7 @@ ul.task-list li input[type="checkbox"] {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="rnf_mcts-preview.html"><i class="bi bi-journal-code"></i>Zero-like reinforcement learning method for hexapawn game</a></li></ul></div></div>
+    
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
@@ -168,267 +165,14 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>“zero-like” reinforcement learning model for chess, similar to the AlphaZero approach.</p>
-<p>I wanted to understand a zero-like reinforcement learning method from working code in a simple chess setting so I could transfer the core ideas to a much harder combinatorial optimization problem (where search space grows explosively): finding the best topologies for industrial network devices.</p>
+<p>Zero-like reinforcement learning model for chess, similar to the <a href="https://arxiv.org/pdf/1712.01815">DeepMind’s AlphaZero</a> approach.</p>
+<p>Practical walktrough to understand the basics of the zero-like reinforcment learning method and <a href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search">Monte Carlo Tree Search (MCTS)</a>. Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).</p>
 <p><img src="hexapawn_rnf_nz.png" class="img-fluid"></p>
-<p>High-level training loop of the zero-like reinforcement learning pipeline</p>
-<p>Thank you Dominik Klein and his book <a href="https://github.com/asdfjkl/neural_network_chess">“Neural Networks for Chess”</a></p>
-<section id="zero-like-reinforcement-learning-method-for-hexapawn-game" class="level1 quarto-embed-nb-cell">
-<h1>Zero-like reinforcement learning method for hexapawn game</h1>
-<p>This notebook walks through the full pipeline: game rules → supervised learning → reinforcement learning (AlphaZero-style MCTS).</p>
-<section id="the-game---hexapawn" class="level2">
-<h2 class="anchored" data-anchor-id="the-game---hexapawn">1. The Game - Hexapawn</h2>
-<p>Hexapawn invented by Martin Gardner. Is played on a 3×3 board. Each side has three pawns.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="hexapawn.png" class="img-fluid figure-img"></p>
-<figcaption>hexapawn board</figcaption>
-</figure>
-</div>
-<p>Board squares are indexed 0–8 (left-to-right, top-to-bottom):</p>
-<pre><code>0 1 2
-3 4 5
-6 7 8</code></pre>
-<p><strong>Rules:</strong> - Pawns move one square forward (no double-step). - Pawns capture diagonally forward. - <strong>White wins</strong> by reaching row 0 (squares 0–2). - <strong>Black wins</strong> by reaching row 2 (squares 6–8). - A player with no legal moves <strong>loses</strong>.</p>
-<div id="7142f793" class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>BBB
-___
-WWW
-
-Legal moves for White: [(6, 3), (7, 4), (8, 5)]</code></pre>
-</div>
-</div>
-</section>
-<section id="network" class="level2">
-<h2 class="anchored" data-anchor-id="network">2. Network</h2>
-<p>Encoding: <strong>input</strong> is a bit <strong>vector of size 21</strong> which represents the current postions of the white and black pawns:</p>
-<ul>
-<li>bits 0–8: 1 if White pawn on that square, else 0</li>
-<li>bits 9–17: 1 if Black pawn on that square, else 0</li>
-<li>bits 18–20: 1 if it is White’s turn, else 0</li>
-</ul>
-<p>The network has <strong>two outputs</strong>: | Head | Shape | Meaning | |——|——-|———| | Policy | (28,) | Probability over all possible moves | | Value | (1,) | Expected outcome: +1 = White wins, -1 = Black wins |</p>
-<div id="28ccacbe" class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Input vector (21 values): [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]
-White pawn bits: [0, 0, 0, 0, 0, 0, 1, 1, 1]
-Black pawn bits: [1, 1, 1, 0, 0, 0, 0, 0, 0]
-Turn bits:       [1, 1, 1]</code></pre>
-</div>
-</div>
-</section>
-<section id="step-1-generate-supervised-training-data" class="level2">
-<h2 class="anchored" data-anchor-id="step-1-generate-supervised-training-data">3. Step 1 – Generate Supervised Training Data</h2>
-<p><code>mnx_generateTrainingData.py</code> solves every reachable position with <strong>minimax</strong> (depth 30) and records: - <code>positions.npy</code> — network input vectors<br>
-- <code>moveprobs.npy</code> — one-hot best move (policy target)<br>
-- <code>outcomes.npy</code> — game result (+1 / 0 / -1)</p>
-<p>Run once; files are already present if you see <code>*.npy</code> in this directory.</p>
-<div id="77f1d36b" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-stdout">
-<pre><code>positions shape: (118, 21)
-moveprobs shape: (118, 28)
-outcomes shape:  (118,)
-
-First outcome (1=White wins, -1=Black wins): -1</code></pre>
-</div>
-</div>
-</section>
-<section id="step-2-supervised-training" class="level2">
-<h2 class="anchored" data-anchor-id="step-2-supervised-training">4. Step 2 – Supervised Training</h2>
-<p><code>sup_network.py</code> trains the dual-headed network on the minimax-labeled data.</p>
-<p>Architecture: <code>Input(21) → 5× Dense(128, ReLU) → [PolicyHead(28), ValueHead(1)]</code></p>
-<div id="4a0d305b" class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Model: "functional"</span>
-</pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓
-┃<span style="font-weight: bold"> Layer (type)        </span>┃<span style="font-weight: bold"> Output Shape      </span>┃<span style="font-weight: bold">    Param # </span>┃<span style="font-weight: bold"> Connected to      </span>┃
-┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩
-│ input_layer         │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">21</span>)        │          <span style="color: #00af00; text-decoration-color: #00af00">0</span> │ -                 │
-│ (<span style="color: #0087ff; text-decoration-color: #0087ff">InputLayer</span>)        │                   │            │                   │
-├─────────────────────┼───────────────────┼────────────┼───────────────────┤
-│ dense (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)       │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">128</span>)       │      <span style="color: #00af00; text-decoration-color: #00af00">2,816</span> │ input_layer[<span style="color: #00af00; text-decoration-color: #00af00">0</span>][<span style="color: #00af00; text-decoration-color: #00af00">0</span>] │
-├─────────────────────┼───────────────────┼────────────┼───────────────────┤
-│ dense_1 (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)     │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">128</span>)       │     <span style="color: #00af00; text-decoration-color: #00af00">16,512</span> │ dense[<span style="color: #00af00; text-decoration-color: #00af00">0</span>][<span style="color: #00af00; text-decoration-color: #00af00">0</span>]       │
-├─────────────────────┼───────────────────┼────────────┼───────────────────┤
-│ dense_2 (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)     │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">128</span>)       │     <span style="color: #00af00; text-decoration-color: #00af00">16,512</span> │ dense_1[<span style="color: #00af00; text-decoration-color: #00af00">0</span>][<span style="color: #00af00; text-decoration-color: #00af00">0</span>]     │
-├─────────────────────┼───────────────────┼────────────┼───────────────────┤
-│ dense_3 (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)     │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">128</span>)       │     <span style="color: #00af00; text-decoration-color: #00af00">16,512</span> │ dense_2[<span style="color: #00af00; text-decoration-color: #00af00">0</span>][<span style="color: #00af00; text-decoration-color: #00af00">0</span>]     │
-├─────────────────────┼───────────────────┼────────────┼───────────────────┤
-│ dense_4 (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)     │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">128</span>)       │     <span style="color: #00af00; text-decoration-color: #00af00">16,512</span> │ dense_3[<span style="color: #00af00; text-decoration-color: #00af00">0</span>][<span style="color: #00af00; text-decoration-color: #00af00">0</span>]     │
-├─────────────────────┼───────────────────┼────────────┼───────────────────┤
-│ policyHead (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)  │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">28</span>)        │      <span style="color: #00af00; text-decoration-color: #00af00">3,612</span> │ dense_4[<span style="color: #00af00; text-decoration-color: #00af00">0</span>][<span style="color: #00af00; text-decoration-color: #00af00">0</span>]     │
-├─────────────────────┼───────────────────┼────────────┼───────────────────┤
-│ valueHead (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)   │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">1</span>)         │        <span style="color: #00af00; text-decoration-color: #00af00">129</span> │ dense_4[<span style="color: #00af00; text-decoration-color: #00af00">0</span>][<span style="color: #00af00; text-decoration-color: #00af00">0</span>]     │
-└─────────────────────┴───────────────────┴────────────┴───────────────────┘
-</pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Total params: </span><span style="color: #00af00; text-decoration-color: #00af00">72,607</span> (283.62 KB)
-</pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Trainable params: </span><span style="color: #00af00; text-decoration-color: #00af00">72,605</span> (283.61 KB)
-</pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Non-trainable params: </span><span style="color: #00af00; text-decoration-color: #00af00">0</span> (0.00 B)
-</pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Optimizer params: </span><span style="color: #00af00; text-decoration-color: #00af00">2</span> (12.00 B)
-</pre>
-</div>
-</div>
-<div id="170af77d" class="cell" data-execution_count="5">
-<div class="cell-output cell-output-stdout">
-<pre><code>Value (expected outcome): -1.0
-
-Move probabilities (legal moves only):
-  move (6, 3)  →  p = 0.9995
-  move (7, 4)  →  p = 0.0000
-  move (8, 5)  →  p = 0.0001</code></pre>
-</div>
-</div>
-</section>
-<section id="step-3-reinforcement-learning-via-mcts" class="level2">
-<h2 class="anchored" data-anchor-id="step-3-reinforcement-learning-via-mcts">5. Step 3 – Reinforcement Learning via MCTS</h2>
-<p><code>rnf_train.py</code> trains from scratch using <strong>self-play + MCTS</strong> (AlphaZero-style):</p>
-<ol type="1">
-<li>Play a game using MCTS (100 simulations/move) to get move probabilities.</li>
-<li>At game end, label each position with the actual outcome.</li>
-<li>Train the network on those positions.</li>
-<li>Repeat for 11 iterations × 10 games each.</li>
-</ol>
-<p>Saved checkpoints: <code>model_it0.keras</code>, <code>model_it10.keras</code>.</p>
-<div id="0fc7ee68" class="cell" data-execution_count="6">
-<div class="cell-output cell-output-stdout">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 104ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 35ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 34ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 35ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 36ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 36ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 37ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 37ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 44ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 36ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 36ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 31ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 36ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 34ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 34ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 38ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 39ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 35ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 34ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 35ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 36ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 35ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 35ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 32ms/step
-
-<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 46ms/step
-
-MCTS move probabilities (move, prob, N, Q):
-
-  (7, 4)  prob=0.560  N=56  Q=-0.643
-
-  (6, 3)  prob=0.220  N=22  Q=-0.636
-
-  (8, 5)  prob=0.220  N=22  Q=-0.636
-</pre>
-</div>
-</div>
-</div>
-</section>
-<section id="evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="evaluation">6. Evaluation</h2>
-<p>Both eval scripts pit the network (as Black) against a <strong>random White player</strong> over 100 games.</p>
-<div id="adfa6343" class="cell" data-execution_count="7">
-<div class="cell-output cell-output-stdout">
-<pre><code>Supervised model:
-White (rand) wins: 0%  |  Black (net) wins: 100%
-
-RL model (it10):
-White (rand) wins: 0%  |  Black (net) wins: 100%</code></pre>
-</div>
-</div>
-</section>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<pre><code>mnx_generateTrainingData.py   →  positions.npy / moveprobs.npy / outcomes.npy
-         ↓
-sup_network.py                →  supervised_model.keras
-
-common/init_random_model.py   →  common/random_model.keras
-         ↓
-rnf_train.py  (self-play)     →  model_it0.keras, model_it10.keras</code></pre>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Script</th>
-<th>What it produces</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>mnx_generateTrainingData.py</code></td>
-<td>Training labels via minimax</td>
-</tr>
-<tr class="even">
-<td><code>sup_network.py</code></td>
-<td>Supervised model</td>
-</tr>
-<tr class="odd">
-<td><code>sup_eval.py</code></td>
-<td>Win-rate of supervised model vs random</td>
-</tr>
-<tr class="even">
-<td><code>rnf_train.py</code></td>
-<td>RL model via self-play + MCTS</td>
-</tr>
-<tr class="odd">
-<td><code>rnf_eval.py</code></td>
-<td>Win-rate of RL model vs random</td>
-</tr>
-<tr class="even">
-<td><code>rnf_search_test.py</code></td>
-<td>One-shot MCTS debug output</td>
-</tr>
-</tbody>
-</table>
-</section>
-<a class="quarto-notebook-link" id="nblink-1" href="rnf_mcts-preview.html#eb1c7997">Source: Zero-like reinforcement learning method for hexapawn game</a></section>
-<p><a href="https://github.com/nikozhuk/neural_network_chess/blob/main/chapter_05/rnf_mcts.ipynb">Jupyter Notebook</a></p>
+<p>High-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book <a href="https://github.com/asdfjkl/neural_network_chess">“Neural Networks for Chess”</a>.</p>
+<!-- {{< embed rnf_mcts.ipynb >}} -->
+<p><a href="https://github.com/nikozhuk/neural_network_chess/blob/main/chapter_05/">Here is full implementation</a></p>
 <p>Training without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…</p>
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="self_play.mp4"></video></div>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 #mcts-wrap{font-family:system-ui,sans-serif;background:#f8f8f6;color:#1a1a1a;
@@ -1331,6 +1075,7 @@ renderTree();
   });
   </script>
 </div> <!-- /content -->
+<script>videojs(video_shortcode_videojs_video1);</script>
 
 
 

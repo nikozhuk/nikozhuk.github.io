@@ -1,45 +1,52 @@
 [
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Hello World 👀!",
+    "objectID": "tt.html",
+    "href": "tt.html",
+    "title": "🏓",
     "section": "",
-    "text": "💻🏓🎨 🔦"
+    "text": "Table tennis projects."
   },
   {
-    "objectID": "posts/lighthouse again works/index.html",
-    "href": "posts/lighthouse again works/index.html",
-    "title": "Word2Vec",
+    "objectID": "posts/transcedent_learning/index.html",
+    "href": "posts/transcedent_learning/index.html",
+    "title": "Transcendental learning",
     "section": "",
-    "text": "Word2vec explained.\n\nThanks to Jiří Materna for Machine Learning College in Prague. Where you can find much more handful notebooks to understand the basics of machine learning.\nOriginal paper T.Mikolov, K.Chen, G.Corrado, J.Dean Efficient Estimation of Word Representations in Vector Space\n\n\nword_vectors.most_similar(positive=['Paris', 'Spain'], negative=['France'])\n\n[('Madrid', 0.8625079989433289),\n ('Barcelona', 0.7637037634849548),\n ('Sevilla', 0.6874054074287415),\n ('Seville', 0.6747831106185913),\n ('Malaga', 0.6494932174682617),\n ('Zaragoza', 0.6459373831748962),\n ('Valencia', 0.6383104920387268),\n ('Alicante', 0.6115807890892029),\n ('Salamanca', 0.6041630506515503),\n ('Murcia', 0.6019026041030884)]\n\n\nSource: Word2vec"
+    "text": "Different ways of humans’s learning.\nInspired by the course Leading teams in the Digital Age by Hyperisland ❤️ 🇸🇪"
+  },
+  {
+    "objectID": "posts/hexapawn_rnf/index.html",
+    "href": "posts/hexapawn_rnf/index.html",
+    "title": "Zero-like Reinforcement Learning, Monte Carlo Tree Search methods",
+    "section": "",
+    "text": "Zero-like reinforcement learning model for chess, similar to the DeepMind’s AlphaZero approach.\nPractical walktrough to understand the basics of the zero-like reinforcment learning method and Monte Carlo Tree Search (MCTS). Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).\n\nHigh-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book “Neural Networks for Chess”.\n\nHere is full implementation\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…\n\n\n\n\n\n  \n    Hexapawn · MCTS Visualizer\n    AlphaZero-style search  ·  100 simulations  ·  model_it10.keras\n  \n  Step 0 / 101\n\n\n\n  \n  \n    \n      Board position\n      \n    \n\n    \n      Root expansion\n      \n    \n\n    \n      Legend\n      Selection path\n      Expansion (neural net)\n      Backup propagation\n      Unvisited node\n      High Q (White wins)\n      Low Q (Black wins)\n    \n  \n\n  \n  \n    Loading…\n  \n\n\n\n  \n    ↺ Reset\n    ◀ Prev\n    ▶ Next\n    ⏵ Auto\n    ⏩ End\n  \n  \n    Step\n    \n  \n  \n    Speed\n    \n  \n  \n  0 / 101"
   },
   {
     "objectID": "industry_projects.html",
     "href": "industry_projects.html",
-    "title": "Projects",
+    "title": "💻",
     "section": "",
     "text": "Projects in industry."
   },
   {
     "objectID": "books.html",
     "href": "books.html",
-    "title": "Books",
+    "title": "ML/GNN 📚",
     "section": "",
-    "text": "Machine Learning, Zhi-Hua Zhou (2021)\nA compact mathematical explanation of the ML basics.\nAI and Machine Learning for Coders, Laurence Moroney (2020)\nA great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.\nDesigning Machine Learning Systems, Chip Huyen (2022)\nJust a very useful for ML- practitioners in industry.\nDeep Learning with Python, François Chollet (2nd edition 2021)\nThe most understandable explanation of concepts in textual format, which is interesting to read. By the way, I’ll give the second copy to someone who’ll take good care of it.\nDeep Learning, Jan Goodfellow (2016)\nComprehensive mathematical and conceptual explanation, insights for the open research fields.\nDeep Learning for Vision Systems, Mohamed Elgendy (2020)\nDetailed explanation for baseline’s Computer Vision backbones/architectures.\nDeep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)\nA view on Deep Learning from practitioners. Practical Data Ethics!\nDeep Learning: A Visual Approach, Andrew-Glassner (2021)\nAdditional dimension for concept’s understanding.\nComputer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)\nConstantly updated meta-survey.\nInterpretable Machine Learning, Christoph Molnar (2019)\nSurvey, good starting point on the topic. Shapley Values."
-  },
-  {
-    "objectID": "books.html#mldl",
-    "href": "books.html#mldl",
-    "title": "Books",
-    "section": "",
-    "text": "Machine Learning, Zhi-Hua Zhou (2021)\nA compact mathematical explanation of the ML basics.\nAI and Machine Learning for Coders, Laurence Moroney (2020)\nA great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.\nDesigning Machine Learning Systems, Chip Huyen (2022)\nJust a very useful for ML- practitioners in industry.\nDeep Learning with Python, François Chollet (2nd edition 2021)\nThe most understandable explanation of concepts in textual format, which is interesting to read. By the way, I’ll give the second copy to someone who’ll take good care of it.\nDeep Learning, Jan Goodfellow (2016)\nComprehensive mathematical and conceptual explanation, insights for the open research fields.\nDeep Learning for Vision Systems, Mohamed Elgendy (2020)\nDetailed explanation for baseline’s Computer Vision backbones/architectures.\nDeep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)\nA view on Deep Learning from practitioners. Practical Data Ethics!\nDeep Learning: A Visual Approach, Andrew-Glassner (2021)\nAdditional dimension for concept’s understanding.\nComputer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)\nConstantly updated meta-survey.\nInterpretable Machine Learning, Christoph Molnar (2019)\nSurvey, good starting point on the topic. Shapley Values."
+    "text": "🖥️ Introduction to Graph Neural Networks by Zak Jost\n\n📘 Deep learning with graph-structured representations by Thomas Kipf 2020\n📘 Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges by Michael Bronstein et al., 2021\n🎨 Graph Neural Networks for Novice Math Fanatic by Rishabh Anand"
   },
   {
     "objectID": "books.html#gnns-books-and-courses",
     "href": "books.html#gnns-books-and-courses",
-    "title": "Books",
-    "section": "GNNs 📘books and 🖥️courses:",
-    "text": "GNNs 📘books and 🖥️courses:\n\n🖥️ Introduction to Graph Neural Networks by Zak Jost\n\n📘 Deep learning with graph-structured representations by Thomas Kipf 2020\n📘 Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges by Michael Bronstein et al., 2021\n🎨 Graph Neural Networks for Novice Math Fanatic by Rishabh Anand"
+    "title": "ML/GNN 📚",
+    "section": "",
+    "text": "🖥️ Introduction to Graph Neural Networks by Zak Jost\n\n📘 Deep learning with graph-structured representations by Thomas Kipf 2020\n📘 Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges by Michael Bronstein et al., 2021\n🎨 Graph Neural Networks for Novice Math Fanatic by Rishabh Anand"
+  },
+  {
+    "objectID": "books.html#mldl",
+    "href": "books.html#mldl",
+    "title": "ML/GNN 📚",
+    "section": "ML/DL",
+    "text": "ML/DL\n\nMachine Learning, Zhi-Hua Zhou (2021)\nA compact mathematical explanation of the ML basics.\nAI and Machine Learning for Coders, Laurence Moroney (2020)\nA great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.\nDesigning Machine Learning Systems, Chip Huyen (2022)\nJust a very useful for ML- practitioners in industry.\nDeep Learning with Python, François Chollet (2nd edition 2021)\nThe most understandable explanation of concepts in textual format, which is interesting to read. By the way, I’ll give the second copy to someone who’ll take good care of it.\nDeep Learning, Jan Goodfellow (2016)\nComprehensive mathematical and conceptual explanation, insights for the open research fields.\nDeep Learning for Vision Systems, Mohamed Elgendy (2020)\nDetailed explanation for baseline’s Computer Vision backbones/architectures.\nDeep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)\nA view on Deep Learning from practitioners. Practical Data Ethics!\nDeep Learning: A Visual Approach, Andrew-Glassner (2021)\nAdditional dimension for concept’s understanding.\nComputer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)\nConstantly updated meta-survey.\nInterpretable Machine Learning, Christoph Molnar (2019)\nSurvey, good starting point on the topic. Shapley Values."
   },
   {
     "objectID": "about.html",
@@ -53,69 +60,27 @@
     "href": "index.html",
     "title": "Nikolai Zhukov",
     "section": "",
-    "text": "Zero-like Reinforcement Learning method\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJan 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWord2Vec\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
+    "text": "Zero-like Reinforcement Learning, Monte Carlo Tree Search methods\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJan 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWords representation in vector space\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "posts/hexapawn_rnf/index.html",
-    "href": "posts/hexapawn_rnf/index.html",
-    "title": "Zero-like Reinforcement Learning method",
+    "objectID": "pics.html",
+    "href": "pics.html",
+    "title": "🎨",
     "section": "",
-    "text": "“zero-like” reinforcement learning model for chess, similar to the AlphaZero approach.\nI wanted to understand a zero-like reinforcement learning method from working code in a simple chess setting so I could transfer the core ideas to a much harder combinatorial optimization problem (where search space grows explosively): finding the best topologies for industrial network devices.\nHigh-level training loop of the zero-like reinforcement learning pipeline\nThank you Dominik Klein and his book “Neural Networks for Chess”\nJupyter Notebook\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…"
+    "text": "Art."
   },
   {
-    "objectID": "posts/hexapawn_rnf/index.html#the-game---hexapawn",
-    "href": "posts/hexapawn_rnf/index.html#the-game---hexapawn",
-    "title": "Zero-like Reinforcement Learning method",
-    "section": "1. The Game - Hexapawn",
-    "text": "1. The Game - Hexapawn\nHexapawn invented by Martin Gardner. Is played on a 3×3 board. Each side has three pawns.\n\n\n\nhexapawn board\n\n\nBoard squares are indexed 0–8 (left-to-right, top-to-bottom):\n0 1 2\n3 4 5\n6 7 8\nRules: - Pawns move one square forward (no double-step). - Pawns capture diagonally forward. - White wins by reaching row 0 (squares 0–2). - Black wins by reaching row 2 (squares 6–8). - A player with no legal moves loses.\n\n\nBBB\n___\nWWW\n\nLegal moves for White: [(6, 3), (7, 4), (8, 5)]"
-  },
-  {
-    "objectID": "posts/hexapawn_rnf/index.html#network",
-    "href": "posts/hexapawn_rnf/index.html#network",
-    "title": "Zero-like Reinforcement Learning method",
-    "section": "2. Network",
-    "text": "2. Network\nEncoding: input is a bit vector of size 21 which represents the current postions of the white and black pawns:\n\nbits 0–8: 1 if White pawn on that square, else 0\nbits 9–17: 1 if Black pawn on that square, else 0\nbits 18–20: 1 if it is White’s turn, else 0\n\nThe network has two outputs: | Head | Shape | Meaning | |——|——-|———| | Policy | (28,) | Probability over all possible moves | | Value | (1,) | Expected outcome: +1 = White wins, -1 = Black wins |\n\n\nInput vector (21 values): [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]\nWhite pawn bits: [0, 0, 0, 0, 0, 0, 1, 1, 1]\nBlack pawn bits: [1, 1, 1, 0, 0, 0, 0, 0, 0]\nTurn bits:       [1, 1, 1]"
-  },
-  {
-    "objectID": "posts/hexapawn_rnf/index.html#step-1-generate-supervised-training-data",
-    "href": "posts/hexapawn_rnf/index.html#step-1-generate-supervised-training-data",
-    "title": "Zero-like Reinforcement Learning method",
-    "section": "3. Step 1 – Generate Supervised Training Data",
-    "text": "3. Step 1 – Generate Supervised Training Data\nmnx_generateTrainingData.py solves every reachable position with minimax (depth 30) and records: - positions.npy — network input vectors\n- moveprobs.npy — one-hot best move (policy target)\n- outcomes.npy — game result (+1 / 0 / -1)\nRun once; files are already present if you see *.npy in this directory.\n\n\npositions shape: (118, 21)\nmoveprobs shape: (118, 28)\noutcomes shape:  (118,)\n\nFirst outcome (1=White wins, -1=Black wins): -1"
-  },
-  {
-    "objectID": "posts/hexapawn_rnf/index.html#step-2-supervised-training",
-    "href": "posts/hexapawn_rnf/index.html#step-2-supervised-training",
-    "title": "Zero-like Reinforcement Learning method",
-    "section": "4. Step 2 – Supervised Training",
-    "text": "4. Step 2 – Supervised Training\nsup_network.py trains the dual-headed network on the minimax-labeled data.\nArchitecture: Input(21) → 5× Dense(128, ReLU) → [PolicyHead(28), ValueHead(1)]\n\n\nModel: \"functional\"\n\n\n\n┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓\n┃ Layer (type)        ┃ Output Shape      ┃    Param # ┃ Connected to      ┃\n┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩\n│ input_layer         │ (None, 21)        │          0 │ -                 │\n│ (InputLayer)        │                   │            │                   │\n├─────────────────────┼───────────────────┼────────────┼───────────────────┤\n│ dense (Dense)       │ (None, 128)       │      2,816 │ input_layer[0][0] │\n├─────────────────────┼───────────────────┼────────────┼───────────────────┤\n│ dense_1 (Dense)     │ (None, 128)       │     16,512 │ dense[0][0]       │\n├─────────────────────┼───────────────────┼────────────┼───────────────────┤\n│ dense_2 (Dense)     │ (None, 128)       │     16,512 │ dense_1[0][0]     │\n├─────────────────────┼───────────────────┼────────────┼───────────────────┤\n│ dense_3 (Dense)     │ (None, 128)       │     16,512 │ dense_2[0][0]     │\n├─────────────────────┼───────────────────┼────────────┼───────────────────┤\n│ dense_4 (Dense)     │ (None, 128)       │     16,512 │ dense_3[0][0]     │\n├─────────────────────┼───────────────────┼────────────┼───────────────────┤\n│ policyHead (Dense)  │ (None, 28)        │      3,612 │ dense_4[0][0]     │\n├─────────────────────┼───────────────────┼────────────┼───────────────────┤\n│ valueHead (Dense)   │ (None, 1)         │        129 │ dense_4[0][0]     │\n└─────────────────────┴───────────────────┴────────────┴───────────────────┘\n\n\n\n Total params: 72,607 (283.62 KB)\n\n\n\n Trainable params: 72,605 (283.61 KB)\n\n\n\n Non-trainable params: 0 (0.00 B)\n\n\n\n Optimizer params: 2 (12.00 B)\n\n\n\n\n\nValue (expected outcome): -1.0\n\nMove probabilities (legal moves only):\n  move (6, 3)  →  p = 0.9995\n  move (7, 4)  →  p = 0.0000\n  move (8, 5)  →  p = 0.0001"
-  },
-  {
-    "objectID": "posts/hexapawn_rnf/index.html#step-3-reinforcement-learning-via-mcts",
-    "href": "posts/hexapawn_rnf/index.html#step-3-reinforcement-learning-via-mcts",
-    "title": "Zero-like Reinforcement Learning method",
-    "section": "5. Step 3 – Reinforcement Learning via MCTS",
-    "text": "5. Step 3 – Reinforcement Learning via MCTS\nrnf_train.py trains from scratch using self-play + MCTS (AlphaZero-style):\n\nPlay a game using MCTS (100 simulations/move) to get move probabilities.\nAt game end, label each position with the actual outcome.\nTrain the network on those positions.\nRepeat for 11 iterations × 10 games each.\n\nSaved checkpoints: model_it0.keras, model_it10.keras.\n\n\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 104ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 35ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 34ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 35ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 36ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 36ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 37ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 37ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 44ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 36ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 36ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 31ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 36ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 34ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 34ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 38ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 39ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 35ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 34ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 35ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 36ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 35ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 35ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 32ms/step\n\n1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 46ms/step\n\nMCTS move probabilities (move, prob, N, Q):\n\n  (7, 4)  prob=0.560  N=56  Q=-0.643\n\n  (6, 3)  prob=0.220  N=22  Q=-0.636\n\n  (8, 5)  prob=0.220  N=22  Q=-0.636"
-  },
-  {
-    "objectID": "posts/hexapawn_rnf/index.html#evaluation",
-    "href": "posts/hexapawn_rnf/index.html#evaluation",
-    "title": "Zero-like Reinforcement Learning method",
-    "section": "6. Evaluation",
-    "text": "6. Evaluation\nBoth eval scripts pit the network (as Black) against a random White player over 100 games.\n\n\nSupervised model:\nWhite (rand) wins: 0%  |  Black (net) wins: 100%\n\nRL model (it10):\nWhite (rand) wins: 0%  |  Black (net) wins: 100%"
-  },
-  {
-    "objectID": "posts/hexapawn_rnf/index.html#summary",
-    "href": "posts/hexapawn_rnf/index.html#summary",
-    "title": "Zero-like Reinforcement Learning method",
-    "section": "Summary",
-    "text": "Summary\nmnx_generateTrainingData.py   →  positions.npy / moveprobs.npy / outcomes.npy\n         ↓\nsup_network.py                →  supervised_model.keras\n\ncommon/init_random_model.py   →  common/random_model.keras\n         ↓\nrnf_train.py  (self-play)     →  model_it0.keras, model_it10.keras\n\n\n\nScript\nWhat it produces\n\n\n\n\nmnx_generateTrainingData.py\nTraining labels via minimax\n\n\nsup_network.py\nSupervised model\n\n\nsup_eval.py\nWin-rate of supervised model vs random\n\n\nrnf_train.py\nRL model via self-play + MCTS\n\n\nrnf_eval.py\nWin-rate of RL model vs random\n\n\nrnf_search_test.py\nOne-shot MCTS debug output"
-  },
-  {
-    "objectID": "posts/transcedent_learning/index.html",
-    "href": "posts/transcedent_learning/index.html",
-    "title": "Transcendental learning",
+    "objectID": "posts/lighthouse again works/index.html",
+    "href": "posts/lighthouse again works/index.html",
+    "title": "Words representation in vector space",
     "section": "",
-    "text": "Inspired by the course Leading teams in the Digital Age by Hyperisland ❤️ 🇸🇪"
+    "text": "Word2vec explained.\n\nOriginal paper T.Mikolov, K.Chen, G.Corrado, J.Dean Efficient Estimation of Word Representations in Vector Space\n\n\nword_vectors.most_similar(positive=['Paris', 'Spain'], negative=['France'])\n\n[('Madrid', 0.8625079989433289),\n ('Barcelona', 0.7637037634849548),\n ('Sevilla', 0.6874054074287415),\n ('Seville', 0.6747831106185913),\n ('Malaga', 0.6494932174682617),\n ('Zaragoza', 0.6459373831748962),\n ('Valencia', 0.6383104920387268),\n ('Alicante', 0.6115807890892029),\n ('Salamanca', 0.6041630506515503),\n ('Murcia', 0.6019026041030884)]\n\n\nSource: Word2vec\nThanks to Jiří Materna for Machine Learning College in Prague. Where you can find much more handful notebooks to understand the basics of machine learning."
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Hello World 👀!",
+    "section": "",
+    "text": "💻🏓🎨 🔦"
   }
 ]
