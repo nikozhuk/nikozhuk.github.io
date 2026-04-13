@@ -278,13 +278,13 @@
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-game-hexapawn" id="toc-the-game-hexapawn" class="nav-link active" data-scroll-target="#the-game-hexapawn">1. The Game – Hexapawn</a></li>
-  <li><a href="#network-input-output-format" id="toc-network-input-output-format" class="nav-link" data-scroll-target="#network-input-output-format">2. Network Input / Output Format</a></li>
+  <li><a href="#the-game---hexapawn" id="toc-the-game---hexapawn" class="nav-link active" data-scroll-target="#the-game---hexapawn">1. The Game - Hexapawn</a></li>
+  <li><a href="#network" id="toc-network" class="nav-link" data-scroll-target="#network">2. Network</a></li>
   <li><a href="#step-1-generate-supervised-training-data" id="toc-step-1-generate-supervised-training-data" class="nav-link" data-scroll-target="#step-1-generate-supervised-training-data">3. Step 1 – Generate Supervised Training Data</a></li>
   <li><a href="#step-2-supervised-training" id="toc-step-2-supervised-training" class="nav-link" data-scroll-target="#step-2-supervised-training">4. Step 2 – Supervised Training</a></li>
   <li><a href="#step-3-reinforcement-learning-via-mcts" id="toc-step-3-reinforcement-learning-via-mcts" class="nav-link" data-scroll-target="#step-3-reinforcement-learning-via-mcts">5. Step 3 – Reinforcement Learning via MCTS</a></li>
   <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">6. Evaluation</a></li>
-  <li><a href="#pipeline-summary" id="toc-pipeline-summary" class="nav-link" data-scroll-target="#pipeline-summary">Pipeline Summary</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
 </nav>
@@ -296,17 +296,17 @@
 <main class="content quarto-banner-title-block" id="quarto-document-content">      
      <div id="eb1c7997" class="cell markdown">
 <p>This notebook walks through the full pipeline: game rules → supervised learning → reinforcement learning (AlphaZero-style MCTS).</p>
-<p><strong>Activate the virtual environment before launching Jupyter:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venvhexapawn/bin/activate</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> notebook rnf_mcts.ipynb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="53237314" class="cell markdown">
-<section id="the-game-hexapawn" class="level2">
-<h2 class="anchored" data-anchor-id="the-game-hexapawn">1. The Game – Hexapawn</h2>
-<p>Hexapawn is played on a 3×3 board. Each side has three pawns.</p>
-<pre><code>B B B   (row 0 – black starts here)
-_ _ _   (row 1)
-W W W   (row 2 – white starts here)</code></pre>
+<section id="the-game---hexapawn" class="level2">
+<h2 class="anchored" data-anchor-id="the-game---hexapawn">1. The Game - Hexapawn</h2>
+<p>Hexapawn invented by Martin Gardner. Is played on a 3×3 board. Each side has three pawns.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="hexapawn.png" class="img-fluid figure-img"></p>
+<figcaption>hexapawn board</figcaption>
+</figure>
+</div>
 <p>Board squares are indexed 0–8 (left-to-right, top-to-bottom):</p>
 <pre><code>0 1 2
 3 4 5
@@ -314,13 +314,13 @@ W W W   (row 2 – white starts here)</code></pre>
 <p><strong>Rules:</strong> - Pawns move one square forward (no double-step). - Pawns capture diagonally forward. - <strong>White wins</strong> by reaching row 0 (squares 0–2). - <strong>Black wins</strong> by reaching row 2 (squares 6–8). - A player with no legal moves <strong>loses</strong>.</p>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div id="7142f793" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> common.game <span class="im">import</span> Board</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Board()</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>b.setStartingPosition()</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(b.toDisplayString())</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Legal moves for White:"</span>, b.generateMoves())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div id="7142f793" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> common.game <span class="im">import</span> Board</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Board()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>b.setStartingPosition()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(b.toDisplayString())</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Legal moves for White:"</span>, b.generateMoves())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>BBB
 ___
@@ -330,22 +330,27 @@ Legal moves for White: [(6, 3), (7, 4), (8, 5)]</code></pre>
 </div>
 </div></div>
 <div id="2400c21e" class="cell markdown">
-<section id="network-input-output-format" class="level2">
-<h2 class="anchored" data-anchor-id="network-input-output-format">2. Network Input / Output Format</h2>
-<p>The network takes a <strong>21-dimensional</strong> vector: - bits 0–8: 1 if White pawn on that square, else 0 - bits 9–17: 1 if Black pawn on that square, else 0 - bits 18–20: 1 if it is White’s turn, else 0</p>
+<section id="network" class="level2">
+<h2 class="anchored" data-anchor-id="network">2. Network</h2>
+<p>Encoding: <strong>input</strong> is a bit <strong>vector of size 21</strong> which represents the current postions of the white and black pawns:</p>
+<ul>
+<li>bits 0–8: 1 if White pawn on that square, else 0</li>
+<li>bits 9–17: 1 if Black pawn on that square, else 0</li>
+<li>bits 18–20: 1 if it is White’s turn, else 0</li>
+</ul>
 <p>The network has <strong>two outputs</strong>: | Head | Shape | Meaning | |——|——-|———| | Policy | (28,) | Probability over all possible moves | | Value | (1,) | Expected outcome: +1 = White wins, -1 = Black wins |</p>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div id="28ccacbe" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Board()</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>b.setStartingPosition()</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> b.toNetworkInput()</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Input vector (21 values):"</span>, vec)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"White pawn bits:"</span>, vec[<span class="dv">0</span>:<span class="dv">9</span>])</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Black pawn bits:"</span>, vec[<span class="dv">9</span>:<span class="dv">18</span>])</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Turn bits:      "</span>, vec[<span class="dv">18</span>:<span class="dv">21</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="28ccacbe" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Board()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>b.setStartingPosition()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> b.toNetworkInput()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Input vector (21 values):"</span>, vec)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"White pawn bits:"</span>, vec[<span class="dv">0</span>:<span class="dv">9</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Black pawn bits:"</span>, vec[<span class="dv">9</span>:<span class="dv">18</span>])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Turn bits:      "</span>, vec[<span class="dv">18</span>:<span class="dv">21</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Input vector (21 values): [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]
 White pawn bits: [0, 0, 0, 0, 0, 0, 1, 1, 1]
@@ -363,18 +368,18 @@ Turn bits:       [1, 1, 1]</code></pre>
 </section>
 </div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div id="77f1d36b" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run this cell to regenerate the training data (takes a few seconds)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %run mnx_generateTrainingData.py</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or just inspect the existing data:</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>positions   <span class="op">=</span> np.load(<span class="st">"positions.npy"</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>moveprobs   <span class="op">=</span> np.load(<span class="st">"moveprobs.npy"</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>outcomes    <span class="op">=</span> np.load(<span class="st">"outcomes.npy"</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"positions shape:"</span>, positions.shape)   <span class="co"># (N, 21)</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"moveprobs shape:"</span>, moveprobs.shape)   <span class="co"># (N, 28)</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"outcomes shape: "</span>, outcomes.shape)    <span class="co"># (N,)</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">First outcome (1=White wins, -1=Black wins):"</span>, outcomes[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run this cell to regenerate the training data (takes a few seconds)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %run mnx_generateTrainingData.py</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or just inspect the existing data:</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>positions   <span class="op">=</span> np.load(<span class="st">"positions.npy"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>moveprobs   <span class="op">=</span> np.load(<span class="st">"moveprobs.npy"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>outcomes    <span class="op">=</span> np.load(<span class="st">"outcomes.npy"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"positions shape:"</span>, positions.shape)   <span class="co"># (N, 21)</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"moveprobs shape:"</span>, moveprobs.shape)   <span class="co"># (N, 28)</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"outcomes shape: "</span>, outcomes.shape)    <span class="co"># (N,)</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">First outcome (1=White wins, -1=Black wins):"</span>, outcomes[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>positions shape: (118, 21)
 moveprobs shape: (118, 28)
@@ -391,14 +396,14 @@ First outcome (1=White wins, -1=Black wins): -1</code></pre>
 </section>
 </div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="4a0d305b" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run supervised training (saves supervised_model.keras)</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %run sup_network.py</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or load the pre-trained model and inspect it:</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> keras</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> keras.models.load_model(<span class="st">"supervised_model.keras"</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run supervised training (saves supervised_model.keras)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %run sup_network.py</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or load the pre-trained model and inspect it:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> keras</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> keras.models.load_model(<span class="st">"supervised_model.keras"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>2026-04-12 19:21:00.482270: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
@@ -453,17 +458,17 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="170af77d" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run one inference: policy + value for the starting position</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Board()</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>b.setStartingPosition()</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>inp <span class="op">=</span> np.array([b.toNetworkInput()])</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>policy, value <span class="op">=</span> model.predict(inp, verbose<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Value (expected outcome):"</span>, value[<span class="dv">0</span>][<span class="dv">0</span>])</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Move probabilities (legal moves only):"</span>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> move <span class="kw">in</span> b.generateMoves():</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> b.getNetworkOutputIndex(move)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  move </span><span class="sc">{</span>move<span class="sc">}</span><span class="ss">  →  p = </span><span class="sc">{</span>policy[<span class="dv">0</span>][idx]<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run one inference: policy + value for the starting position</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Board()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>b.setStartingPosition()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>inp <span class="op">=</span> np.array([b.toNetworkInput()])</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>policy, value <span class="op">=</span> model.predict(inp, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Value (expected outcome):"</span>, value[<span class="dv">0</span>][<span class="dv">0</span>])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Move probabilities (legal moves only):"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> move <span class="kw">in</span> b.generateMoves():</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> b.getNetworkOutputIndex(move)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  move </span><span class="sc">{</span>move<span class="sc">}</span><span class="ss">  →  p = </span><span class="sc">{</span>policy[<span class="dv">0</span>][idx]<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Value (expected outcome): -1.0
 
@@ -487,27 +492,27 @@ Move probabilities (legal moves only):
 </section>
 </div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="0fc7ee68" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run RL training (~minutes depending on hardware)</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %run rnf_train.py</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or run a single MCTS search on the starting position to see move probabilities:</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rnf_mcts <span class="im">import</span> Edge, Node, MCTS</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(precision<span class="op">=</span><span class="dv">3</span>, suppress<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>rl_model <span class="op">=</span> keras.models.load_model(<span class="st">"model_it10.keras"</span>)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Board()</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>b.setStartingPosition()</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>root_edge <span class="op">=</span> Edge(<span class="va">None</span>, <span class="va">None</span>)</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>root_edge.N <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>root_node <span class="op">=</span> Node(b, root_edge)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>searcher <span class="op">=</span> MCTS(rl_model)</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> searcher.search(root_node)</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MCTS move probabilities (move, prob, N, Q):"</span>)</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> move, prob, n, q <span class="kw">in</span> <span class="bu">sorted</span>(probs, key<span class="op">=</span><span class="kw">lambda</span> x: <span class="op">-</span>x[<span class="dv">1</span>]):</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>move<span class="sc">}</span><span class="ss">  prob=</span><span class="sc">{</span>prob<span class="sc">:.3f}</span><span class="ss">  N=</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">  Q=</span><span class="sc">{</span>q<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run RL training (~minutes depending on hardware)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %run rnf_train.py</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or run a single MCTS search on the starting position to see move probabilities:</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rnf_mcts <span class="im">import</span> Edge, Node, MCTS</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(precision<span class="op">=</span><span class="dv">3</span>, suppress<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>rl_model <span class="op">=</span> keras.models.load_model(<span class="st">"model_it10.keras"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Board()</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>b.setStartingPosition()</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>root_edge <span class="op">=</span> Edge(<span class="va">None</span>, <span class="va">None</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>root_edge.N <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>root_node <span class="op">=</span> Node(b, root_edge)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>searcher <span class="op">=</span> MCTS(rl_model)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> searcher.search(root_node)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MCTS move probabilities (move, prob, N, Q):"</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> move, prob, n, q <span class="kw">in</span> <span class="bu">sorted</span>(probs, key<span class="op">=</span><span class="kw">lambda</span> x: <span class="op">-</span>x[<span class="dv">1</span>]):</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>move<span class="sc">}</span><span class="ss">  prob=</span><span class="sc">{</span>prob<span class="sc">:.3f}</span><span class="ss">  N=</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">  Q=</span><span class="sc">{</span>q<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 104ms/step
@@ -578,37 +583,37 @@ MCTS move probabilities (move, prob, N, Q):
 </section>
 </div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="adfa6343" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> net_vs_rand(model, n_games<span class="op">=</span><span class="dv">100</span>):</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    white_wins <span class="op">=</span> black_wins <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_games):</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> Board()</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        b.setStartingPosition()</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># White plays first move randomly to vary openings</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        b.applyMove(random.choice(b.generateMoves()))</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="kw">not</span> b.isTerminal()[<span class="dv">0</span>]:</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> b.turn <span class="op">==</span> Board.WHITE:</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                b.applyMove(random.choice(b.generateMoves()))</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>                q <span class="op">=</span> model.predict(np.array([b.toNetworkInput()]), verbose<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>                masked <span class="op">=</span> [<span class="fl">0.0</span>] <span class="op">*</span> <span class="dv">28</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> m <span class="kw">in</span> b.generateMoves():</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>                    idx <span class="op">=</span> b.getNetworkOutputIndex(m)</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>                    masked[idx] <span class="op">=</span> q[<span class="dv">0</span>][<span class="dv">0</span>][idx]</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>                best <span class="op">=</span> b.generateMoves()[np.argmax([masked[b.getNetworkOutputIndex(m)] <span class="cf">for</span> m <span class="kw">in</span> b.generateMoves()])]</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>                b.applyMove(best)</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        winner <span class="op">=</span> b.isTerminal()[<span class="dv">1</span>]</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> winner <span class="op">==</span> Board.WHITE: white_wins <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> winner <span class="op">==</span> Board.BLACK: black_wins <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> white_wins <span class="op">+</span> black_wins</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"White (rand) wins: </span><span class="sc">{</span>white_wins<span class="op">/</span>total<span class="sc">:.0%}</span><span class="ss">  |  Black (net) wins: </span><span class="sc">{</span>black_wins<span class="op">/</span>total<span class="sc">:.0%}</span><span class="ss">"</span>)</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Supervised model:"</span>)</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>net_vs_rand(keras.models.load_model(<span class="st">"supervised_model.keras"</span>))</span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">RL model (it10):"</span>)</span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>net_vs_rand(keras.models.load_model(<span class="st">"model_it10.keras"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> net_vs_rand(model, n_games<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    white_wins <span class="op">=</span> black_wins <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_games):</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> Board()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        b.setStartingPosition()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># White plays first move randomly to vary openings</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        b.applyMove(random.choice(b.generateMoves()))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="kw">not</span> b.isTerminal()[<span class="dv">0</span>]:</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> b.turn <span class="op">==</span> Board.WHITE:</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>                b.applyMove(random.choice(b.generateMoves()))</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>                q <span class="op">=</span> model.predict(np.array([b.toNetworkInput()]), verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>                masked <span class="op">=</span> [<span class="fl">0.0</span>] <span class="op">*</span> <span class="dv">28</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> m <span class="kw">in</span> b.generateMoves():</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>                    idx <span class="op">=</span> b.getNetworkOutputIndex(m)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                    masked[idx] <span class="op">=</span> q[<span class="dv">0</span>][<span class="dv">0</span>][idx]</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                best <span class="op">=</span> b.generateMoves()[np.argmax([masked[b.getNetworkOutputIndex(m)] <span class="cf">for</span> m <span class="kw">in</span> b.generateMoves()])]</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>                b.applyMove(best)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        winner <span class="op">=</span> b.isTerminal()[<span class="dv">1</span>]</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> winner <span class="op">==</span> Board.WHITE: white_wins <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> winner <span class="op">==</span> Board.BLACK: black_wins <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> white_wins <span class="op">+</span> black_wins</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"White (rand) wins: </span><span class="sc">{</span>white_wins<span class="op">/</span>total<span class="sc">:.0%}</span><span class="ss">  |  Black (net) wins: </span><span class="sc">{</span>black_wins<span class="op">/</span>total<span class="sc">:.0%}</span><span class="ss">"</span>)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Supervised model:"</span>)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>net_vs_rand(keras.models.load_model(<span class="st">"supervised_model.keras"</span>))</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">RL model (it10):"</span>)</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>net_vs_rand(keras.models.load_model(<span class="st">"model_it10.keras"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Supervised model:
 White (rand) wins: 0%  |  Black (net) wins: 100%
@@ -618,8 +623,8 @@ White (rand) wins: 0%  |  Black (net) wins: 100%</code></pre>
 </div>
 </div></div>
 <div id="cell-15" class="cell markdown">
-<section id="pipeline-summary" class="level2">
-<h2 class="anchored" data-anchor-id="pipeline-summary">Pipeline Summary</h2>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <pre><code>mnx_generateTrainingData.py   →  positions.npy / moveprobs.npy / outcomes.npy
          ↓
 sup_network.py                →  supervised_model.keras
@@ -662,6 +667,9 @@ rnf_train.py  (self-play)     →  model_it0.keras, model_it10.keras</code></pre
 </tbody>
 </table>
 </section>
+</div>
+<div id="32a7e6a8" class="cell markdown">
+
 </div>
 
 
@@ -738,7 +746,7 @@ rnf_train.py  (self-play)     →  model_it0.keras, model_it10.keras</code></pre
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/nikozhuk\.github\.io\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

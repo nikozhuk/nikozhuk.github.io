@@ -24,41 +24,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -211,21 +176,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="zero-like-reinforcement-learning-method-for-hexapawn-game" class="level1 quarto-embed-nb-cell">
 <h1>Zero-like reinforcement learning method for hexapawn game</h1>
 <p>This notebook walks through the full pipeline: game rules → supervised learning → reinforcement learning (AlphaZero-style MCTS).</p>
-<p><strong>Activate the virtual environment before launching Jupyter:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venvhexapawn/bin/activate</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> notebook rnf_mcts.ipynb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="the-game-hexapawn" class="level2">
-<h2 class="anchored" data-anchor-id="the-game-hexapawn">1. The Game – Hexapawn</h2>
-<p>Hexapawn is played on a 3×3 board. Each side has three pawns.</p>
-<pre><code>B B B   (row 0 – black starts here)
-_ _ _   (row 1)
-W W W   (row 2 – white starts here)</code></pre>
+<section id="the-game---hexapawn" class="level2">
+<h2 class="anchored" data-anchor-id="the-game---hexapawn">1. The Game - Hexapawn</h2>
+<p>Hexapawn invented by Martin Gardner. Is played on a 3×3 board. Each side has three pawns.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="hexapawn.png" class="img-fluid figure-img"></p>
+<figcaption>hexapawn board</figcaption>
+</figure>
+</div>
 <p>Board squares are indexed 0–8 (left-to-right, top-to-bottom):</p>
 <pre><code>0 1 2
 3 4 5
 6 7 8</code></pre>
 <p><strong>Rules:</strong> - Pawns move one square forward (no double-step). - Pawns capture diagonally forward. - <strong>White wins</strong> by reaching row 0 (squares 0–2). - <strong>Black wins</strong> by reaching row 2 (squares 6–8). - A player with no legal moves <strong>loses</strong>.</p>
-<div id="7142f793" class="cell" data-execution_count="1">
+<div id="7142f793" class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>BBB
 ___
@@ -235,11 +200,16 @@ Legal moves for White: [(6, 3), (7, 4), (8, 5)]</code></pre>
 </div>
 </div>
 </section>
-<section id="network-input-output-format" class="level2">
-<h2 class="anchored" data-anchor-id="network-input-output-format">2. Network Input / Output Format</h2>
-<p>The network takes a <strong>21-dimensional</strong> vector: - bits 0–8: 1 if White pawn on that square, else 0 - bits 9–17: 1 if Black pawn on that square, else 0 - bits 18–20: 1 if it is White’s turn, else 0</p>
+<section id="network" class="level2">
+<h2 class="anchored" data-anchor-id="network">2. Network</h2>
+<p>Encoding: <strong>input</strong> is a bit <strong>vector of size 21</strong> which represents the current postions of the white and black pawns:</p>
+<ul>
+<li>bits 0–8: 1 if White pawn on that square, else 0</li>
+<li>bits 9–17: 1 if Black pawn on that square, else 0</li>
+<li>bits 18–20: 1 if it is White’s turn, else 0</li>
+</ul>
 <p>The network has <strong>two outputs</strong>: | Head | Shape | Meaning | |——|——-|———| | Policy | (28,) | Probability over all possible moves | | Value | (1,) | Expected outcome: +1 = White wins, -1 = Black wins |</p>
-<div id="28ccacbe" class="cell" data-execution_count="2">
+<div id="28ccacbe" class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Input vector (21 values): [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]
 White pawn bits: [0, 0, 0, 0, 0, 0, 1, 1, 1]
@@ -412,8 +382,8 @@ White (rand) wins: 0%  |  Black (net) wins: 100%</code></pre>
 </div>
 </div>
 </section>
-<section id="pipeline-summary" class="level2">
-<h2 class="anchored" data-anchor-id="pipeline-summary">Pipeline Summary</h2>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <pre><code>mnx_generateTrainingData.py   →  positions.npy / moveprobs.npy / outcomes.npy
          ↓
 sup_network.py                →  supervised_model.keras

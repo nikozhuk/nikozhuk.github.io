@@ -11,21 +11,14 @@
     "href": "posts/lighthouse again works/index.html",
     "title": "Word2Vec",
     "section": "",
-    "text": "Word2vec explained.\n\nThanks to Jiří Materna for Machine Learning College in Prague.\nOriginal paper T.Mikolov, K.Chen, G.Corrado, J.Dean Efficient Estimation of Word Representations in Vector Space\n\n\nword_vectors.most_similar(positive=['Paris', 'Spain'], negative=['France'])\n\n[('Madrid', 0.8625079989433289),\n ('Barcelona', 0.7637037634849548),\n ('Sevilla', 0.6874054074287415),\n ('Seville', 0.6747831106185913),\n ('Malaga', 0.6494932174682617),\n ('Zaragoza', 0.6459373831748962),\n ('Valencia', 0.6383104920387268),\n ('Alicante', 0.6115807890892029),\n ('Salamanca', 0.6041630506515503),\n ('Murcia', 0.6019026041030884)]\n\n\nSource: Word2vec"
+    "text": "Word2vec explained.\n\nThanks to Jiří Materna for Machine Learning College in Prague. Where you can find much more handful notebooks to understand the basics of machine learning.\nOriginal paper T.Mikolov, K.Chen, G.Corrado, J.Dean Efficient Estimation of Word Representations in Vector Space\n\n\nword_vectors.most_similar(positive=['Paris', 'Spain'], negative=['France'])\n\n[('Madrid', 0.8625079989433289),\n ('Barcelona', 0.7637037634849548),\n ('Sevilla', 0.6874054074287415),\n ('Seville', 0.6747831106185913),\n ('Malaga', 0.6494932174682617),\n ('Zaragoza', 0.6459373831748962),\n ('Valencia', 0.6383104920387268),\n ('Alicante', 0.6115807890892029),\n ('Salamanca', 0.6041630506515503),\n ('Murcia', 0.6019026041030884)]\n\n\nSource: Word2vec"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Nikolai Zhukov",
+    "objectID": "industry_projects.html",
+    "href": "industry_projects.html",
+    "title": "Projects",
     "section": "",
-    "text": "Zero-like Reinforcement Learning method\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJan 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWord2Vec\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "Hi, there 🤲",
-    "section": "",
-    "text": "I’m human,\nwho did these projects\nby dancing with curiosity."
+    "text": "Projects in industry."
   },
   {
     "objectID": "books.html",
@@ -49,6 +42,20 @@
     "text": "GNNs 📘books and 🖥️courses:\n\n🖥️ Introduction to Graph Neural Networks by Zak Jost\n\n📘 Deep learning with graph-structured representations by Thomas Kipf 2020\n📘 Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges by Michael Bronstein et al., 2021\n🎨 Graph Neural Networks for Novice Math Fanatic by Rishabh Anand"
   },
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Hi, there 🤲",
+    "section": "",
+    "text": "I’m human,\nwho did these projects\nby dancing with curiosity."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Nikolai Zhukov",
+    "section": "",
+    "text": "Zero-like Reinforcement Learning method\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJan 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWord2Vec\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "posts/hexapawn_rnf/index.html",
     "href": "posts/hexapawn_rnf/index.html",
     "title": "Zero-like Reinforcement Learning method",
@@ -56,18 +63,18 @@
     "text": "“zero-like” reinforcement learning model for chess, similar to the AlphaZero approach.\nI wanted to understand a zero-like reinforcement learning method from working code in a simple chess setting so I could transfer the core ideas to a much harder combinatorial optimization problem (where search space grows explosively): finding the best topologies for industrial network devices.\nHigh-level training loop of the zero-like reinforcement learning pipeline\nThank you Dominik Klein and his book “Neural Networks for Chess”\nJupyter Notebook\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…"
   },
   {
-    "objectID": "posts/hexapawn_rnf/index.html#the-game-hexapawn",
-    "href": "posts/hexapawn_rnf/index.html#the-game-hexapawn",
+    "objectID": "posts/hexapawn_rnf/index.html#the-game---hexapawn",
+    "href": "posts/hexapawn_rnf/index.html#the-game---hexapawn",
     "title": "Zero-like Reinforcement Learning method",
-    "section": "1. The Game – Hexapawn",
-    "text": "1. The Game – Hexapawn\nHexapawn is played on a 3×3 board. Each side has three pawns.\nB B B   (row 0 – black starts here)\n_ _ _   (row 1)\nW W W   (row 2 – white starts here)\nBoard squares are indexed 0–8 (left-to-right, top-to-bottom):\n0 1 2\n3 4 5\n6 7 8\nRules: - Pawns move one square forward (no double-step). - Pawns capture diagonally forward. - White wins by reaching row 0 (squares 0–2). - Black wins by reaching row 2 (squares 6–8). - A player with no legal moves loses.\n\n\nBBB\n___\nWWW\n\nLegal moves for White: [(6, 3), (7, 4), (8, 5)]"
+    "section": "1. The Game - Hexapawn",
+    "text": "1. The Game - Hexapawn\nHexapawn invented by Martin Gardner. Is played on a 3×3 board. Each side has three pawns.\n\n\n\nhexapawn board\n\n\nBoard squares are indexed 0–8 (left-to-right, top-to-bottom):\n0 1 2\n3 4 5\n6 7 8\nRules: - Pawns move one square forward (no double-step). - Pawns capture diagonally forward. - White wins by reaching row 0 (squares 0–2). - Black wins by reaching row 2 (squares 6–8). - A player with no legal moves loses.\n\n\nBBB\n___\nWWW\n\nLegal moves for White: [(6, 3), (7, 4), (8, 5)]"
   },
   {
-    "objectID": "posts/hexapawn_rnf/index.html#network-input-output-format",
-    "href": "posts/hexapawn_rnf/index.html#network-input-output-format",
+    "objectID": "posts/hexapawn_rnf/index.html#network",
+    "href": "posts/hexapawn_rnf/index.html#network",
     "title": "Zero-like Reinforcement Learning method",
-    "section": "2. Network Input / Output Format",
-    "text": "2. Network Input / Output Format\nThe network takes a 21-dimensional vector: - bits 0–8: 1 if White pawn on that square, else 0 - bits 9–17: 1 if Black pawn on that square, else 0 - bits 18–20: 1 if it is White’s turn, else 0\nThe network has two outputs: | Head | Shape | Meaning | |——|——-|———| | Policy | (28,) | Probability over all possible moves | | Value | (1,) | Expected outcome: +1 = White wins, -1 = Black wins |\n\n\nInput vector (21 values): [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]\nWhite pawn bits: [0, 0, 0, 0, 0, 0, 1, 1, 1]\nBlack pawn bits: [1, 1, 1, 0, 0, 0, 0, 0, 0]\nTurn bits:       [1, 1, 1]"
+    "section": "2. Network",
+    "text": "2. Network\nEncoding: input is a bit vector of size 21 which represents the current postions of the white and black pawns:\n\nbits 0–8: 1 if White pawn on that square, else 0\nbits 9–17: 1 if Black pawn on that square, else 0\nbits 18–20: 1 if it is White’s turn, else 0\n\nThe network has two outputs: | Head | Shape | Meaning | |——|——-|———| | Policy | (28,) | Probability over all possible moves | | Value | (1,) | Expected outcome: +1 = White wins, -1 = Black wins |\n\n\nInput vector (21 values): [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]\nWhite pawn bits: [0, 0, 0, 0, 0, 0, 1, 1, 1]\nBlack pawn bits: [1, 1, 1, 0, 0, 0, 0, 0, 0]\nTurn bits:       [1, 1, 1]"
   },
   {
     "objectID": "posts/hexapawn_rnf/index.html#step-1-generate-supervised-training-data",
@@ -98,11 +105,11 @@
     "text": "6. Evaluation\nBoth eval scripts pit the network (as Black) against a random White player over 100 games.\n\n\nSupervised model:\nWhite (rand) wins: 0%  |  Black (net) wins: 100%\n\nRL model (it10):\nWhite (rand) wins: 0%  |  Black (net) wins: 100%"
   },
   {
-    "objectID": "posts/hexapawn_rnf/index.html#pipeline-summary",
-    "href": "posts/hexapawn_rnf/index.html#pipeline-summary",
+    "objectID": "posts/hexapawn_rnf/index.html#summary",
+    "href": "posts/hexapawn_rnf/index.html#summary",
     "title": "Zero-like Reinforcement Learning method",
-    "section": "Pipeline Summary",
-    "text": "Pipeline Summary\nmnx_generateTrainingData.py   →  positions.npy / moveprobs.npy / outcomes.npy\n         ↓\nsup_network.py                →  supervised_model.keras\n\ncommon/init_random_model.py   →  common/random_model.keras\n         ↓\nrnf_train.py  (self-play)     →  model_it0.keras, model_it10.keras\n\n\n\nScript\nWhat it produces\n\n\n\n\nmnx_generateTrainingData.py\nTraining labels via minimax\n\n\nsup_network.py\nSupervised model\n\n\nsup_eval.py\nWin-rate of supervised model vs random\n\n\nrnf_train.py\nRL model via self-play + MCTS\n\n\nrnf_eval.py\nWin-rate of RL model vs random\n\n\nrnf_search_test.py\nOne-shot MCTS debug output"
+    "section": "Summary",
+    "text": "Summary\nmnx_generateTrainingData.py   →  positions.npy / moveprobs.npy / outcomes.npy\n         ↓\nsup_network.py                →  supervised_model.keras\n\ncommon/init_random_model.py   →  common/random_model.keras\n         ↓\nrnf_train.py  (self-play)     →  model_it0.keras, model_it10.keras\n\n\n\nScript\nWhat it produces\n\n\n\n\nmnx_generateTrainingData.py\nTraining labels via minimax\n\n\nsup_network.py\nSupervised model\n\n\nsup_eval.py\nWin-rate of supervised model vs random\n\n\nrnf_train.py\nRL model via self-play + MCTS\n\n\nrnf_eval.py\nWin-rate of RL model vs random\n\n\nrnf_search_test.py\nOne-shot MCTS debug output"
   },
   {
     "objectID": "posts/transcedent_learning/index.html",
