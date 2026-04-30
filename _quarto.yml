@@ -1,16 +1,26 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - "posts/**/*.qmd"
+    - "!posts/**/*.ipynb"
 
 website:
-  title: "Blog"
+  title: ""
+  favicon: nzlogo.png
   navbar:
+    logo: nzlogo.png
     right:
       - about.qmd
+      - books.qmd
       - icon: github
         href: https://github.com/
+      - icon: bluesky
+        href: https://bsky.app/profile/nikozhuk.bsky.social
       - icon: twitter
         href: https://twitter.com/Zhukovi
+  
 format:
   html:
     theme: cosmo

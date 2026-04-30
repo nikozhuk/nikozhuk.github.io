@@ -9,3 +9,8 @@ vendor
 _notebooks/.ipynb_checkpoints
 /.quarto/
 /_site/
+**/*.quarto_ipynb
+.venv/
+*.vec
+*.txt
+/docs/

@@ -1,0 +1,14 @@
+---
+title: "Transcendental learning"
+author: ""
+date: "2021-01-12"
+date-format: "MMMM YYYY"
+categories: [visualisation]
+image: transcendental_learning_nz.png
+---
+
+Different ways of humans's learning.
+
+Inspired by the course Leading teams in the Digital Age by [Hyperisland ❤️ 🇸🇪](https://hyperisland.com/)
+
+![](transcendental_learning_nz.png) 

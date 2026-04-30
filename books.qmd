@@ -1,0 +1,40 @@
+---                                                                        
+title: "GNN/ML 📚"
+title-block-banner: images/ml_books_banner_split_horizontal_320h.png
+---
+
+<style>
+.quarto-title h1.title {
+  display: none;
+}
+</style>                                                                             
+## GNNs 📘books and 🖥️courses:
+- 🖥️ [Introduction to Graph Neural Networks](https://t.co/9f2qvXcQsP) by [Zak Jost](https://x.com/ZakJost)                                                   
+- 📘 [Deep learning with graph-structured representations](https://pure.uva.nl/ws/files/46900201/Thesis.pdf) by [Thomas Kipf](https://x.com/tkipf) 2020
+
+- 📘 [Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges](https://geometricdeeplearning.com/lectures/) by [Michael Bronstein](https://x.com/mmbronstein) et al., 2021
+- 🎨 [Graph Neural Networks for Novice Math Fanatic](https://rish16.notion.site/Graph-Neural-Networks-for-Novice-Math-Fanatics-c51b922a595b4efd8647788475461d57) by [Rishabh Anand](https://x.com/rishabh16_)
+
+## ML/DL
+
+- [Machine Learning, Zhi-Hua Zhou (2021)]()  
+  A compact mathematical explanation of the ML basics. 
+- [AI and Machine Learning for Coders, Laurence Moroney (2020)]()  
+  A great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.
+- [Designing Machine Learning Systems, Chip Huyen (2022)]()  
+Just a very useful for ML- practitioners in industry.
+- [Deep Learning with Python, François Chollet (2nd edition 2021)]()  
+The most understandable explanation of concepts in textual format, which is interesting to read. By the way, I'll give the second copy to someone who'll take good care of it.
+- [Deep Learning, Jan Goodfellow (2016)]()  
+Comprehensive mathematical and conceptual explanation, insights for the open research fields.
+- [Deep Learning for Vision Systems, Mohamed Elgendy (2020)]()  
+  Detailed explanation for baseline’s Computer Vision backbones/architectures.
+- [Deep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)]()    
+A view on Deep Learning from practitioners. Practical Data Ethics!
+
+- [Deep Learning: A Visual Approach, Andrew-Glassner (2021)]()  
+Additional dimension for concept’s understanding.
+- [Computer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)]()  
+Constantly updated meta-survey.
+- [Interpretable Machine Learning, Christoph Molnar (2019)]()  
+Survey, good starting point on the topic. Shapley Values.

@@ -1,0 +1,497 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+#mcts-wrap{font-family:system-ui,sans-serif;background:#f8f8f6;color:#1a1a1a;
+     display:flex;flex-direction:column;min-height:600px;}
+
+/* ── header ── */
+#hdr{padding:10px 18px;background:#fff;border-bottom:1px solid #e2e0d8;
+     display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+#hdr h1{font-size:15px;font-weight:700;letter-spacing:-.3px}
+#hdr .sub{font-size:11px;color:#888;margin-top:2px}
+#sim-badge{font-size:13px;font-weight:600;background:#f3f2ee;
+           border:1px solid #e2e0d8;border-radius:20px;padding:4px 12px}
+
+/* ── main ── */
+#main{display:flex;flex:1;overflow:hidden;gap:0}
+
+/* ── left panel ── */
+#left{width:230px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;
+      padding:14px;border-right:1px solid #e2e0d8;background:#fff;overflow-y:auto}
+.phead{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;
+       color:#999;margin-bottom:6px}
+
+/* ── board ── */
+#board{display:grid;grid-template-columns:repeat(3,62px);border:1px solid #ccc;
+       width:186px;flex-shrink:0}
+.sq{width:62px;height:62px;display:flex;align-items:center;justify-content:center}
+.sq.light{background:#EEEED2}.sq.dark{background:#769656}
+.pawn{width:40px;height:40px;border-radius:50%;display:flex;
+      align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.pawn.w{background:#fff;color:#111;border:2px solid #bbb}
+.pawn.b{background:#222;color:#fff;border:2px solid #555}
+
+/* ── info boxes ── */
+.info-box{background:#f7f6f2;border:1px solid #e2e0d8;border-radius:7px;padding:9px 11px}
+#phase-label{font-size:12px;font-weight:600;color:#1a1a1a;line-height:1.5}
+#value-line{font-size:11px;color:#666;margin-top:3px}
+
+/* ── legend ── */
+.leg{display:flex;align-items:center;gap:7px;font-size:11px;color:#555;margin-top:4px}
+.ldot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+
+/* ── right: tree ── */
+#right{flex:1;overflow:auto;padding:10px;background:#f8f8f6}
+svg#tree{display:block}
+
+/* ── controls ── */
+#ctrl{padding:9px 18px;background:#fff;border-top:1px solid #e2e0d8;
+      display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap}
+.btn{padding:5px 13px;font-size:12px;border:1px solid #ccc;border-radius:6px;
+     background:#fff;cursor:pointer;transition:background .12s}
+.btn:hover{background:#f0efe9}
+.btn.active{background:#769656;color:#fff;border-color:#769656}
+.ctrl-group{display:flex;gap:5px;align-items:center}
+.ctrl-label{font-size:11px;color:#999}
+#prog-wrap{flex:1;min-width:120px;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden}
+#prog-fill{height:100%;background:#769656;border-radius:3px;transition:width .15s}
+#step-label{font-size:11px;color:#888;white-space:nowrap}
+</style>
+
+<div id="mcts-wrap">
+<div id="hdr">
+  <div>
+    <div id="hdr-h1" style="font-size:15px;font-weight:700">Hexapawn · MCTS Visualizer</div>
+    <div class="sub">AlphaZero-style search &nbsp;·&nbsp; 100 simulations &nbsp;·&nbsp; model_it10.keras</div>
+  </div>
+  <div id="sim-badge">Step 0 / 101</div>
+</div>
+
+<div id="main">
+  <!-- left -->
+  <div id="left">
+    <div>
+      <div class="phead">Board position</div>
+      <div id="board"></div>
+    </div>
+
+    <div class="info-box">
+      <div id="phase-label">Root expansion</div>
+      <div id="value-line"></div>
+    </div>
+
+    <div>
+      <div class="phead">Legend</div>
+      <div class="leg"><div class="ldot" style="background:#93C5FD"></div>Selection path</div>
+      <div class="leg"><div class="ldot" style="background:#FCD34D"></div>Expansion (neural net)</div>
+      <div class="leg"><div class="ldot" style="background:#86EFAC"></div>Backup propagation</div>
+      <div class="leg"><div class="ldot" style="background:#dbeafe"></div>Unvisited node</div>
+      <div class="leg"><div class="ldot" style="background:#a3e635"></div>High Q (White wins)</div>
+      <div class="leg"><div class="ldot" style="background:#f87171"></div>Low Q (Black wins)</div>
+    </div>
+  </div>
+
+  <!-- right: tree -->
+  <div id="right">
+    <svg id="tree"><text x="12" y="28" font-size="12" fill="#999">Loading…</text></svg>
+  </div>
+</div>
+
+<div id="ctrl">
+  <div class="ctrl-group">
+    <button class="btn" id="btn-reset">↺ Reset</button>
+    <button class="btn" id="btn-prev">◀ Prev</button>
+    <button class="btn" id="btn-next">▶ Next</button>
+    <button class="btn" id="btn-auto">⏵ Auto</button>
+    <button class="btn" id="btn-end">⏩ End</button>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Step</span>
+    <input type="range" id="sim-slider" min="0" max="100" value="0"
+           style="width:120px;accent-color:#769656">
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Speed</span>
+    <input type="range" id="spd" min="1" max="10" value="5" style="width:70px;accent-color:#769656">
+  </div>
+  <div id="prog-wrap"><div id="prog-fill" style="width:0%"></div></div>
+  <div id="step-label">0 / 101</div>
+</div>
+
+<script>
+// ── trace data ────────────────────────────────────────────────────────────
+const TRACE = {"initial_board":[-1,-1,-1,0,0,0,1,1,1],"initial_turn":1,"nodes":{"0":{"board":[-1,-1,-1,0,0,0,1,1,1],"turn":1},"1":{"board":[-1,-1,-1,1,0,0,0,1,1],"turn":-1},"2":{"board":[-1,-1,-1,0,1,0,1,0,1],"turn":-1},"3":{"board":[-1,-1,-1,0,0,1,1,1,0],"turn":-1},"4":{"board":[0,-1,-1,-1,1,0,1,0,1],"turn":1},"5":{"board":[0,-1,-1,0,-1,0,1,0,1],"turn":1},"6":{"board":[-1,-1,0,0,1,-1,1,0,1],"turn":1},"7":{"board":[-1,-1,0,0,-1,0,1,0,1],"turn":1},"8":{"board":[-1,-1,0,1,-1,0,0,0,1],"turn":-1},"9":{"board":[-1,-1,0,0,1,0,0,0,1],"turn":-1},"10":{"board":[-1,-1,0,0,-1,1,1,0,0],"turn":-1},"11":{"board":[-1,-1,0,0,1,0,1,0,0],"turn":-1},"12":{"board":[-1,0,-1,1,-1,0,0,1,1],"turn":1},"13":{"board":[-1,0,-1,-1,0,0,0,1,1],"turn":1},"14":{"board":[-1,-1,0,1,0,-1,0,1,1],"turn":1},"15":{"board":[-1,0,-1,-1,1,0,0,0,1],"turn":-1},"16":{"board":[-1,0,-1,1,0,0,0,0,1],"turn":-1},"17":{"board":[-1,0,-1,-1,0,1,0,1,0],"turn":-1},"18":{"board":[0,-1,-1,-1,0,1,1,1,0],"turn":1},"19":{"board":[-1,0,-1,0,-1,1,1,1,0],"turn":1},"20":{"board":[-1,0,-1,0,0,-1,1,1,0],"turn":1},"21":{"board":[-1,0,-1,1,0,-1,0,1,0],"turn":-1},"22":{"board":[-1,0,-1,0,1,-1,1,0,0],"turn":-1},"23":{"board":[-1,0,-1,0,0,1,1,0,0],"turn":-1},"24":{"board":[0,-1,0,-1,-1,1,1,0,0],"turn":1},"25":{"board":[-1,0,0,0,-1,-1,1,0,0],"turn":1},"26":{"board":[-1,-1,0,0,0,1,1,-1,0],"turn":1},"27":{"board":[-1,-1,0,0,0,1,-1,0,0],"turn":1},"28":{"board":[-1,0,0,1,-1,-1,0,0,0],"turn":-1},"29":{"board":[-1,0,0,0,1,-1,0,0,0],"turn":-1},"30":{"board":[-1,0,0,-1,-1,0,0,0,1],"turn":1},"31":{"board":[-1,-1,0,1,0,0,0,-1,1],"turn":1},"32":{"board":[-1,-1,0,1,0,0,0,0,-1],"turn":1},"33":{"board":[-1,0,0,-1,-1,1,0,0,0],"turn":-1},"34":{"board":[-1,0,0,-1,1,0,0,0,0],"turn":-1},"35":{"board":[0,-1,0,-1,1,0,0,0,1],"turn":1},"36":{"board":[0,-1,0,0,-1,0,0,0,1],"turn":1},"37":{"board":[0,-1,0,-1,1,1,0,0,0],"turn":-1},"38":{"board":[0,0,-1,-1,-1,0,0,0,1],"turn":1},"39":{"board":[-1,0,0,-1,1,-1,0,0,1],"turn":1},"40":{"board":[-1,0,0,-1,-1,0,0,0,1],"turn":1},"41":{"board":[-1,0,-1,0,1,0,-1,0,1],"turn":1},"42":{"board":[0,0,-1,-1,1,-1,1,0,0],"turn":1},"43":{"board":[0,0,-1,0,-1,-1,1,0,0],"turn":1},"44":{"board":[-1,0,0,0,-1,-1,1,0,0],"turn":1},"45":{"board":[-1,0,-1,0,1,0,1,0,-1],"turn":1},"46":{"board":[0,0,0,-1,1,-1,0,0,0],"turn":1},"47":{"board":[0,0,0,0,-1,-1,0,0,0],"turn":1},"48":{"board":[-1,0,0,0,1,0,0,0,-1],"turn":1},"49":{"board":[-1,0,0,0,-1,1,-1,0,0],"turn":1},"50":{"board":[-1,0,0,-1,0,1,0,-1,0],"turn":1},"51":{"board":[-1,0,-1,0,0,1,-1,1,0],"turn":1},"52":{"board":[-1,0,-1,0,0,1,0,-1,0],"turn":1},"53":{"board":[-1,0,-1,1,0,0,0,1,-1],"turn":1},"54":{"board":[-1,0,-1,1,0,0,0,-1,0],"turn":1},"55":{"board":[0,-1,0,-1,1,0,1,0,0],"turn":1},"56":{"board":[0,-1,0,0,-1,0,1,0,0],"turn":1},"57":{"board":[0,0,0,-1,1,-1,0,0,0],"turn":1},"58":{"board":[0,-1,0,0,1,1,-1,0,0],"turn":1},"59":{"board":[-1,0,0,1,0,-1,0,-1,0],"turn":1},"60":{"board":[-1,0,0,1,-1,0,0,0,-1],"turn":1},"61":{"board":[-1,0,0,1,0,-1,0,0,1],"turn":1},"62":{"board":[0,0,-1,-1,0,1,1,0,0],"turn":1},"63":{"board":[0,0,0,-1,-1,0,0,0,0],"turn":1},"64":{"board":[-1,0,0,0,1,0,-1,0,0],"turn":1}},"sims":[{"sim":-1,"path":[0],"leafId":0,"value":-1.0,"newNodes":[{"id":1,"move":{"from":6,"to":3},"P":0.22},{"id":2,"move":{"from":7,"to":4},"P":0.561},{"id":3,"move":{"from":8,"to":5},"P":0.219}],"terminal":false,"backup":[{"nodeId":0,"move":null,"N":2,"Q":-0.5}]},{"sim":0,"path":[0,2],"leafId":2,"value":1.0,"newNodes":[{"id":4,"move":{"from":0,"to":3},"P":0.0006},{"id":5,"move":{"from":0,"to":4},"P":0.0},{"id":6,"move":{"from":2,"to":5},"P":0.0004},{"id":7,"move":{"from":2,"to":4},"P":0.999}],"terminal":false,"backup":[{"nodeId":2,"move":{"from":7,"to":4},"N":1,"Q":1.0},{"nodeId":0,"move":null,"N":3,"Q":0.0}]},{"sim":1,"path":[0,2,7],"leafId":7,"value":-1.0,"newNodes":[{"id":8,"move":{"from":6,"to":3},"P":0.3306},{"id":9,"move":{"from":6,"to":4},"P":0.2209},{"id":10,"move":{"from":8,"to":5},"P":0.3388},{"id":11,"move":{"from":8,"to":4},"P":0.1097}],"terminal":false,"backup":[{"nodeId":7,"move":{"from":2,"to":4},"N":1,"Q":-1.0},{"nodeId":2,"move":{"from":7,"to":4},"N":2,"Q":-0.0},{"nodeId":0,"move":null,"N":4,"Q":-0.25}]},{"sim":2,"path":[0,1],"leafId":1,"value":1.0,"newNodes":[{"id":12,"move":{"from":1,"to":4},"P":0.0},{"id":13,"move":{"from":1,"to":3},"P":0.9996},{"id":14,"move":{"from":2,"to":5},"P":0.0004}],"terminal":false,"backup":[{"nodeId":1,"move":{"from":6,"to":3},"N":1,"Q":1.0},{"nodeId":0,"move":null,"N":5,"Q":0.0}]},{"sim":3,"path":[0,1,13],"leafId":13,"value":-0.9999,"newNodes":[{"id":15,"move":{"from":7,"to":4},"P":0.362},{"id":16,"move":{"from":7,"to":3},"P":0.3101},{"id":17,"move":{"from":8,"to":5},"P":0.3279}],"terminal":false,"backup":[{"nodeId":13,"move":{"from":1,"to":3},"N":1,"Q":-0.9999},{"nodeId":1,"move":{"from":6,"to":3},"N":2,"Q":0.0001},{"nodeId":0,"move":null,"N":6,"Q":-0.1666}]},{"sim":4,"path":[0,3],"leafId":3,"value":1.0,"newNodes":[{"id":18,"move":{"from":0,"to":3},"P":0.0},{"id":19,"move":{"from":1,"to":4},"P":0.0},{"id":20,"move":{"from":1,"to":5},"P":1.0}],"terminal":false,"backup":[{"nodeId":3,"move":{"from":8,"to":5},"N":1,"Q":1.0},{"nodeId":0,"move":null,"N":7,"Q":0.0}]},{"sim":5,"path":[0,3,20],"leafId":20,"value":-0.9999,"newNodes":[{"id":21,"move":{"from":6,"to":3},"P":0.3099},{"id":22,"move":{"from":7,"to":4},"P":0.3813},{"id":23,"move":{"from":7,"to":5},"P":0.3088}],"terminal":false,"backup":[{"nodeId":20,"move":{"from":1,"to":5},"N":1,"Q":-0.9999},{"nodeId":3,"move":{"from":8,"to":5},"N":2,"Q":0.0},{"nodeId":0,"move":null,"N":8,"Q":-0.125}]},{"sim":6,"path":[0,2,7,10],"leafId":10,"value":0.9999,"newNodes":[{"id":24,"move":{"from":0,"to":3},"P":0.0009},{"id":25,"move":{"from":1,"to":5},"P":0.9991},{"id":26,"move":{"from":4,"to":7},"P":0.0},{"id":27,"move":{"from":4,"to":6},"P":0.0}],"terminal":false,"backup":[{"nodeId":10,"move":{"from":8,"to":5},"N":1,"Q":0.9999},{"nodeId":7,"move":{"from":2,"to":4},"N":2,"Q":-0.0},{"nodeId":2,"move":{"from":7,"to":4},"N":3,"Q":0.3333},{"nodeId":0,"move":null,"N":9,"Q":0.0}]},{"sim":7,"path":[0,2,7,10,25],"leafId":25,"value":-1.0,"newNodes":[{"id":28,"move":{"from":6,"to":3},"P":0.4593},{"id":29,"move":{"from":6,"to":4},"P":0.5407}],"terminal":false,"backup":[{"nodeId":25,"move":{"from":1,"to":5},"N":1,"Q":-1.0},{"nodeId":10,"move":{"from":8,"to":5},"N":2,"Q":-0.0},{"nodeId":7,"move":{"from":2,"to":4},"N":3,"Q":-0.3334},{"nodeId":2,"move":{"from":7,"to":4},"N":4,"Q":-0.0},{"nodeId":0,"move":null,"N":10,"Q":-0.1}]},{"sim":8,"path":[0,2,7,8],"leafId":8,"value":1.0,"newNodes":[{"id":30,"move":{"from":1,"to":3},"P":1.0},{"id":31,"move":{"from":4,"to":7},"P":0.0},{"id":32,"move":{"from":4,"to":8},"P":0.0}],"terminal":false,"backup":[{"nodeId":8,"move":{"from":6,"to":3},"N":1,"Q":1.0},{"nodeId":7,"move":{"from":2,"to":4},"N":4,"Q":-0.0},{"nodeId":2,"move":{"from":7,"to":4},"N":5,"Q":0.2},{"nodeId":0,"move":null,"N":11,"Q":0.0}]},{"sim":9,"path":[0,2,7,8,30],"leafId":30,"value":-1.0,"newNodes":[{"id":33,"move":{"from":8,"to":5},"P":0.5976},{"id":34,"move":{"from":8,"to":4},"P":0.4024}],"terminal":false,"backup":[{"nodeId":30,"move":{"from":1,"to":3},"N":1,"Q":-1.0},{"nodeId":8,"move":{"from":6,"to":3},"N":2,"Q":-0.0},{"nodeId":7,"move":{"from":2,"to":4},"N":5,"Q":-0.2},{"nodeId":2,"move":{"from":7,"to":4},"N":6,"Q":-0.0},{"nodeId":0,"move":null,"N":12,"Q":-0.0833}]},{"sim":10,"path":[0,2,7,9],"leafId":9,"value":1.0,"newNodes":[{"id":35,"move":{"from":0,"to":3},"P":0.9943},{"id":36,"move":{"from":0,"to":4},"P":0.0057}],"terminal":false,"backup":[{"nodeId":9,"move":{"from":6,"to":4},"N":1,"Q":1.0},{"nodeId":7,"move":{"from":2,"to":4},"N":6,"Q":-0.0},{"nodeId":2,"move":{"from":7,"to":4},"N":7,"Q":0.1428},{"nodeId":0,"move":null,"N":13,"Q":0.0}]},{"sim":11,"path":[0,2,7,9,35],"leafId":35,"value":-1.0,"newNodes":[{"id":37,"move":{"from":8,"to":5},"P":1.0}],"terminal":false,"backup":[{"nodeId":35,"move":{"from":0,"to":3},"N":1,"Q":-1.0},{"nodeId":9,"move":{"from":6,"to":4},"N":2,"Q":0.0},{"nodeId":7,"move":{"from":2,"to":4},"N":7,"Q":-0.1429},{"nodeId":2,"move":{"from":7,"to":4},"N":8,"Q":-0.0},{"nodeId":0,"move":null,"N":14,"Q":-0.0714}]},{"sim":12,"path":[0,1,13,15],"leafId":15,"value":1.0,"newNodes":[{"id":38,"move":{"from":0,"to":4},"P":0.0006},{"id":39,"move":{"from":2,"to":5},"P":0.0},{"id":40,"move":{"from":2,"to":4},"P":0.0},{"id":41,"move":{"from":3,"to":6},"P":0.9994}],"terminal":false,"backup":[{"nodeId":15,"move":{"from":7,"to":4},"N":1,"Q":1.0},{"nodeId":13,"move":{"from":1,"to":3},"N":2,"Q":0.0001},{"nodeId":1,"move":{"from":6,"to":3},"N":3,"Q":0.3334},{"nodeId":0,"move":null,"N":15,"Q":0.0}]},{"sim":13,"path":[0,1,13,15,41],"leafId":41,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":41,"move":{"from":3,"to":6},"N":1,"Q":-1.0},{"nodeId":15,"move":{"from":7,"to":4},"N":2,"Q":0.0},{"nodeId":13,"move":{"from":1,"to":3},"N":3,"Q":-0.3333},{"nodeId":1,"move":{"from":6,"to":3},"N":4,"Q":0.0},{"nodeId":0,"move":null,"N":16,"Q":-0.0625}]},{"sim":14,"path":[0,3,20,22],"leafId":22,"value":1.0,"newNodes":[{"id":42,"move":{"from":0,"to":3},"P":0.0001},{"id":43,"move":{"from":0,"to":4},"P":0.0002},{"id":44,"move":{"from":2,"to":4},"P":0.0002},{"id":45,"move":{"from":5,"to":8},"P":0.9995}],"terminal":false,"backup":[{"nodeId":22,"move":{"from":7,"to":4},"N":1,"Q":1.0},{"nodeId":20,"move":{"from":1,"to":5},"N":2,"Q":0.0},{"nodeId":3,"move":{"from":8,"to":5},"N":3,"Q":0.3334},{"nodeId":0,"move":null,"N":17,"Q":0.0}]},{"sim":15,"path":[0,3,20,22,45],"leafId":45,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":45,"move":{"from":5,"to":8},"N":1,"Q":-1.0},{"nodeId":22,"move":{"from":7,"to":4},"N":2,"Q":-0.0},{"nodeId":20,"move":{"from":1,"to":5},"N":3,"Q":-0.3333},{"nodeId":3,"move":{"from":8,"to":5},"N":4,"Q":0.0},{"nodeId":0,"move":null,"N":18,"Q":-0.0555}]},{"sim":16,"path":[0,2,7,10,25,29],"leafId":29,"value":0.9999,"newNodes":[{"id":46,"move":{"from":0,"to":3},"P":0.002},{"id":47,"move":{"from":0,"to":4},"P":0.9942},{"id":48,"move":{"from":5,"to":8},"P":0.0038}],"terminal":false,"backup":[{"nodeId":29,"move":{"from":6,"to":4},"N":1,"Q":0.9999},{"nodeId":25,"move":{"from":1,"to":5},"N":2,"Q":-0.0},{"nodeId":10,"move":{"from":8,"to":5},"N":3,"Q":0.3333},{"nodeId":7,"move":{"from":2,"to":4},"N":8,"Q":-0.0},{"nodeId":2,"move":{"from":7,"to":4},"N":9,"Q":0.1111},{"nodeId":0,"move":null,"N":19,"Q":0.0}]},{"sim":17,"path":[0,2,7,10,25,29,47],"leafId":47,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":47,"move":{"from":0,"to":4},"N":1,"Q":-1.0},{"nodeId":29,"move":{"from":6,"to":4},"N":2,"Q":-0.0},{"nodeId":25,"move":{"from":1,"to":5},"N":3,"Q":-0.3334},{"nodeId":10,"move":{"from":8,"to":5},"N":4,"Q":-0.0},{"nodeId":7,"move":{"from":2,"to":4},"N":9,"Q":-0.1111},{"nodeId":2,"move":{"from":7,"to":4},"N":10,"Q":-0.0},{"nodeId":0,"move":null,"N":20,"Q":-0.05}]},{"sim":18,"path":[0,2,7,8,30,33],"leafId":33,"value":1.0,"newNodes":[{"id":49,"move":{"from":3,"to":6},"P":1.0},{"id":50,"move":{"from":4,"to":7},"P":0.0}],"terminal":false,"backup":[{"nodeId":33,"move":{"from":8,"to":5},"N":1,"Q":1.0},{"nodeId":30,"move":{"from":1,"to":3},"N":2,"Q":0.0},{"nodeId":8,"move":{"from":6,"to":3},"N":3,"Q":0.3333},{"nodeId":7,"move":{"from":2,"to":4},"N":10,"Q":-0.0},{"nodeId":2,"move":{"from":7,"to":4},"N":11,"Q":0.0909},{"nodeId":0,"move":null,"N":21,"Q":0.0}]},{"sim":19,"path":[0,2,7,8,30,33,49],"leafId":49,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":49,"move":{"from":3,"to":6},"N":1,"Q":-1.0},{"nodeId":33,"move":{"from":8,"to":5},"N":2,"Q":0.0},{"nodeId":30,"move":{"from":1,"to":3},"N":3,"Q":-0.3333},{"nodeId":8,"move":{"from":6,"to":3},"N":4,"Q":-0.0},{"nodeId":7,"move":{"from":2,"to":4},"N":11,"Q":-0.0909},{"nodeId":2,"move":{"from":7,"to":4},"N":12,"Q":-0.0},{"nodeId":0,"move":null,"N":22,"Q":-0.0455}]},{"sim":20,"path":[0,1,13,17],"leafId":17,"value":1.0,"newNodes":[{"id":51,"move":{"from":3,"to":6},"P":1.0},{"id":52,"move":{"from":3,"to":7},"P":0.0}],"terminal":false,"backup":[{"nodeId":17,"move":{"from":8,"to":5},"N":1,"Q":1.0},{"nodeId":13,"move":{"from":1,"to":3},"N":4,"Q":0.0},{"nodeId":1,"move":{"from":6,"to":3},"N":5,"Q":0.2},{"nodeId":0,"move":null,"N":23,"Q":0.0}]},{"sim":21,"path":[0,1,13,17,51],"leafId":51,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":51,"move":{"from":3,"to":6},"N":1,"Q":-1.0},{"nodeId":17,"move":{"from":8,"to":5},"N":2,"Q":0.0},{"nodeId":13,"move":{"from":1,"to":3},"N":5,"Q":-0.2},{"nodeId":1,"move":{"from":6,"to":3},"N":6,"Q":0.0},{"nodeId":0,"move":null,"N":24,"Q":-0.0417}]},{"sim":22,"path":[0,3,20,21],"leafId":21,"value":1.0,"newNodes":[{"id":53,"move":{"from":5,"to":8},"P":0.9999},{"id":54,"move":{"from":5,"to":7},"P":0.0001}],"terminal":false,"backup":[{"nodeId":21,"move":{"from":6,"to":3},"N":1,"Q":1.0},{"nodeId":20,"move":{"from":1,"to":5},"N":4,"Q":0.0},{"nodeId":3,"move":{"from":8,"to":5},"N":5,"Q":0.2},{"nodeId":0,"move":null,"N":25,"Q":0.0}]},{"sim":23,"path":[0,3,20,21,53],"leafId":53,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":53,"move":{"from":5,"to":8},"N":1,"Q":-1.0},{"nodeId":21,"move":{"from":6,"to":3},"N":2,"Q":-0.0},{"nodeId":20,"move":{"from":1,"to":5},"N":5,"Q":-0.2},{"nodeId":3,"move":{"from":8,"to":5},"N":6,"Q":0.0},{"nodeId":0,"move":null,"N":26,"Q":-0.0385}]},{"sim":24,"path":[0,2,7,11],"leafId":11,"value":1.0,"newNodes":[{"id":55,"move":{"from":0,"to":3},"P":1.0},{"id":56,"move":{"from":0,"to":4},"P":0.0}],"terminal":false,"backup":[{"nodeId":11,"move":{"from":8,"to":4},"N":1,"Q":1.0},{"nodeId":7,"move":{"from":2,"to":4},"N":12,"Q":-0.0},{"nodeId":2,"move":{"from":7,"to":4},"N":13,"Q":0.0769},{"nodeId":0,"move":null,"N":27,"Q":0.0}]},{"sim":25,"path":[0,2,7,11,55],"leafId":55,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":55,"move":{"from":0,"to":3},"N":1,"Q":-1.0},{"nodeId":11,"move":{"from":8,"to":4},"N":2,"Q":-0.0},{"nodeId":7,"move":{"from":2,"to":4},"N":13,"Q":-0.0769},{"nodeId":2,"move":{"from":7,"to":4},"N":14,"Q":-0.0},{"nodeId":0,"move":null,"N":28,"Q":-0.0357}]},{"sim":26,"path":[0,2,7,9,35,37],"leafId":37,"value":1.0,"newNodes":[{"id":57,"move":{"from":1,"to":5},"P":0.0},{"id":58,"move":{"from":3,"to":6},"P":1.0}],"terminal":false,"backup":[{"nodeId":37,"move":{"from":8,"to":5},"N":1,"Q":1.0},{"nodeId":35,"move":{"from":0,"to":3},"N":2,"Q":0.0},{"nodeId":9,"move":{"from":6,"to":4},"N":3,"Q":0.3333},{"nodeId":7,"move":{"from":2,"to":4},"N":14,"Q":-0.0},{"nodeId":2,"move":{"from":7,"to":4},"N":15,"Q":0.0667},{"nodeId":0,"move":null,"N":29,"Q":0.0}]},{"sim":27,"path":[0,2,7,9,35,37,58],"leafId":58,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":58,"move":{"from":3,"to":6},"N":1,"Q":-1.0},{"nodeId":37,"move":{"from":8,"to":5},"N":2,"Q":0.0},{"nodeId":35,"move":{"from":0,"to":3},"N":3,"Q":-0.3333},{"nodeId":9,"move":{"from":6,"to":4},"N":4,"Q":0.0},{"nodeId":7,"move":{"from":2,"to":4},"N":15,"Q":-0.0667},{"nodeId":2,"move":{"from":7,"to":4},"N":16,"Q":-0.0},{"nodeId":0,"move":null,"N":30,"Q":-0.0333}]},{"sim":28,"path":[0,2,7,10,25,28],"leafId":28,"value":0.9995,"newNodes":[{"id":59,"move":{"from":4,"to":7},"P":0.0},{"id":60,"move":{"from":5,"to":8},"P":1.0}],"terminal":false,"backup":[{"nodeId":28,"move":{"from":6,"to":3},"N":1,"Q":0.9995},{"nodeId":25,"move":{"from":1,"to":5},"N":4,"Q":-0.0002},{"nodeId":10,"move":{"from":8,"to":5},"N":5,"Q":0.1999},{"nodeId":7,"move":{"from":2,"to":4},"N":16,"Q":-0.0},{"nodeId":2,"move":{"from":7,"to":4},"N":17,"Q":0.0588},{"nodeId":0,"move":null,"N":31,"Q":-0.0}]},{"sim":29,"path":[0,2,7,10,25,28,60],"leafId":60,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":60,"move":{"from":5,"to":8},"N":1,"Q":-1.0},{"nodeId":28,"move":{"from":6,"to":3},"N":2,"Q":-0.0003},{"nodeId":25,"move":{"from":1,"to":5},"N":5,"Q":-0.2001},{"nodeId":10,"move":{"from":8,"to":5},"N":6,"Q":-0.0001},{"nodeId":7,"move":{"from":2,"to":4},"N":17,"Q":-0.0589},{"nodeId":2,"move":{"from":7,"to":4},"N":18,"Q":-0.0},{"nodeId":0,"move":null,"N":32,"Q":-0.0313}]},{"sim":30,"path":[0,1,13,16],"leafId":16,"value":1.0,"newNodes":[{"id":61,"move":{"from":2,"to":5},"P":1.0}],"terminal":false,"backup":[{"nodeId":16,"move":{"from":7,"to":3},"N":1,"Q":1.0},{"nodeId":13,"move":{"from":1,"to":3},"N":6,"Q":0.0},{"nodeId":1,"move":{"from":6,"to":3},"N":7,"Q":0.1429},{"nodeId":0,"move":null,"N":33,"Q":-0.0}]},{"sim":31,"path":[0,1,13,16,61],"leafId":61,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":61,"move":{"from":2,"to":5},"N":1,"Q":-1.0},{"nodeId":16,"move":{"from":7,"to":3},"N":2,"Q":0.0},{"nodeId":13,"move":{"from":1,"to":3},"N":7,"Q":-0.1428},{"nodeId":1,"move":{"from":6,"to":3},"N":8,"Q":0.0},{"nodeId":0,"move":null,"N":34,"Q":-0.0294}]},{"sim":32,"path":[0,3,20,23],"leafId":23,"value":1.0,"newNodes":[{"id":62,"move":{"from":0,"to":3},"P":1.0}],"terminal":false,"backup":[{"nodeId":23,"move":{"from":7,"to":5},"N":1,"Q":1.0},{"nodeId":20,"move":{"from":1,"to":5},"N":6,"Q":0.0},{"nodeId":3,"move":{"from":8,"to":5},"N":7,"Q":0.1429},{"nodeId":0,"move":null,"N":35,"Q":-0.0}]},{"sim":33,"path":[0,3,20,23,62],"leafId":62,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":62,"move":{"from":0,"to":3},"N":1,"Q":-1.0},{"nodeId":23,"move":{"from":7,"to":5},"N":2,"Q":0.0},{"nodeId":20,"move":{"from":1,"to":5},"N":7,"Q":-0.1429},{"nodeId":3,"move":{"from":8,"to":5},"N":8,"Q":0.0},{"nodeId":0,"move":null,"N":36,"Q":-0.0278}]},{"sim":34,"path":[0,2,7,8,30,34],"leafId":34,"value":1.0,"newNodes":[{"id":63,"move":{"from":0,"to":4},"P":0.0376},{"id":64,"move":{"from":3,"to":6},"P":0.9624}],"terminal":false,"backup":[{"nodeId":34,"move":{"from":8,"to":4},"N":1,"Q":1.0},{"nodeId":30,"move":{"from":1,"to":3},"N":4,"Q":0.0},{"nodeId":8,"move":{"from":6,"to":3},"N":5,"Q":0.2},{"nodeId":7,"move":{"from":2,"to":4},"N":18,"Q":-0.0},{"nodeId":2,"move":{"from":7,"to":4},"N":19,"Q":0.0526},{"nodeId":0,"move":null,"N":37,"Q":-0.0}]},{"sim":35,"path":[0,2,7,8,30,34,64],"leafId":64,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":64,"move":{"from":3,"to":6},"N":1,"Q":-1.0},{"nodeId":34,"move":{"from":8,"to":4},"N":2,"Q":0.0},{"nodeId":30,"move":{"from":1,"to":3},"N":5,"Q":-0.2},{"nodeId":8,"move":{"from":6,"to":3},"N":6,"Q":-0.0},{"nodeId":7,"move":{"from":2,"to":4},"N":19,"Q":-0.0527},{"nodeId":2,"move":{"from":7,"to":4},"N":20,"Q":-0.0},{"nodeId":0,"move":null,"N":38,"Q":-0.0263}]},{"sim":36,"path":[0,2,7,10,25,29,47],"leafId":47,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":47,"move":{"from":0,"to":4},"N":2,"Q":-1.0},{"nodeId":29,"move":{"from":6,"to":4},"N":3,"Q":-0.3334},{"nodeId":25,"move":{"from":1,"to":5},"N":6,"Q":-0.3334},{"nodeId":10,"move":{"from":8,"to":5},"N":7,"Q":-0.143},{"nodeId":7,"move":{"from":2,"to":4},"N":20,"Q":-0.1},{"nodeId":2,"move":{"from":7,"to":4},"N":21,"Q":-0.0477},{"nodeId":0,"move":null,"N":39,"Q":-0.0513}]},{"sim":37,"path":[0,1,13,15,41],"leafId":41,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":41,"move":{"from":3,"to":6},"N":2,"Q":-1.0},{"nodeId":15,"move":{"from":7,"to":4},"N":3,"Q":-0.3333},{"nodeId":13,"move":{"from":1,"to":3},"N":8,"Q":-0.25},{"nodeId":1,"move":{"from":6,"to":3},"N":9,"Q":-0.1111},{"nodeId":0,"move":null,"N":40,"Q":-0.075}]},{"sim":38,"path":[0,3,20,22,45],"leafId":45,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":45,"move":{"from":5,"to":8},"N":2,"Q":-1.0},{"nodeId":22,"move":{"from":7,"to":4},"N":3,"Q":-0.3333},{"nodeId":20,"move":{"from":1,"to":5},"N":8,"Q":-0.25},{"nodeId":3,"move":{"from":8,"to":5},"N":9,"Q":-0.1111},{"nodeId":0,"move":null,"N":41,"Q":-0.0976}]},{"sim":39,"path":[0,2,7,8,30,33,49],"leafId":49,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":49,"move":{"from":3,"to":6},"N":2,"Q":-1.0},{"nodeId":33,"move":{"from":8,"to":5},"N":3,"Q":-0.3333},{"nodeId":30,"move":{"from":1,"to":3},"N":6,"Q":-0.3333},{"nodeId":8,"move":{"from":6,"to":3},"N":7,"Q":-0.1429},{"nodeId":7,"move":{"from":2,"to":4},"N":21,"Q":-0.1429},{"nodeId":2,"move":{"from":7,"to":4},"N":22,"Q":-0.0909},{"nodeId":0,"move":null,"N":42,"Q":-0.1191}]},{"sim":40,"path":[0,2,7,9,35,37,58],"leafId":58,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":58,"move":{"from":3,"to":6},"N":2,"Q":-1.0},{"nodeId":37,"move":{"from":8,"to":5},"N":3,"Q":-0.3333},{"nodeId":35,"move":{"from":0,"to":3},"N":4,"Q":-0.5},{"nodeId":9,"move":{"from":6,"to":4},"N":5,"Q":-0.2},{"nodeId":7,"move":{"from":2,"to":4},"N":22,"Q":-0.1818},{"nodeId":2,"move":{"from":7,"to":4},"N":23,"Q":-0.1305},{"nodeId":0,"move":null,"N":43,"Q":-0.1395}]},{"sim":41,"path":[0,1,13,17,51],"leafId":51,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":51,"move":{"from":3,"to":6},"N":2,"Q":-1.0},{"nodeId":17,"move":{"from":8,"to":5},"N":3,"Q":-0.3333},{"nodeId":13,"move":{"from":1,"to":3},"N":9,"Q":-0.3333},{"nodeId":1,"move":{"from":6,"to":3},"N":10,"Q":-0.2},{"nodeId":0,"move":null,"N":44,"Q":-0.1591}]},{"sim":42,"path":[0,3,20,21,53],"leafId":53,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":53,"move":{"from":5,"to":8},"N":2,"Q":-1.0},{"nodeId":21,"move":{"from":6,"to":3},"N":3,"Q":-0.3333},{"nodeId":20,"move":{"from":1,"to":5},"N":9,"Q":-0.3333},{"nodeId":3,"move":{"from":8,"to":5},"N":10,"Q":-0.2},{"nodeId":0,"move":null,"N":45,"Q":-0.1778}]},{"sim":43,"path":[0,2,7,11,55],"leafId":55,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":55,"move":{"from":0,"to":3},"N":2,"Q":-1.0},{"nodeId":11,"move":{"from":8,"to":4},"N":3,"Q":-0.3333},{"nodeId":7,"move":{"from":2,"to":4},"N":23,"Q":-0.2174},{"nodeId":2,"move":{"from":7,"to":4},"N":24,"Q":-0.1667},{"nodeId":0,"move":null,"N":46,"Q":-0.1957}]},{"sim":44,"path":[0,2,7,10,25,28,60],"leafId":60,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":60,"move":{"from":5,"to":8},"N":2,"Q":-1.0},{"nodeId":28,"move":{"from":6,"to":3},"N":3,"Q":-0.3335},{"nodeId":25,"move":{"from":1,"to":5},"N":7,"Q":-0.4287},{"nodeId":10,"move":{"from":8,"to":5},"N":8,"Q":-0.2501},{"nodeId":7,"move":{"from":2,"to":4},"N":24,"Q":-0.25},{"nodeId":2,"move":{"from":7,"to":4},"N":25,"Q":-0.2},{"nodeId":0,"move":null,"N":47,"Q":-0.2128}]},{"sim":45,"path":[0,2,7,8,30,34,64],"leafId":64,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":64,"move":{"from":3,"to":6},"N":2,"Q":-1.0},{"nodeId":34,"move":{"from":8,"to":4},"N":3,"Q":-0.3333},{"nodeId":30,"move":{"from":1,"to":3},"N":7,"Q":-0.4286},{"nodeId":8,"move":{"from":6,"to":3},"N":8,"Q":-0.25},{"nodeId":7,"move":{"from":2,"to":4},"N":25,"Q":-0.28},{"nodeId":2,"move":{"from":7,"to":4},"N":26,"Q":-0.2308},{"nodeId":0,"move":null,"N":48,"Q":-0.2292}]},{"sim":46,"path":[0,1,13,16,61],"leafId":61,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":61,"move":{"from":2,"to":5},"N":2,"Q":-1.0},{"nodeId":16,"move":{"from":7,"to":3},"N":3,"Q":-0.3333},{"nodeId":13,"move":{"from":1,"to":3},"N":10,"Q":-0.4},{"nodeId":1,"move":{"from":6,"to":3},"N":11,"Q":-0.2727},{"nodeId":0,"move":null,"N":49,"Q":-0.2449}]},{"sim":47,"path":[0,3,20,23,62],"leafId":62,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":62,"move":{"from":0,"to":3},"N":2,"Q":-1.0},{"nodeId":23,"move":{"from":7,"to":5},"N":3,"Q":-0.3333},{"nodeId":20,"move":{"from":1,"to":5},"N":10,"Q":-0.4},{"nodeId":3,"move":{"from":8,"to":5},"N":11,"Q":-0.2727},{"nodeId":0,"move":null,"N":50,"Q":-0.26}]},{"sim":48,"path":[0,2,7,9,35,37,58],"leafId":58,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":58,"move":{"from":3,"to":6},"N":3,"Q":-1.0},{"nodeId":37,"move":{"from":8,"to":5},"N":4,"Q":-0.5},{"nodeId":35,"move":{"from":0,"to":3},"N":5,"Q":-0.6},{"nodeId":9,"move":{"from":6,"to":4},"N":6,"Q":-0.3333},{"nodeId":7,"move":{"from":2,"to":4},"N":26,"Q":-0.3077},{"nodeId":2,"move":{"from":7,"to":4},"N":27,"Q":-0.2593},{"nodeId":0,"move":null,"N":51,"Q":-0.2745}]},{"sim":49,"path":[0,2,7,10,25,29,47],"leafId":47,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":47,"move":{"from":0,"to":4},"N":3,"Q":-1.0},{"nodeId":29,"move":{"from":6,"to":4},"N":4,"Q":-0.5},{"nodeId":25,"move":{"from":1,"to":5},"N":8,"Q":-0.5001},{"nodeId":10,"move":{"from":8,"to":5},"N":9,"Q":-0.3334},{"nodeId":7,"move":{"from":2,"to":4},"N":27,"Q":-0.3334},{"nodeId":2,"move":{"from":7,"to":4},"N":28,"Q":-0.2857},{"nodeId":0,"move":null,"N":52,"Q":-0.2885}]},{"sim":50,"path":[0,1,13,15,41],"leafId":41,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":41,"move":{"from":3,"to":6},"N":3,"Q":-1.0},{"nodeId":15,"move":{"from":7,"to":4},"N":4,"Q":-0.5},{"nodeId":13,"move":{"from":1,"to":3},"N":11,"Q":-0.4545},{"nodeId":1,"move":{"from":6,"to":3},"N":12,"Q":-0.3333},{"nodeId":0,"move":null,"N":53,"Q":-0.3019}]},{"sim":51,"path":[0,3,20,22,45],"leafId":45,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":45,"move":{"from":5,"to":8},"N":3,"Q":-1.0},{"nodeId":22,"move":{"from":7,"to":4},"N":4,"Q":-0.5},{"nodeId":20,"move":{"from":1,"to":5},"N":11,"Q":-0.4545},{"nodeId":3,"move":{"from":8,"to":5},"N":12,"Q":-0.3333},{"nodeId":0,"move":null,"N":54,"Q":-0.3148}]},{"sim":52,"path":[0,2,7,8,30,33,49],"leafId":49,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":49,"move":{"from":3,"to":6},"N":3,"Q":-1.0},{"nodeId":33,"move":{"from":8,"to":5},"N":4,"Q":-0.5},{"nodeId":30,"move":{"from":1,"to":3},"N":8,"Q":-0.5},{"nodeId":8,"move":{"from":6,"to":3},"N":9,"Q":-0.3333},{"nodeId":7,"move":{"from":2,"to":4},"N":28,"Q":-0.3572},{"nodeId":2,"move":{"from":7,"to":4},"N":29,"Q":-0.3104},{"nodeId":0,"move":null,"N":55,"Q":-0.3273}]},{"sim":53,"path":[0,2,7,10,25,28,60],"leafId":60,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":60,"move":{"from":5,"to":8},"N":3,"Q":-1.0},{"nodeId":28,"move":{"from":6,"to":3},"N":4,"Q":-0.5001},{"nodeId":25,"move":{"from":1,"to":5},"N":9,"Q":-0.5556},{"nodeId":10,"move":{"from":8,"to":5},"N":10,"Q":-0.4001},{"nodeId":7,"move":{"from":2,"to":4},"N":29,"Q":-0.3793},{"nodeId":2,"move":{"from":7,"to":4},"N":30,"Q":-0.3334},{"nodeId":0,"move":null,"N":56,"Q":-0.3393}]},{"sim":54,"path":[0,2,7,8,30,34,64],"leafId":64,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":64,"move":{"from":3,"to":6},"N":3,"Q":-1.0},{"nodeId":34,"move":{"from":8,"to":4},"N":4,"Q":-0.5},{"nodeId":30,"move":{"from":1,"to":3},"N":9,"Q":-0.5556},{"nodeId":8,"move":{"from":6,"to":3},"N":10,"Q":-0.4},{"nodeId":7,"move":{"from":2,"to":4},"N":30,"Q":-0.4},{"nodeId":2,"move":{"from":7,"to":4},"N":31,"Q":-0.3549},{"nodeId":0,"move":null,"N":57,"Q":-0.3509}]},{"sim":55,"path":[0,1,13,17,51],"leafId":51,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":51,"move":{"from":3,"to":6},"N":3,"Q":-1.0},{"nodeId":17,"move":{"from":8,"to":5},"N":4,"Q":-0.5},{"nodeId":13,"move":{"from":1,"to":3},"N":12,"Q":-0.5},{"nodeId":1,"move":{"from":6,"to":3},"N":13,"Q":-0.3846},{"nodeId":0,"move":null,"N":58,"Q":-0.3621}]},{"sim":56,"path":[0,3,20,21,53],"leafId":53,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":53,"move":{"from":5,"to":8},"N":3,"Q":-1.0},{"nodeId":21,"move":{"from":6,"to":3},"N":4,"Q":-0.5},{"nodeId":20,"move":{"from":1,"to":5},"N":12,"Q":-0.5},{"nodeId":3,"move":{"from":8,"to":5},"N":13,"Q":-0.3846},{"nodeId":0,"move":null,"N":59,"Q":-0.3729}]},{"sim":57,"path":[0,2,7,9,35,37,58],"leafId":58,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":58,"move":{"from":3,"to":6},"N":4,"Q":-1.0},{"nodeId":37,"move":{"from":8,"to":5},"N":5,"Q":-0.6},{"nodeId":35,"move":{"from":0,"to":3},"N":6,"Q":-0.6667},{"nodeId":9,"move":{"from":6,"to":4},"N":7,"Q":-0.4286},{"nodeId":7,"move":{"from":2,"to":4},"N":31,"Q":-0.4194},{"nodeId":2,"move":{"from":7,"to":4},"N":32,"Q":-0.375},{"nodeId":0,"move":null,"N":60,"Q":-0.3833}]},{"sim":58,"path":[0,2,7,11,55],"leafId":55,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":55,"move":{"from":0,"to":3},"N":3,"Q":-1.0},{"nodeId":11,"move":{"from":8,"to":4},"N":4,"Q":-0.5},{"nodeId":7,"move":{"from":2,"to":4},"N":32,"Q":-0.4375},{"nodeId":2,"move":{"from":7,"to":4},"N":33,"Q":-0.394},{"nodeId":0,"move":null,"N":61,"Q":-0.3935}]},{"sim":59,"path":[0,1,13,16,61],"leafId":61,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":61,"move":{"from":2,"to":5},"N":3,"Q":-1.0},{"nodeId":16,"move":{"from":7,"to":3},"N":4,"Q":-0.5},{"nodeId":13,"move":{"from":1,"to":3},"N":13,"Q":-0.5385},{"nodeId":1,"move":{"from":6,"to":3},"N":14,"Q":-0.4286},{"nodeId":0,"move":null,"N":62,"Q":-0.4032}]},{"sim":60,"path":[0,3,20,23,62],"leafId":62,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":62,"move":{"from":0,"to":3},"N":3,"Q":-1.0},{"nodeId":23,"move":{"from":7,"to":5},"N":4,"Q":-0.5},{"nodeId":20,"move":{"from":1,"to":5},"N":13,"Q":-0.5385},{"nodeId":3,"move":{"from":8,"to":5},"N":14,"Q":-0.4286},{"nodeId":0,"move":null,"N":63,"Q":-0.4127}]},{"sim":61,"path":[0,2,7,10,25,29,47],"leafId":47,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":47,"move":{"from":0,"to":4},"N":4,"Q":-1.0},{"nodeId":29,"move":{"from":6,"to":4},"N":5,"Q":-0.6},{"nodeId":25,"move":{"from":1,"to":5},"N":10,"Q":-0.6001},{"nodeId":10,"move":{"from":8,"to":5},"N":11,"Q":-0.4546},{"nodeId":7,"move":{"from":2,"to":4},"N":33,"Q":-0.4546},{"nodeId":2,"move":{"from":7,"to":4},"N":34,"Q":-0.4118},{"nodeId":0,"move":null,"N":64,"Q":-0.4219}]},{"sim":62,"path":[0,2,7,8,30,33,49],"leafId":49,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":49,"move":{"from":3,"to":6},"N":4,"Q":-1.0},{"nodeId":33,"move":{"from":8,"to":5},"N":5,"Q":-0.6},{"nodeId":30,"move":{"from":1,"to":3},"N":10,"Q":-0.6},{"nodeId":8,"move":{"from":6,"to":3},"N":11,"Q":-0.4545},{"nodeId":7,"move":{"from":2,"to":4},"N":34,"Q":-0.4706},{"nodeId":2,"move":{"from":7,"to":4},"N":35,"Q":-0.4286},{"nodeId":0,"move":null,"N":65,"Q":-0.4308}]},{"sim":63,"path":[0,2,7,9,35,37,58],"leafId":58,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":58,"move":{"from":3,"to":6},"N":5,"Q":-1.0},{"nodeId":37,"move":{"from":8,"to":5},"N":6,"Q":-0.6667},{"nodeId":35,"move":{"from":0,"to":3},"N":7,"Q":-0.7143},{"nodeId":9,"move":{"from":6,"to":4},"N":8,"Q":-0.5},{"nodeId":7,"move":{"from":2,"to":4},"N":35,"Q":-0.4857},{"nodeId":2,"move":{"from":7,"to":4},"N":36,"Q":-0.4445},{"nodeId":0,"move":null,"N":66,"Q":-0.4394}]},{"sim":64,"path":[0,1,13,15,41],"leafId":41,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":41,"move":{"from":3,"to":6},"N":4,"Q":-1.0},{"nodeId":15,"move":{"from":7,"to":4},"N":5,"Q":-0.6},{"nodeId":13,"move":{"from":1,"to":3},"N":14,"Q":-0.5714},{"nodeId":1,"move":{"from":6,"to":3},"N":15,"Q":-0.4667},{"nodeId":0,"move":null,"N":67,"Q":-0.4478}]},{"sim":65,"path":[0,3,20,22,45],"leafId":45,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":45,"move":{"from":5,"to":8},"N":4,"Q":-1.0},{"nodeId":22,"move":{"from":7,"to":4},"N":5,"Q":-0.6},{"nodeId":20,"move":{"from":1,"to":5},"N":14,"Q":-0.5714},{"nodeId":3,"move":{"from":8,"to":5},"N":15,"Q":-0.4667},{"nodeId":0,"move":null,"N":68,"Q":-0.4559}]},{"sim":66,"path":[0,2,7,10,25,28,60],"leafId":60,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":60,"move":{"from":5,"to":8},"N":4,"Q":-1.0},{"nodeId":28,"move":{"from":6,"to":3},"N":5,"Q":-0.6001},{"nodeId":25,"move":{"from":1,"to":5},"N":11,"Q":-0.6364},{"nodeId":10,"move":{"from":8,"to":5},"N":12,"Q":-0.5001},{"nodeId":7,"move":{"from":2,"to":4},"N":36,"Q":-0.5},{"nodeId":2,"move":{"from":7,"to":4},"N":37,"Q":-0.4595},{"nodeId":0,"move":null,"N":69,"Q":-0.4638}]},{"sim":67,"path":[0,2,7,8,30,34,64],"leafId":64,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":64,"move":{"from":3,"to":6},"N":4,"Q":-1.0},{"nodeId":34,"move":{"from":8,"to":4},"N":5,"Q":-0.6},{"nodeId":30,"move":{"from":1,"to":3},"N":11,"Q":-0.6364},{"nodeId":8,"move":{"from":6,"to":3},"N":12,"Q":-0.5},{"nodeId":7,"move":{"from":2,"to":4},"N":37,"Q":-0.5135},{"nodeId":2,"move":{"from":7,"to":4},"N":38,"Q":-0.4737},{"nodeId":0,"move":null,"N":70,"Q":-0.4714}]},{"sim":68,"path":[0,1,13,17,51],"leafId":51,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":51,"move":{"from":3,"to":6},"N":4,"Q":-1.0},{"nodeId":17,"move":{"from":8,"to":5},"N":5,"Q":-0.6},{"nodeId":13,"move":{"from":1,"to":3},"N":15,"Q":-0.6},{"nodeId":1,"move":{"from":6,"to":3},"N":16,"Q":-0.5},{"nodeId":0,"move":null,"N":71,"Q":-0.4789}]},{"sim":69,"path":[0,3,20,21,53],"leafId":53,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":53,"move":{"from":5,"to":8},"N":4,"Q":-1.0},{"nodeId":21,"move":{"from":6,"to":3},"N":5,"Q":-0.6},{"nodeId":20,"move":{"from":1,"to":5},"N":15,"Q":-0.6},{"nodeId":3,"move":{"from":8,"to":5},"N":16,"Q":-0.5},{"nodeId":0,"move":null,"N":72,"Q":-0.4861}]},{"sim":70,"path":[0,2,7,10,25,29,47],"leafId":47,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":47,"move":{"from":0,"to":4},"N":5,"Q":-1.0},{"nodeId":29,"move":{"from":6,"to":4},"N":6,"Q":-0.6667},{"nodeId":25,"move":{"from":1,"to":5},"N":12,"Q":-0.6667},{"nodeId":10,"move":{"from":8,"to":5},"N":13,"Q":-0.5385},{"nodeId":7,"move":{"from":2,"to":4},"N":38,"Q":-0.5263},{"nodeId":2,"move":{"from":7,"to":4},"N":39,"Q":-0.4872},{"nodeId":0,"move":null,"N":73,"Q":-0.4932}]},{"sim":71,"path":[0,2,7,8,30,33,49],"leafId":49,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":49,"move":{"from":3,"to":6},"N":5,"Q":-1.0},{"nodeId":33,"move":{"from":8,"to":5},"N":6,"Q":-0.6667},{"nodeId":30,"move":{"from":1,"to":3},"N":12,"Q":-0.6667},{"nodeId":8,"move":{"from":6,"to":3},"N":13,"Q":-0.5385},{"nodeId":7,"move":{"from":2,"to":4},"N":39,"Q":-0.5385},{"nodeId":2,"move":{"from":7,"to":4},"N":40,"Q":-0.5},{"nodeId":0,"move":null,"N":74,"Q":-0.5}]},{"sim":72,"path":[0,2,7,9,35,37,58],"leafId":58,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":58,"move":{"from":3,"to":6},"N":6,"Q":-1.0},{"nodeId":37,"move":{"from":8,"to":5},"N":7,"Q":-0.7143},{"nodeId":35,"move":{"from":0,"to":3},"N":8,"Q":-0.75},{"nodeId":9,"move":{"from":6,"to":4},"N":9,"Q":-0.5556},{"nodeId":7,"move":{"from":2,"to":4},"N":40,"Q":-0.55},{"nodeId":2,"move":{"from":7,"to":4},"N":41,"Q":-0.5122},{"nodeId":0,"move":null,"N":75,"Q":-0.5067}]},{"sim":73,"path":[0,1,13,16,61],"leafId":61,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":61,"move":{"from":2,"to":5},"N":4,"Q":-1.0},{"nodeId":16,"move":{"from":7,"to":3},"N":5,"Q":-0.6},{"nodeId":13,"move":{"from":1,"to":3},"N":16,"Q":-0.625},{"nodeId":1,"move":{"from":6,"to":3},"N":17,"Q":-0.5294},{"nodeId":0,"move":null,"N":76,"Q":-0.5132}]},{"sim":74,"path":[0,3,20,23,62],"leafId":62,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":62,"move":{"from":0,"to":3},"N":4,"Q":-1.0},{"nodeId":23,"move":{"from":7,"to":5},"N":5,"Q":-0.6},{"nodeId":20,"move":{"from":1,"to":5},"N":16,"Q":-0.625},{"nodeId":3,"move":{"from":8,"to":5},"N":17,"Q":-0.5294},{"nodeId":0,"move":null,"N":77,"Q":-0.5195}]},{"sim":75,"path":[0,2,7,11,55],"leafId":55,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":55,"move":{"from":0,"to":3},"N":4,"Q":-1.0},{"nodeId":11,"move":{"from":8,"to":4},"N":5,"Q":-0.6},{"nodeId":7,"move":{"from":2,"to":4},"N":41,"Q":-0.561},{"nodeId":2,"move":{"from":7,"to":4},"N":42,"Q":-0.5238},{"nodeId":0,"move":null,"N":78,"Q":-0.5256}]},{"sim":76,"path":[0,2,7,10,25,28,60],"leafId":60,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":60,"move":{"from":5,"to":8},"N":5,"Q":-1.0},{"nodeId":28,"move":{"from":6,"to":3},"N":6,"Q":-0.6668},{"nodeId":25,"move":{"from":1,"to":5},"N":13,"Q":-0.6924},{"nodeId":10,"move":{"from":8,"to":5},"N":14,"Q":-0.5715},{"nodeId":7,"move":{"from":2,"to":4},"N":42,"Q":-0.5714},{"nodeId":2,"move":{"from":7,"to":4},"N":43,"Q":-0.5349},{"nodeId":0,"move":null,"N":79,"Q":-0.5317}]},{"sim":77,"path":[0,1,13,15,41],"leafId":41,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":41,"move":{"from":3,"to":6},"N":5,"Q":-1.0},{"nodeId":15,"move":{"from":7,"to":4},"N":6,"Q":-0.6667},{"nodeId":13,"move":{"from":1,"to":3},"N":17,"Q":-0.6471},{"nodeId":1,"move":{"from":6,"to":3},"N":18,"Q":-0.5555},{"nodeId":0,"move":null,"N":80,"Q":-0.5375}]},{"sim":78,"path":[0,3,20,22,45],"leafId":45,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":45,"move":{"from":5,"to":8},"N":5,"Q":-1.0},{"nodeId":22,"move":{"from":7,"to":4},"N":6,"Q":-0.6667},{"nodeId":20,"move":{"from":1,"to":5},"N":17,"Q":-0.6471},{"nodeId":3,"move":{"from":8,"to":5},"N":18,"Q":-0.5556},{"nodeId":0,"move":null,"N":81,"Q":-0.5432}]},{"sim":79,"path":[0,2,7,8,30,34,64],"leafId":64,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":64,"move":{"from":3,"to":6},"N":5,"Q":-1.0},{"nodeId":34,"move":{"from":8,"to":4},"N":6,"Q":-0.6667},{"nodeId":30,"move":{"from":1,"to":3},"N":13,"Q":-0.6923},{"nodeId":8,"move":{"from":6,"to":3},"N":14,"Q":-0.5714},{"nodeId":7,"move":{"from":2,"to":4},"N":43,"Q":-0.5814},{"nodeId":2,"move":{"from":7,"to":4},"N":44,"Q":-0.5455},{"nodeId":0,"move":null,"N":82,"Q":-0.5488}]},{"sim":80,"path":[0,2,7,9,35,37,58],"leafId":58,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":58,"move":{"from":3,"to":6},"N":7,"Q":-1.0},{"nodeId":37,"move":{"from":8,"to":5},"N":8,"Q":-0.75},{"nodeId":35,"move":{"from":0,"to":3},"N":9,"Q":-0.7778},{"nodeId":9,"move":{"from":6,"to":4},"N":10,"Q":-0.6},{"nodeId":7,"move":{"from":2,"to":4},"N":44,"Q":-0.5909},{"nodeId":2,"move":{"from":7,"to":4},"N":45,"Q":-0.5556},{"nodeId":0,"move":null,"N":83,"Q":-0.5542}]},{"sim":81,"path":[0,2,7,10,25,29,47],"leafId":47,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":47,"move":{"from":0,"to":4},"N":6,"Q":-1.0},{"nodeId":29,"move":{"from":6,"to":4},"N":7,"Q":-0.7143},{"nodeId":25,"move":{"from":1,"to":5},"N":14,"Q":-0.7143},{"nodeId":10,"move":{"from":8,"to":5},"N":15,"Q":-0.6},{"nodeId":7,"move":{"from":2,"to":4},"N":45,"Q":-0.6},{"nodeId":2,"move":{"from":7,"to":4},"N":46,"Q":-0.5652},{"nodeId":0,"move":null,"N":84,"Q":-0.5595}]},{"sim":82,"path":[0,1,13,17,51],"leafId":51,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":51,"move":{"from":3,"to":6},"N":5,"Q":-1.0},{"nodeId":17,"move":{"from":8,"to":5},"N":6,"Q":-0.6667},{"nodeId":13,"move":{"from":1,"to":3},"N":18,"Q":-0.6667},{"nodeId":1,"move":{"from":6,"to":3},"N":19,"Q":-0.5789},{"nodeId":0,"move":null,"N":85,"Q":-0.5647}]},{"sim":83,"path":[0,3,20,21,53],"leafId":53,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":53,"move":{"from":5,"to":8},"N":5,"Q":-1.0},{"nodeId":21,"move":{"from":6,"to":3},"N":6,"Q":-0.6667},{"nodeId":20,"move":{"from":1,"to":5},"N":18,"Q":-0.6667},{"nodeId":3,"move":{"from":8,"to":5},"N":19,"Q":-0.5789},{"nodeId":0,"move":null,"N":86,"Q":-0.5698}]},{"sim":84,"path":[0,2,7,8,30,33,49],"leafId":49,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":49,"move":{"from":3,"to":6},"N":6,"Q":-1.0},{"nodeId":33,"move":{"from":8,"to":5},"N":7,"Q":-0.7143},{"nodeId":30,"move":{"from":1,"to":3},"N":14,"Q":-0.7143},{"nodeId":8,"move":{"from":6,"to":3},"N":15,"Q":-0.6},{"nodeId":7,"move":{"from":2,"to":4},"N":46,"Q":-0.6087},{"nodeId":2,"move":{"from":7,"to":4},"N":47,"Q":-0.5745},{"nodeId":0,"move":null,"N":87,"Q":-0.5747}]},{"sim":85,"path":[0,2,7,10,25,28,60],"leafId":60,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":60,"move":{"from":5,"to":8},"N":6,"Q":-1.0},{"nodeId":28,"move":{"from":6,"to":3},"N":7,"Q":-0.7144},{"nodeId":25,"move":{"from":1,"to":5},"N":15,"Q":-0.7334},{"nodeId":10,"move":{"from":8,"to":5},"N":16,"Q":-0.625},{"nodeId":7,"move":{"from":2,"to":4},"N":47,"Q":-0.617},{"nodeId":2,"move":{"from":7,"to":4},"N":48,"Q":-0.5833},{"nodeId":0,"move":null,"N":88,"Q":-0.5796}]},{"sim":86,"path":[0,1,13,16,61],"leafId":61,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":61,"move":{"from":2,"to":5},"N":5,"Q":-1.0},{"nodeId":16,"move":{"from":7,"to":3},"N":6,"Q":-0.6667},{"nodeId":13,"move":{"from":1,"to":3},"N":19,"Q":-0.6842},{"nodeId":1,"move":{"from":6,"to":3},"N":20,"Q":-0.6},{"nodeId":0,"move":null,"N":89,"Q":-0.5843}]},{"sim":87,"path":[0,2,7,8,30,33,49],"leafId":49,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":49,"move":{"from":3,"to":6},"N":7,"Q":-1.0},{"nodeId":33,"move":{"from":8,"to":5},"N":8,"Q":-0.75},{"nodeId":30,"move":{"from":1,"to":3},"N":15,"Q":-0.7333},{"nodeId":8,"move":{"from":6,"to":3},"N":16,"Q":-0.625},{"nodeId":7,"move":{"from":2,"to":4},"N":48,"Q":-0.625},{"nodeId":2,"move":{"from":7,"to":4},"N":49,"Q":-0.5919},{"nodeId":0,"move":null,"N":90,"Q":-0.5889}]},{"sim":88,"path":[0,3,20,23,62],"leafId":62,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":62,"move":{"from":0,"to":3},"N":5,"Q":-1.0},{"nodeId":23,"move":{"from":7,"to":5},"N":6,"Q":-0.6667},{"nodeId":20,"move":{"from":1,"to":5},"N":19,"Q":-0.6842},{"nodeId":3,"move":{"from":8,"to":5},"N":20,"Q":-0.6},{"nodeId":0,"move":null,"N":91,"Q":-0.5934}]},{"sim":89,"path":[0,2,7,9,35,37,58],"leafId":58,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":58,"move":{"from":3,"to":6},"N":8,"Q":-1.0},{"nodeId":37,"move":{"from":8,"to":5},"N":9,"Q":-0.7778},{"nodeId":35,"move":{"from":0,"to":3},"N":10,"Q":-0.8},{"nodeId":9,"move":{"from":6,"to":4},"N":11,"Q":-0.6364},{"nodeId":7,"move":{"from":2,"to":4},"N":49,"Q":-0.6327},{"nodeId":2,"move":{"from":7,"to":4},"N":50,"Q":-0.6},{"nodeId":0,"move":null,"N":92,"Q":-0.5978}]},{"sim":90,"path":[0,2,7,11,55],"leafId":55,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":55,"move":{"from":0,"to":3},"N":5,"Q":-1.0},{"nodeId":11,"move":{"from":8,"to":4},"N":6,"Q":-0.6667},{"nodeId":7,"move":{"from":2,"to":4},"N":50,"Q":-0.64},{"nodeId":2,"move":{"from":7,"to":4},"N":51,"Q":-0.6079},{"nodeId":0,"move":null,"N":93,"Q":-0.6022}]},{"sim":91,"path":[0,1,13,15,41],"leafId":41,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":41,"move":{"from":3,"to":6},"N":6,"Q":-1.0},{"nodeId":15,"move":{"from":7,"to":4},"N":7,"Q":-0.7143},{"nodeId":13,"move":{"from":1,"to":3},"N":20,"Q":-0.7},{"nodeId":1,"move":{"from":6,"to":3},"N":21,"Q":-0.619},{"nodeId":0,"move":null,"N":94,"Q":-0.6064}]},{"sim":92,"path":[0,3,20,22,45],"leafId":45,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":45,"move":{"from":5,"to":8},"N":6,"Q":-1.0},{"nodeId":22,"move":{"from":7,"to":4},"N":7,"Q":-0.7143},{"nodeId":20,"move":{"from":1,"to":5},"N":20,"Q":-0.7},{"nodeId":3,"move":{"from":8,"to":5},"N":21,"Q":-0.619},{"nodeId":0,"move":null,"N":95,"Q":-0.6105}]},{"sim":93,"path":[0,2,7,10,25,29,47],"leafId":47,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":47,"move":{"from":0,"to":4},"N":7,"Q":-1.0},{"nodeId":29,"move":{"from":6,"to":4},"N":8,"Q":-0.75},{"nodeId":25,"move":{"from":1,"to":5},"N":16,"Q":-0.75},{"nodeId":10,"move":{"from":8,"to":5},"N":17,"Q":-0.6471},{"nodeId":7,"move":{"from":2,"to":4},"N":51,"Q":-0.6471},{"nodeId":2,"move":{"from":7,"to":4},"N":52,"Q":-0.6154},{"nodeId":0,"move":null,"N":96,"Q":-0.6146}]},{"sim":94,"path":[0,2,7,8,30,34,64],"leafId":64,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":64,"move":{"from":3,"to":6},"N":6,"Q":-1.0},{"nodeId":34,"move":{"from":8,"to":4},"N":7,"Q":-0.7143},{"nodeId":30,"move":{"from":1,"to":3},"N":16,"Q":-0.75},{"nodeId":8,"move":{"from":6,"to":3},"N":17,"Q":-0.6471},{"nodeId":7,"move":{"from":2,"to":4},"N":52,"Q":-0.6539},{"nodeId":2,"move":{"from":7,"to":4},"N":53,"Q":-0.6227},{"nodeId":0,"move":null,"N":97,"Q":-0.6186}]},{"sim":95,"path":[0,2,7,9,35,37,58],"leafId":58,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":58,"move":{"from":3,"to":6},"N":9,"Q":-1.0},{"nodeId":37,"move":{"from":8,"to":5},"N":10,"Q":-0.8},{"nodeId":35,"move":{"from":0,"to":3},"N":11,"Q":-0.8182},{"nodeId":9,"move":{"from":6,"to":4},"N":12,"Q":-0.6667},{"nodeId":7,"move":{"from":2,"to":4},"N":53,"Q":-0.6604},{"nodeId":2,"move":{"from":7,"to":4},"N":54,"Q":-0.6296},{"nodeId":0,"move":null,"N":98,"Q":-0.6225}]},{"sim":96,"path":[0,1,13,17,51],"leafId":51,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":51,"move":{"from":3,"to":6},"N":6,"Q":-1.0},{"nodeId":17,"move":{"from":8,"to":5},"N":7,"Q":-0.7143},{"nodeId":13,"move":{"from":1,"to":3},"N":21,"Q":-0.7143},{"nodeId":1,"move":{"from":6,"to":3},"N":22,"Q":-0.6364},{"nodeId":0,"move":null,"N":99,"Q":-0.6263}]},{"sim":97,"path":[0,3,20,21,53],"leafId":53,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":53,"move":{"from":5,"to":8},"N":6,"Q":-1.0},{"nodeId":21,"move":{"from":6,"to":3},"N":7,"Q":-0.7143},{"nodeId":20,"move":{"from":1,"to":5},"N":21,"Q":-0.7143},{"nodeId":3,"move":{"from":8,"to":5},"N":22,"Q":-0.6364},{"nodeId":0,"move":null,"N":100,"Q":-0.63}]},{"sim":98,"path":[0,2,7,10,25,28,60],"leafId":60,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":60,"move":{"from":5,"to":8},"N":7,"Q":-1.0},{"nodeId":28,"move":{"from":6,"to":3},"N":8,"Q":-0.7501},{"nodeId":25,"move":{"from":1,"to":5},"N":17,"Q":-0.7647},{"nodeId":10,"move":{"from":8,"to":5},"N":18,"Q":-0.6667},{"nodeId":7,"move":{"from":2,"to":4},"N":54,"Q":-0.6667},{"nodeId":2,"move":{"from":7,"to":4},"N":55,"Q":-0.6364},{"nodeId":0,"move":null,"N":101,"Q":-0.6337}]},{"sim":99,"path":[0,2,7,8,30,33,49],"leafId":49,"value":-1.0,"newNodes":[],"terminal":true,"backup":[{"nodeId":49,"move":{"from":3,"to":6},"N":8,"Q":-1.0},{"nodeId":33,"move":{"from":8,"to":5},"N":9,"Q":-0.7778},{"nodeId":30,"move":{"from":1,"to":3},"N":17,"Q":-0.7647},{"nodeId":8,"move":{"from":6,"to":3},"N":18,"Q":-0.6667},{"nodeId":7,"move":{"from":2,"to":4},"N":55,"Q":-0.6727},{"nodeId":2,"move":{"from":7,"to":4},"N":56,"Q":-0.6429},{"nodeId":0,"move":null,"N":102,"Q":-0.6373}]}],"final":[{"move":{"from":6,"to":3},"prob":0.22,"N":22,"Q":-0.6364},{"move":{"from":7,"to":4},"prob":0.56,"N":56,"Q":-0.6429},{"move":{"from":8,"to":5},"prob":0.22,"N":22,"Q":-0.6364}]};
+
+// ── constants ─────────────────────────────────────────────────────────────
+const W=1, B=-1, E=0;
+const NR=18;  // node radius
+const NC=58;  // node column width
+const NH=88;  // row height
+
+// ── state ─────────────────────────────────────────────────────────────────
+let nodes   = {};   // nid → {board,turn,depth,children[],parentId,parentMove,P,N,Q,_x,_y}
+let rootId  = null;
+let stepIdx = -1;   // -1 = before start
+let autoTmr = null;
+let hlSel=[], hlLeaf=null, hlBack=[], hlNew=[], isTerm=false, hlLeafValue=0;
+
+const TOTAL = TRACE.sims.length;  // 101 steps (root expand + 100 sims)
+
+// ── tree management ──────────────────────────────────────────────────────
+
+function applyUpTo(idx) {
+  nodes  = {};
+  rootId = null;
+  for (let i = 0; i <= idx; i++) _applySimStep(TRACE.sims[i]);
+}
+
+function _applySimStep(sim) {
+  // First step: root initialisation
+  if (rootId === null) {
+    rootId = sim.leafId;
+    const nd = TRACE.nodes[String(rootId)];
+    nodes[rootId] = {...nd, depth:0, children:[], parentId:null,
+                     parentMove:null, P:1, N:0, Q:0};
+  }
+  // Add new nodes (children of the expanded leaf)
+  for (const c of sim.newNodes) {
+    if (nodes[c.id]) continue;
+    const nd = TRACE.nodes[String(c.id)];
+    const pd = nodes[sim.leafId]?.depth ?? 0;
+    nodes[c.id] = {...nd, depth: pd+1, children:[], parentId: sim.leafId,
+                   parentMove: c.move, P: c.P, N:0, Q:0};
+    nodes[sim.leafId]?.children.push(c.id);
+  }
+  // Apply backup: update N / Q on each node in the chain
+  for (const b of sim.backup) {
+    if (nodes[b.nodeId]) {
+      nodes[b.nodeId].N = b.N;
+      nodes[b.nodeId].Q = b.Q;
+    }
+  }
+}
+
+// ── layout ────────────────────────────────────────────────────────────────
+
+function leafCount(nid) {
+  const n = nodes[nid];
+  if (!n?.children?.length) return 1;
+  return n.children.reduce((s, c) => s + leafCount(c), 0);
+}
+
+function doLayout(nid, x0, w) {
+  const n = nodes[nid]; if (!n) return;
+  n._x = x0 + w/2;
+  n._y = n.depth * NH + NR + 10;
+  let cx = x0;
+  for (const c of (n.children || [])) {
+    const cw = Math.max(NC, leafCount(c) * NC);
+    doLayout(c, cx, cw); cx += cw;
+  }
+}
+
+function layout() {
+  if (rootId === null) return {W: 200, H: 80};
+  const total = Math.max(NC, leafCount(rootId) * NC);
+  doLayout(rootId, 10, total);
+  let maxX=0, maxY=0;
+  for (const n of Object.values(nodes)) {
+    maxX = Math.max(maxX, (n._x||0) + NR + 40);
+    maxY = Math.max(maxY, (n._y||0) + NR + 30);
+  }
+  return {W: Math.max(200, maxX), H: Math.max(80, maxY)};
+}
+
+// ── colors ────────────────────────────────────────────────────────────────
+
+function lerp(a, b, t) { return a + (b-a)*t; }
+function lerpC(c1, c2, t) {
+  const h = s => parseInt(s.slice(1),16);
+  const [r1,g1,b1]=[h(c1)>>16,(h(c1)>>8)&255,h(c1)&255];
+  const [r2,g2,b2]=[h(c2)>>16,(h(c2)>>8)&255,h(c2)&255];
+  return `rgb(${Math.round(lerp(r1,r2,t))},${Math.round(lerp(g1,g2,t))},${Math.round(lerp(b1,b2,t))})`;
+}
+
+function nodeColor(nid) {
+  if (hlNew.includes(nid))  return '#c4b5fd';  // newly added: purple
+  if (nid === hlLeaf) {
+    if (isTerm) return hlLeafValue > 0 ? '#4ade80' : '#f87171';  // terminal: green/red
+    return '#fcd34d';  // expanded by network: yellow
+  }
+  if (hlBack.includes(nid)) return '#86efac';  // backup path: green
+  if (hlSel.includes(nid))  return '#93c5fd';  // selection path: blue
+  const n = nodes[nid];
+  if (!n || n.N === 0)      return '#dbeafe';  // unvisited
+  // steady-state: interpolate gray → lime/red by Q value
+  const q = n.Q;
+  return q >= 0
+    ? lerpC('#e5e7eb', '#a3e635', Math.min(1, q * 1.5))
+    : lerpC('#e5e7eb', '#f87171', Math.min(1,-q * 1.5));
+}
+
+function nodeBorder(nid) {
+  if (hlNew.includes(nid))  return '#7c3aed';
+  if (nid === hlLeaf)       return isTerm ? (hlLeafValue>0 ? '#15803d' : '#b91c1c') : '#b45309';
+  if (hlBack.includes(nid)) return '#15803d';
+  if (hlSel.includes(nid))  return '#1d4ed8';
+  const n = nodes[nid];
+  if (!n || n.N === 0)      return '#93c5fd';
+  return '#9ca3af';
+}
+
+// ── SVG helpers ───────────────────────────────────────────────────────────
+
+function el(tag, attrs) {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  return e;
+}
+
+function txt(x, y, t, attrs={}) {
+  const e = el('text', {x, y, 'text-anchor':'middle',
+                        'font-family':'system-ui,sans-serif', ...attrs});
+  e.textContent = t; return e;
+}
+
+// ── board rendering ───────────────────────────────────────────────────────
+
+function renderBoard(brd) {
+  const c = document.getElementById('board'); c.innerHTML = '';
+  for (let i = 0; i < 9; i++) {
+    const r = Math.floor(i/3), col = i%3;
+    const d = document.createElement('div');
+    d.className = 'sq ' + ((r+col)%2===0 ? 'light' : 'dark');
+    if (brd[i] !== E) {
+      const p = document.createElement('div');
+      p.className = 'pawn ' + (brd[i]===W ? 'w' : 'b');
+      p.textContent = brd[i]===W ? 'W' : 'B';
+      d.appendChild(p);
+    }
+    c.appendChild(d);
+  }
+}
+
+// ── mini board (18×18 px) inside an SVG node ─────────────────────────────
+
+function miniBoard(svg, brd, cx, cy) {
+  const S=5, N=3, off=-(S*N)/2;
+  for (let i = 0; i < 9; i++) {
+    const r=Math.floor(i/3), c=i%3;
+    const light=(r+c)%2===0;
+    const rect = el('rect', {
+      x: cx+off+c*S, y: cy+off+r*S, width:S, height:S,
+      fill: light ? '#EEEED2' : '#769656', rx:0,
+    });
+    svg.appendChild(rect);
+    if (brd[i] === W) {
+      const circ = el('circle', {cx:cx+off+c*S+S/2, cy:cy+off+r*S+S/2,
+                                  r:1.8, fill:'#fff', stroke:'#bbb','stroke-width':.4});
+      svg.appendChild(circ);
+    } else if (brd[i] === B) {
+      const circ = el('circle', {cx:cx+off+c*S+S/2, cy:cy+off+r*S+S/2,
+                                  r:1.8, fill:'#222', stroke:'#555','stroke-width':.4});
+      svg.appendChild(circ);
+    }
+  }
+}
+
+// ── move label ────────────────────────────────────────────────────────────
+
+function moveLabel(m) {
+  const files='abc', row=i=>3-Math.floor(i/3), col=i=>i%3;
+  return files[col(m.from)]+(row(m.from))+'-'+files[col(m.to)]+(row(m.to));
+}
+
+// ── tree rendering ────────────────────────────────────────────────────────
+
+function renderTree() {
+  const svg = document.getElementById('tree');
+  svg.innerHTML = '';
+  if (rootId === null) {
+    svg.setAttribute('width','200'); svg.setAttribute('height','60');
+    svg.appendChild(txt(100, 35, 'Press ▶ Next to start', {'font-size':'12', fill:'#999'}));
+    return;
+  }
+  const {W, H} = layout();
+  svg.setAttribute('width', W); svg.setAttribute('height', H);
+
+  // Draw edges first (below nodes)
+  for (const [nid, n] of Object.entries(nodes)) {
+    if (n.parentId === null) continue;
+    const p = nodes[n.parentId]; if (!p) continue;
+    const ni = parseInt(nid);
+    const isHl = hlBack.includes(ni) || hlSel.includes(ni) ||
+                 ni === hlLeaf        || hlNew.includes(ni);
+    const line = el('line', {
+      x1:p._x, y1:p._y+NR, x2:n._x, y2:n._y-NR,
+      stroke: isHl ? '#64748b' : '#d1d5db',
+      'stroke-width': isHl ? 1.5 : 1,
+    });
+    svg.appendChild(line);
+
+    // Edge label: move + P
+    if (n.parentMove) {
+      const mx=(p._x+n._x)/2+4, my=(p._y+NR+n._y-NR)/2;
+      const lbl = el('text', {x:mx, y:my, 'text-anchor':'middle',
+                               'font-size':'7.5', 'font-family':'monospace',
+                               fill: isHl ? '#374151' : '#9ca3af'});
+      lbl.textContent = moveLabel(n.parentMove) + (n.P ? '  p='+n.P.toFixed(2) : '');
+      svg.appendChild(lbl);
+    }
+  }
+
+  // Draw nodes
+  for (const [nid, n] of Object.entries(nodes)) {
+    const fill   = nodeColor(parseInt(nid));
+    const stroke = nodeBorder(parseInt(nid));
+    const sw     = hlSel.includes(parseInt(nid)) ||
+                   hlBack.includes(parseInt(nid)) ||
+                   String(nid)===String(hlLeaf)   ||
+                   hlNew.includes(parseInt(nid)) ? 2.2 : 1.2;
+
+    svg.appendChild(el('circle', {cx:n._x, cy:n._y, r:NR,
+                                   fill, stroke, 'stroke-width':sw}));
+    // mini board
+    miniBoard(svg, n.board, n._x, n._y);
+
+    // N label below
+    const nLabel = n.N > 0 ? `N=${n.N}` : 'N=0';
+    svg.appendChild(txt(n._x, n._y + NR + 11, nLabel,
+      {'font-size':'8.5', fill:'#374151', 'font-weight':'600'}));
+    if (n.N > 0) {
+      const qStr = (n.Q >= 0 ? '+' : '') + n.Q.toFixed(2);
+      svg.appendChild(txt(n._x, n._y + NR + 21, qStr,
+        {'font-size':'7.5', fill: n.Q>0 ? '#166534' : n.Q<0 ? '#991b1b' : '#6b7280'}));
+    }
+  }
+}
+
+// ── info panel ────────────────────────────────────────────────────────────
+
+function renderInfo(simIdx) {
+  const sim = simIdx >= 0 && simIdx < TRACE.sims.length ? TRACE.sims[simIdx] : null;
+  let phase, valLine;
+  if (!sim) {
+    phase   = 'Ready';
+    valLine = '← → or buttons to step · Space = next';
+  } else if (sim.sim === -1) {
+    phase   = 'Root expansion — network evaluates starting position';
+    valLine = `Value: ${sim.value >= 0?'+':''}${sim.value.toFixed(3)} · `
+            + `${sim.newNodes.length} children created`;
+  } else {
+    const sn    = sim.sim + 1;
+    const depth = sim.path.length - 1;
+    const vStr  = `${sim.value >= 0?'+':''}${sim.value.toFixed(3)}`;
+    if (sim.terminal) {
+      phase   = `Sim ${sn}/100 · Terminal — ${sim.value>0?'White wins':'Black wins'}`;
+      valLine = `Depth ${depth} · Value ${vStr} · `
+              + `Backup ${sim.backup.length} edge${sim.backup.length!==1?'s':''}`;
+    } else {
+      phase   = `Sim ${sn}/100 · Select → Expand → Backup`;
+      valLine = `Depth ${depth} · Network value ${vStr} · `
+              + `${sim.newNodes.length} new node${sim.newNodes.length!==1?'s':''} · `
+              + `Backup ${sim.backup.length} edge${sim.backup.length!==1?'s':''}`;
+    }
+  }
+  document.getElementById('phase-label').textContent = phase;
+  document.getElementById('value-line').textContent  = valLine;
+}
+
+// ── step control ──────────────────────────────────────────────────────────
+
+function goTo(idx) {
+  idx = Math.max(0, Math.min(TOTAL-1, idx));
+  if (idx === stepIdx) return;
+
+  // Replay forward incrementally if possible, else from scratch
+  if (idx > stepIdx && stepIdx >= 0) {
+    for (let i = stepIdx+1; i <= idx; i++) _applySimStep(TRACE.sims[i]);
+  } else {
+    applyUpTo(idx);
+  }
+
+  stepIdx = idx;
+  const sim = TRACE.sims[idx];
+
+  hlNew       = sim.newNodes.map(c => c.id);
+  hlLeaf      = sim.leafId;
+  hlLeafValue = sim.value;
+  hlSel       = sim.path.filter(id => id !== sim.leafId);
+  hlBack      = sim.backup.map(b => b.nodeId).filter(id => id !== sim.leafId);
+  isTerm      = sim.terminal;
+
+  // keep slider in sync
+  const slider = document.getElementById('sim-slider');
+  if (slider) slider.value = idx;
+
+  // Show board for the leaf node
+  const boardData = nodes[sim.leafId]?.board || TRACE.initial_board;
+  renderBoard(boardData);
+  renderInfo(idx);
+  renderTree();
+
+  const pct = ((idx+1)/TOTAL*100).toFixed(1);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('step-label').textContent = `${idx+1} / ${TOTAL}`;
+  document.getElementById('sim-badge').textContent  =
+    idx === 0 ? 'Step 1 / 101 · Root' :
+    `Step ${idx+1} / ${TOTAL} · Sim ${sim.sim+1}/100`;
+}
+
+// ── button handlers ───────────────────────────────────────────────────────
+
+document.getElementById('btn-reset').onclick = () => { stopAuto(); doReset(); };
+
+document.getElementById('btn-prev').onclick = () => { stopAuto(); goTo(stepIdx-1); };
+document.getElementById('btn-next').onclick = () => { stopAuto(); goTo(stepIdx+1); };
+document.getElementById('btn-end' ).onclick = () => { stopAuto(); goTo(TOTAL-1);   };
+
+document.getElementById('btn-auto').onclick = () => {
+  const btn = document.getElementById('btn-auto');
+  if (autoTmr) { stopAuto(); return; }
+  btn.classList.add('active');
+  const tick = () => {
+    if (stepIdx >= TOTAL-1) { stopAuto(); return; }
+    goTo(stepIdx+1);
+  };
+  const ms = Math.round(1400/parseInt(document.getElementById('spd').value));
+  tick();
+  autoTmr = setInterval(tick, ms);
+};
+
+function stopAuto() {
+  clearInterval(autoTmr); autoTmr=null;
+  document.getElementById('btn-auto').classList.remove('active');
+}
+
+// ── slider ────────────────────────────────────────────────────────────────
+document.getElementById('sim-slider').max = TOTAL - 1;
+document.getElementById('sim-slider').oninput = function() {
+  stopAuto(); goTo(parseInt(this.value));
+};
+
+// ── keyboard shortcuts ────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); stopAuto(); goTo(stepIdx+1); }
+  if (e.key === 'ArrowLeft')                   { e.preventDefault(); stopAuto(); goTo(stepIdx-1); }
+  if (e.key === 'Home')                        { e.preventDefault(); stopAuto(); doReset(); }
+  if (e.key === 'End')                         { e.preventDefault(); stopAuto(); goTo(TOTAL-1); }
+});
+
+function doReset() {
+  nodes={};rootId=null;stepIdx=-1;
+  hlSel=[];hlLeaf=null;hlBack=[];hlNew=[];isTerm=false;hlLeafValue=0;
+  renderBoard(TRACE.initial_board);
+  renderInfo(-1);
+  renderTree();
+  document.getElementById('prog-fill').style.width='0%';
+  document.getElementById('step-label').textContent=`0 / ${TOTAL}`;
+  document.getElementById('sim-badge').textContent='Step 0 / 101';
+  document.getElementById('sim-slider').value=0;
+}
+
+// ── init ──────────────────────────────────────────────────────────────────
+renderBoard(TRACE.initial_board);
+renderInfo(-1);
+renderTree();
+</script>
+</div>

@@ -1,8 +1,19 @@
 ---
-title: "Dance with curiosity again"
-author: "Nikolai Zhukov"
-date: "2023-09-15"
+title: "Words representation in vector space"
+author: ""
+date: "2022-11-01"
+date-format: "MMMM YYYY"
 categories: [code]
+image: vectors_original.png
+
 ---
 
-This is a post with executable code.
+Word2vec explained.
+
+![](vectors_original.png)
+
+Original paper [T.Mikolov](https://www.linkedin.com/in/tomas-mikolov-59831188/), K.Chen, G.Corrado, J.Dean [Efficient Estimation of Word Representations in Vector Space](https://arxiv.org/pdf/1301.3781)
+
+{{< embed index.ipynb#key-chart >}}
+
+Thanks to [Jiří Materna](https://x.com/JiriMaterna) for [Machine Learning College in Prague](https://github.com/mlcollege/). Where you can find much more handful notebooks to understand the basics of machine learning.

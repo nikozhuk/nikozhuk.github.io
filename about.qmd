@@ -1,19 +1,28 @@
 ---
-title: "About"
-image: profile.jpg
+title: "Hi, there 🤲"
+image: nzhukov_human.jpg
 about:
   template: jolla
   links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/Zhukovi
-    - icon: linkedin
-      text: LinkedIn
-      href: https://linkedin.com
     - icon: github
       text: Github
       href: https://github.com
+    - icon: bluesky
+      text: Bluesky
+      href: https://bsky.app/profile/nikozhuk.bsky.social
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/nikolai-zhukov
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/Zhukovi
+    
+      
 
 ---
 
-About this blog
+I'm human, 
+
+who did these projects 
+
+by dancing with curiosity.

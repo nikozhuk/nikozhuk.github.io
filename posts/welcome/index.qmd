@@ -1,6 +1,6 @@
 ---
-title: "Welcome To My Blog"
-author: "Nikolai Zhukov"
+title: "Hello World 👀!"
+author: ""
 date: "2023-09-15"
 categories: [news]
 ---
