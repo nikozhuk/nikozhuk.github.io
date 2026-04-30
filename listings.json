@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/per_layer_embeddings/index.html",
       "/posts/hexapawn_rnf/index.html",
       "/posts/welcome/index.html",
       "/posts/lighthouse again works/index.html",
