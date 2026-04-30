@@ -14,18 +14,32 @@
     "text": "Different ways of humans’s learning.\nInspired by the course Leading teams in the Digital Age by Hyperisland ❤️ 🇸🇪"
   },
   {
-    "objectID": "posts/hexapawn_rnf/index.html",
-    "href": "posts/hexapawn_rnf/index.html",
-    "title": "Zero-like Reinforcement Learning, Monte Carlo Tree Search methods",
+    "objectID": "posts/lighthouse again works/index.html",
+    "href": "posts/lighthouse again works/index.html",
+    "title": "Words representation in vector space",
     "section": "",
-    "text": "Zero-like reinforcement learning model for chess, similar to the DeepMind’s AlphaZero approach.\nPractical walktrough to understand the basics of the zero-like reinforcment learning method and Monte Carlo Tree Search (MCTS). Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).\n\nHigh-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book “Neural Networks for Chess”.\n\nHere is full implementation\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…\n\n\n\n\n\n  \n    Hexapawn · MCTS Visualizer\n    AlphaZero-style search  ·  100 simulations  ·  model_it10.keras\n  \n  Step 0 / 101\n\n\n\n  \n  \n    \n      Board position\n      \n    \n\n    \n      Root expansion\n      \n    \n\n    \n      Legend\n      Selection path\n      Expansion (neural net)\n      Backup propagation\n      Unvisited node\n      High Q (White wins)\n      Low Q (Black wins)\n    \n  \n\n  \n  \n    Loading…\n  \n\n\n\n  \n    ↺ Reset\n    ◀ Prev\n    ▶ Next\n    ⏵ Auto\n    ⏩ End\n  \n  \n    Step\n    \n  \n  \n    Speed\n    \n  \n  \n  0 / 101"
+    "text": "Word2vec explained.\n\nOriginal paper T.Mikolov, K.Chen, G.Corrado, J.Dean Efficient Estimation of Word Representations in Vector Space\n\n\nword_vectors.most_similar(positive=['Paris', 'Spain'], negative=['France'])\n\n[('Madrid', 0.8625079989433289),\n ('Barcelona', 0.7637037634849548),\n ('Sevilla', 0.6874054074287415),\n ('Seville', 0.6747831106185913),\n ('Malaga', 0.6494932174682617),\n ('Zaragoza', 0.6459373831748962),\n ('Valencia', 0.6383104920387268),\n ('Alicante', 0.6115807890892029),\n ('Salamanca', 0.6041630506515503),\n ('Murcia', 0.6019026041030884)]\n\n\nSource: Word2vec\nThanks to Jiří Materna for Machine Learning College in Prague. Where you can find much more handful notebooks to understand the basics of machine learning."
   },
   {
-    "objectID": "industry_projects.html",
-    "href": "industry_projects.html",
-    "title": "💻",
+    "objectID": "pics.html",
+    "href": "pics.html",
+    "title": "🎨",
     "section": "",
-    "text": "Projects in industry."
+    "text": "Art."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Nikolai Zhukov",
+    "section": "",
+    "text": "Per Layer Embeddings\n\n\n\npost\n\ntext\n\n\n\n\n\n\n\n\n\nApr 30, 2026\n\n\nNikolai Zhukov\n\n\n\n\n\n\n\n\n\n\n\n\nZero-like Reinforcement Learning, Monte Carlo Tree Search methods\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJan 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWords representation in vector space\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Hi, there 🤲",
+    "section": "",
+    "text": "I’m human,\nwho did these projects\nby dancing with curiosity."
   },
   {
     "objectID": "books.html",
@@ -49,38 +63,31 @@
     "text": "ML/DL\n\nMachine Learning, Zhi-Hua Zhou (2021)\nA compact mathematical explanation of the ML basics.\nAI and Machine Learning for Coders, Laurence Moroney (2020)\nA great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.\nDesigning Machine Learning Systems, Chip Huyen (2022)\nJust a very useful for ML- practitioners in industry.\nDeep Learning with Python, François Chollet (2nd edition 2021)\nThe most understandable explanation of concepts in textual format, which is interesting to read. By the way, I’ll give the second copy to someone who’ll take good care of it.\nDeep Learning, Jan Goodfellow (2016)\nComprehensive mathematical and conceptual explanation, insights for the open research fields.\nDeep Learning for Vision Systems, Mohamed Elgendy (2020)\nDetailed explanation for baseline’s Computer Vision backbones/architectures.\nDeep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)\nA view on Deep Learning from practitioners. Practical Data Ethics!\nDeep Learning: A Visual Approach, Andrew-Glassner (2021)\nAdditional dimension for concept’s understanding.\nComputer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)\nConstantly updated meta-survey.\nInterpretable Machine Learning, Christoph Molnar (2019)\nSurvey, good starting point on the topic. Shapley Values."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "Hi, there 🤲",
+    "objectID": "industry_projects.html",
+    "href": "industry_projects.html",
+    "title": "💻",
     "section": "",
-    "text": "I’m human,\nwho did these projects\nby dancing with curiosity."
+    "text": "Projects in industry."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Nikolai Zhukov",
+    "objectID": "posts/hexapawn_rnf/index.html",
+    "href": "posts/hexapawn_rnf/index.html",
+    "title": "Zero-like Reinforcement Learning, Monte Carlo Tree Search methods",
     "section": "",
-    "text": "Zero-like Reinforcement Learning, Monte Carlo Tree Search methods\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJan 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWords representation in vector space\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\nNo matching items"
+    "text": "Zero-like reinforcement learning model for chess, similar to the DeepMind’s AlphaZero approach.\nPractical walktrough to understand the basics of the zero-like reinforcment learning method and Monte Carlo Tree Search (MCTS). Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).\n\nHigh-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book “Neural Networks for Chess”.\n\nHere is full implementation\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…\n\n\n\n\n\n  \n    Hexapawn · MCTS Visualizer\n    AlphaZero-style search  ·  100 simulations  ·  model_it10.keras\n  \n  Step 0 / 101\n\n\n\n  \n  \n    \n      Board position\n      \n    \n\n    \n      Root expansion\n      \n    \n\n    \n      Legend\n      Selection path\n      Expansion (neural net)\n      Backup propagation\n      Unvisited node\n      High Q (White wins)\n      Low Q (Black wins)\n    \n  \n\n  \n  \n    Loading…\n  \n\n\n\n  \n    ↺ Reset\n    ◀ Prev\n    ▶ Next\n    ⏵ Auto\n    ⏩ End\n  \n  \n    Step\n    \n  \n  \n    Speed\n    \n  \n  \n  0 / 101"
   },
   {
-    "objectID": "pics.html",
-    "href": "pics.html",
-    "title": "🎨",
+    "objectID": "posts/per_layer_embeddings/index.html",
+    "href": "posts/per_layer_embeddings/index.html",
+    "title": "Per Layer Embeddings",
     "section": "",
-    "text": "Art."
-  },
-  {
-    "objectID": "posts/lighthouse again works/index.html",
-    "href": "posts/lighthouse again works/index.html",
-    "title": "Words representation in vector space",
-    "section": "",
-    "text": "Word2vec explained.\n\nOriginal paper T.Mikolov, K.Chen, G.Corrado, J.Dean Efficient Estimation of Word Representations in Vector Space\n\n\nword_vectors.most_similar(positive=['Paris', 'Spain'], negative=['France'])\n\n[('Madrid', 0.8625079989433289),\n ('Barcelona', 0.7637037634849548),\n ('Sevilla', 0.6874054074287415),\n ('Seville', 0.6747831106185913),\n ('Malaga', 0.6494932174682617),\n ('Zaragoza', 0.6459373831748962),\n ('Valencia', 0.6383104920387268),\n ('Alicante', 0.6115807890892029),\n ('Salamanca', 0.6041630506515503),\n ('Murcia', 0.6019026041030884)]\n\n\nSource: Word2vec\nThanks to Jiří Materna for Machine Learning College in Prague. Where you can find much more handful notebooks to understand the basics of machine learning."
+    "text": "Per-layer embeddings (used in Gemma4 models),\nin a few words the idea - to fix a separate small vector of meaning representations (embeddings) for each layer of the artificial neural network, for every token. At the very first inference (generating an answer on the device) call, all of these per-layer vectors are looked up at once, only one time (which is one of the reasons the first model call is longer than the subsequent ones). The dimensionality of these per-layer vectors is much smaller than the main hidden state (e.g. 256 dimensions vs. 1536 or 2560). At each layer, the small per-layer vector is injected into the residual stream - so the layer is “reminded” of what this token is about, adding the “shades” of meaning when it’s relevant.  And most importantly - this whole lookup table can be stored in flash memory rather than in RAM! (RAM is needed for computing operations over vectors and is therefore the bottleneck).\nInstead of, during inference, the incoming token getting looked up in the embedding table at the input layer, and the that single embedding having to “drag” all of the token’s semantic context along with it through every layer of the network (how it was in most transformer-like models).\nThank you Maarten Grootendorst for visual explanation!"
   },
   {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
     "title": "Hello World 👀!",
     "section": "",
-    "text": "💻🏓🎨 🔦"
+    "text": "💻🏓🎨 🔦❤️🎶"
   }
 ]
