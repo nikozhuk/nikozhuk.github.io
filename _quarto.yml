@@ -18,8 +18,6 @@ website:
         href: https://github.com/
       - icon: bluesky
         href: https://bsky.app/profile/nikozhuk.bsky.social
-      - icon: twitter
-        href: https://twitter.com/Zhukovi
   
 format:
   html:
