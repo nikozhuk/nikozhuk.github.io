@@ -1,0 +1,10 @@
+---
+title: "MeshGraphNet"
+date: "2024-01-01"
+date-format: "MMMM YYYY"
+categories: [post, draft]
+---
+
+Application of MeshGraphNet.
+
+To be described.

@@ -1,0 +1,10 @@
+---
+title: "Signature detection method (You Look Only Once, custom CNN)"
+date: "2022-01-01"
+date-format: "MMMM YYYY"
+categories: [post, draft]
+---
+
+Application of You Look Only Once(YOLO) method and custom CNN for customer's signature detection.
+
+To be described.
