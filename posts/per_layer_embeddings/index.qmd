@@ -1,9 +1,19 @@
 ---
 title: "Per Layer Embeddings"
-author: "Nikolai Zhukov"
 date: "2026-04-30"
 date-format: "MMMM YYYY"
 categories: [post, text]
+comments:                
+    giscus:
+      repo: nikozhuk/nikozhuk.github.io                                                                  
+      repo-id: "R_kgDOKT9Kww"
+      category: General
+      category-id: "DIC_kwDOKT9Kw84C8GWG"                                                                
+      mapping: pathname                                                                                      
+      reactions-enabled: true
+      input-position: top                                                                                
+      theme: preferred_color_scheme
+      language: en   
 ---
 
 Per-layer embeddings (used in [Gemma4 models](https://ai.google.dev/gemma/docs/core/model_card_4)),
