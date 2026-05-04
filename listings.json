@@ -3,12 +3,16 @@
     "listing": "/index.html",
     "items": [
       "/posts/per_layer_embeddings/index.html",
+      "/posts/mediapipe/index.html",
+      "/posts/nanoGPT/index.html",
+      "/posts/pets_challenge/index.html",
       "/posts/hexapawn_rnf/index.html",
       "/posts/MeshGraphNet/index.html",
       "/posts/welcome/index.html",
       "/posts/lighthouse again works/index.html",
       "/posts/signature_detection/index.html",
       "/posts/transcedent_learning/index.html",
+      "/posts/Shapley_values/index.html",
       "/posts/valeo/index.html"
     ]
   }

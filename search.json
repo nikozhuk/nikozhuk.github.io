@@ -11,28 +11,42 @@
     "href": "posts/valeo/index.html",
     "title": "Mirrorless Safety Windshield System",
     "section": "",
-    "text": "Mirrorless Safety Windschield System by AutoGenZ team. Valeo Innovation Challenge 2025."
+    "text": "Mirrorless Safety Windschield System by AutoGenZ team. 2nd winner of Valeo Innovation Challenge 2025. Computer Vision system which eliminates rear and side mirrors of vehicles.\n\nTo be described."
   },
   {
     "objectID": "posts/signature_detection/index.html",
     "href": "posts/signature_detection/index.html",
-    "title": "Signature detection method (You Look Only Once, custom CNN)",
+    "title": "Signature Detection (You Look Only Once, custom CNN)",
     "section": "",
-    "text": "Application of You Look Only Once(YOLO) method and custom CNN for customer’s signature detection.\nTo be described."
+    "text": "Application of You Look Only Once(YOLO) method and custom CNN for customer’s signature detection.\n\nBase model - connected components method (idea - the longest amount of pixels in documents except of the tables/lines - is signature).\nCustom CNN (with transfer learning approach).\nYou Look Only Once (YOLO) model.\n\nTo be described."
   },
   {
-    "objectID": "posts/lighthouse again works/index.html",
-    "href": "posts/lighthouse again works/index.html",
-    "title": "Words representation in vector space",
+    "objectID": "posts/per_layer_embeddings/index.html",
+    "href": "posts/per_layer_embeddings/index.html",
+    "title": "Per Layer Embeddings",
     "section": "",
-    "text": "Word2vec explained.\n\nOriginal paper T.Mikolov, K.Chen, G.Corrado, J.Dean Efficient Estimation of Word Representations in Vector Space\n\n\nword_vectors.most_similar(positive=['Paris', 'Spain'], negative=['France'])\n\n[('Madrid', 0.8625079989433289),\n ('Barcelona', 0.7637037634849548),\n ('Sevilla', 0.6874054074287415),\n ('Seville', 0.6747831106185913),\n ('Malaga', 0.6494932174682617),\n ('Zaragoza', 0.6459373831748962),\n ('Valencia', 0.6383104920387268),\n ('Alicante', 0.6115807890892029),\n ('Salamanca', 0.6041630506515503),\n ('Murcia', 0.6019026041030884)]\n\n\nSource: Word2vec\nThanks to Jiří Materna for Machine Learning College in Prague. Where you can find much more handful notebooks to understand the basics of machine learning."
+    "text": "Per-layer embeddings (used in Gemma4 models),\nin a few words the idea - to fix a separate small vector of meaning representations (embeddings) for each layer of the artificial neural network, for every token. At the very first inference (generating an answer on the device) call, all of these per-layer vectors are looked up at once, only one time (which is one of the reasons the first model call is longer than the subsequent ones). The dimensionality of these per-layer vectors is much smaller than the main hidden state (e.g. 256 dimensions vs. 1536 or 2560). At each layer, the small per-layer vector is injected into the residual stream - so the layer is “reminded” of what this token is about, adding the “shades” of meaning when it’s relevant.  And most importantly - this whole lookup table can be stored in flash memory rather than in RAM! (RAM is needed for computing operations over vectors and is therefore the bottleneck).\nInstead of, during inference, the incoming token getting looked up in the embedding table at the input layer, and the that single embedding having to “drag” all of the token’s semantic context along with it through every layer of the network (how it was in most transformer-like models).\nThank you Maarten Grootendorst for visual explanation!"
+  },
+  {
+    "objectID": "posts/mediapipe/index.html",
+    "href": "posts/mediapipe/index.html",
+    "title": "Pose Detection",
+    "section": "",
+    "text": "Sceletal pose landmark detection for tebale tennis.\nWith open-sourced MediaPipe framework and open CV.\nBackhand topspin slow motion 🏓."
+  },
+  {
+    "objectID": "posts/hexapawn_rnf/index.html",
+    "href": "posts/hexapawn_rnf/index.html",
+    "title": "Zero-like Reinforcement Learning, Monte Carlo Tree Search",
+    "section": "",
+    "text": "Zero-like reinforcement learning model for chess, similar to the DeepMind’s AlphaZero approach.\nPractical walktrough to understand the basics of the zero-like reinforcment learning method and Monte Carlo Tree Search (MCTS). Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).\n\nHigh-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book “Neural Networks for Chess”.\n\nHere is full implementation\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…\n\n\n\n\n\n  \n    Hexapawn · MCTS Visualizer\n    AlphaZero-style search  ·  100 simulations  ·  model_it10.keras\n  \n  Step 0 / 101\n\n\n\n  \n  \n    \n      Board position\n      \n    \n\n    \n      Root expansion\n      \n    \n\n    \n      Legend\n      Selection path\n      Expansion (neural net)\n      Backup propagation\n      Unvisited node\n      High Q (White wins)\n      Low Q (Black wins)\n    \n  \n\n  \n  \n    Loading…\n  \n\n\n\n  \n    ↺ Reset\n    ◀ Prev\n    ▶ Next\n    ⏵ Auto\n    ⏩ End\n  \n  \n    Step\n    \n  \n  \n    Speed\n    \n  \n  \n  0 / 101"
   },
   {
     "objectID": "posts/MeshGraphNet/index.html",
     "href": "posts/MeshGraphNet/index.html",
-    "title": "MeshGraphNet",
+    "title": "Spatio-temporal Graph Node Prediction with MeshGraphNet",
     "section": "",
-    "text": "Application of MeshGraphNet.\nTo be described."
+    "text": "Application of MeshGraphNet for spatio-temporal Graph node prediction task.\nTo be described."
   },
   {
     "objectID": "industry_projects.html",
@@ -74,7 +88,7 @@
     "href": "index.html",
     "title": "Nikolai Zhukov",
     "section": "",
-    "text": "Per Layer Embeddings\n\n\n\npost\n\ntext\n\n\n\n\n\n\n\n\n\nApr 30, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nZero-like Reinforcement Learning, Monte Carlo Tree Search methods\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJan 12, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nMeshGraphNet\n\n\n\npost\n\ndraft\n\n\n\n\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 15, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWords representation in vector space\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nNov 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nSignature detection method (You Look Only Once, custom CNN)\n\n\n\npost\n\ndraft\n\n\n\n\n\n\n\n\n\nJan 1, 2022\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJan 12, 2021\n\n\n\n\n\n\n\n\n\n\n\n\nMirrorless Safety Windshield System\n\n\n\npost\n\narchive\n\n\n\n\n\n\n\n\n\nMay 1, 2015\n\n\n\n\n\nNo matching items"
+    "text": "Per Layer Embeddings\n\n\n\ntext\n\n\n\n\n\n\n\n\n\nApril 2026\n\n\n\n\n\n\n\n\n\n\n\n\nPose Detection\n\n\n\ncode\n\ntt\n\nvideo\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nPoetry NanoGPT\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nPet’s Facial Expression Detection App\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nJuly 2024\n\n\n\n\n\n\n\n\n\n\n\n\nZero-like Reinforcement Learning, Monte Carlo Tree Search\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nSpatio-temporal Graph Node Prediction with MeshGraphNet\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSeptember 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWords Representation in Vector Space\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nNovember 2022\n\n\n\n\n\n\n\n\n\n\n\n\nSignature Detection (You Look Only Once, custom CNN)\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2021\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJanuary 2021\n\n\n\n\n\n\n\n\n\n\n\n\nShapley Values\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2020\n\n\n\n\n\n\n\n\n\n\n\n\nMirrorless Safety Windshield System\n\n\n\ntext\n\nvideo\n\n\n\n\n\n\n\n\n\nMay 2015\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "pics.html",
@@ -84,18 +98,32 @@
     "text": "Art."
   },
   {
-    "objectID": "posts/hexapawn_rnf/index.html",
-    "href": "posts/hexapawn_rnf/index.html",
-    "title": "Zero-like Reinforcement Learning, Monte Carlo Tree Search methods",
+    "objectID": "posts/Shapley_values/index.html",
+    "href": "posts/Shapley_values/index.html",
+    "title": "Shapley Values",
     "section": "",
-    "text": "Zero-like reinforcement learning model for chess, similar to the DeepMind’s AlphaZero approach.\nPractical walktrough to understand the basics of the zero-like reinforcment learning method and Monte Carlo Tree Search (MCTS). Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).\n\nHigh-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book “Neural Networks for Chess”.\n\nHere is full implementation\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…\n\n\n\n\n\n  \n    Hexapawn · MCTS Visualizer\n    AlphaZero-style search  ·  100 simulations  ·  model_it10.keras\n  \n  Step 0 / 101\n\n\n\n  \n  \n    \n      Board position\n      \n    \n\n    \n      Root expansion\n      \n    \n\n    \n      Legend\n      Selection path\n      Expansion (neural net)\n      Backup propagation\n      Unvisited node\n      High Q (White wins)\n      Low Q (Black wins)\n    \n  \n\n  \n  \n    Loading…\n  \n\n\n\n  \n    ↺ Reset\n    ◀ Prev\n    ▶ Next\n    ⏵ Auto\n    ⏩ End\n  \n  \n    Step\n    \n  \n  \n    Speed\n    \n  \n  \n  0 / 101"
+    "text": "Explaining black box machine learning models with Shapley Values, SHAP, …\n\n\nTo be described."
   },
   {
-    "objectID": "posts/per_layer_embeddings/index.html",
-    "href": "posts/per_layer_embeddings/index.html",
-    "title": "Per Layer Embeddings",
+    "objectID": "posts/lighthouse again works/index.html",
+    "href": "posts/lighthouse again works/index.html",
+    "title": "Words Representation in Vector Space",
     "section": "",
-    "text": "Per-layer embeddings (used in Gemma4 models),\nin a few words the idea - to fix a separate small vector of meaning representations (embeddings) for each layer of the artificial neural network, for every token. At the very first inference (generating an answer on the device) call, all of these per-layer vectors are looked up at once, only one time (which is one of the reasons the first model call is longer than the subsequent ones). The dimensionality of these per-layer vectors is much smaller than the main hidden state (e.g. 256 dimensions vs. 1536 or 2560). At each layer, the small per-layer vector is injected into the residual stream - so the layer is “reminded” of what this token is about, adding the “shades” of meaning when it’s relevant.  And most importantly - this whole lookup table can be stored in flash memory rather than in RAM! (RAM is needed for computing operations over vectors and is therefore the bottleneck).\nInstead of, during inference, the incoming token getting looked up in the embedding table at the input layer, and the that single embedding having to “drag” all of the token’s semantic context along with it through every layer of the network (how it was in most transformer-like models).\nThank you Maarten Grootendorst for visual explanation!"
+    "text": "Word2vec explained.\n\nOriginal paper T.Mikolov, K.Chen, G.Corrado, J.Dean Efficient Estimation of Word Representations in Vector Space\n\n\nword_vectors.most_similar(positive=['Paris', 'Spain'], negative=['France'])\n\n[('Madrid', 0.8625079989433289),\n ('Barcelona', 0.7637037634849548),\n ('Sevilla', 0.6874054074287415),\n ('Seville', 0.6747831106185913),\n ('Malaga', 0.6494932174682617),\n ('Zaragoza', 0.6459373831748962),\n ('Valencia', 0.6383104920387268),\n ('Alicante', 0.6115807890892029),\n ('Salamanca', 0.6041630506515503),\n ('Murcia', 0.6019026041030884)]\n\n\nSource: Word2vec\nThanks to Jiří Materna for Machine Learning College in Prague. Where you can find much more handful notebooks to understand the basics of machine learning."
+  },
+  {
+    "objectID": "posts/nanoGPT/index.html",
+    "href": "posts/nanoGPT/index.html",
+    "title": "Poetry NanoGPT",
+    "section": "",
+    "text": "Nano Generative Pre-trained Transformer (GPT) on W.Shakespear and A. Pushkin datasets.\n\n\nTo be described."
+  },
+  {
+    "objectID": "posts/pets_challenge/index.html",
+    "href": "posts/pets_challenge/index.html",
+    "title": "Pet’s Facial Expression Detection App",
+    "section": "",
+    "text": "To be described."
   },
   {
     "objectID": "posts/transcedent_learning/index.html",
