@@ -32,7 +32,7 @@
     "href": "posts/mediapipe/index.html",
     "title": "Pose Detection",
     "section": "",
-    "text": "Sceletal pose landmark detection for tebale tennis.\nWith open-sourced MediaPipe framework and open CV.\nBackhand topspin slow motion 🏓."
+    "text": "Sceletal pose landmark detection for table tennis.\nWith open-sourced MediaPipe framework and open CV.\nBackhand topspin slow motion 🏓."
   },
   {
     "objectID": "posts/hexapawn_rnf/index.html",
@@ -123,7 +123,7 @@
     "href": "posts/pets_challenge/index.html",
     "title": "Pet’s Facial Expression Detection App",
     "section": "",
-    "text": "To be described."
+    "text": "Kaggle’s pet’s facial expression dataset with EfficientNet CNN.\nTo be described."
   },
   {
     "objectID": "posts/transcedent_learning/index.html",
