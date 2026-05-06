@@ -8,7 +8,7 @@ title-block-banner: images/ml_books_banner_split_horizontal_320h.png
   display: none;
 }
 </style>                                                                             
-## GNNs 📘books and 🖥️courses:
+## GNNs books and courses:
 - 🖥️ [Introduction to Graph Neural Networks](https://t.co/9f2qvXcQsP) by [Zak Jost](https://x.com/ZakJost)                                                   
 - 📘 [Deep learning with graph-structured representations](https://pure.uva.nl/ws/files/46900201/Thesis.pdf) by [Thomas Kipf](https://x.com/tkipf) 2020
 

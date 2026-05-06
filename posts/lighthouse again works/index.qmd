@@ -1,5 +1,5 @@
 ---
-title: "Words representation in vector space"
+title: "Words Representation in Vector Space"
 author: ""
 date: "2022-11-01"
 date-format: "MMMM YYYY"

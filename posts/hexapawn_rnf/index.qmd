@@ -1,5 +1,5 @@
 ---
-title: "Zero-like Reinforcement Learning, Monte Carlo Tree Search methods"
+title: "Zero-like Reinforcement Learning, Monte Carlo Tree Search"
 author: ""
 date: "2024-01-12"
 date-format: "MMMM YYYY"

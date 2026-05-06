@@ -1,0 +1,14 @@
+---
+title: "Poetry NanoGPT"
+date: "2025-02-19"
+date-format: "MMMM YYYY"
+categories: [code]
+resources:
+  - NanoGPT_on_W.pdf
+---
+
+Nano Generative Pre-trained Transformer (GPT) on W.Shakespear and A. Pushkin datasets.
+
+<iframe src="NanoGPT_on_W.pdf" width="100%" height="600px"></iframe>  
+
+To be described.

@@ -1,10 +1,10 @@
 ---
-title: "MeshGraphNet"
+title: "Spatio-temporal Graph Node Prediction with MeshGraphNet"
 date: "2024-01-01"
 date-format: "MMMM YYYY"
-categories: [post, draft]
+categories: [code]
 ---
 
-Application of MeshGraphNet.
+Application of MeshGraphNet for spatio-temporal Graph node prediction task.
 
 To be described.

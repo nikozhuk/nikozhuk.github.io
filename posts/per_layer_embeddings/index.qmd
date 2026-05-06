@@ -2,7 +2,7 @@
 title: "Per Layer Embeddings"
 date: "2026-04-30"
 date-format: "MMMM YYYY"
-categories: [post, text]
+categories: [text]
 comments:                
     giscus:
       repo: nikozhuk/nikozhuk.github.io                                                                  

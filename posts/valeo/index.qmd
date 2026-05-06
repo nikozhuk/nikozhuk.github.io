@@ -2,9 +2,11 @@
 title: "Mirrorless Safety Windshield System"
 date: "2015-05-01"
 date-format: "MMMM YYYY"
-categories: [post,archive]
+categories: [text,video]
 ---
 
-Mirrorless Safety Windschield System by AutoGenZ team. Valeo Innovation Challenge 2025.
+Mirrorless Safety Windschield System by AutoGenZ team. 2nd winner of Valeo Innovation Challenge 2025. Computer Vision system which eliminates rear and side mirrors of vehicles.
 
 {{< video https://youtu.be/8pBKTbdytjo >}}
+
+To be described.
