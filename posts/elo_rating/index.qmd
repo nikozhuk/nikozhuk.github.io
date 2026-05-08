@@ -1,0 +1,10 @@
+---
+title: "Elo Rating System"
+date: "2024-09-9"
+date-format: "MMMM YYYY"
+categories: [code]
+---
+
+Elo rating system, Statsbomb open-data minimal exploratory analysis.
+
+{{< embed ELO_rating_system_bundesliga1516.ipynb >}}

@@ -3,6 +3,7 @@ title: "Pose Detection"
 date: "2025-02-19"
 date-format: "MMMM YYYY"
 categories: [code,tt, video]
+image: nzhukov_tt.png
 ---
 
 Sceletal pose landmark detection for table tennis.
@@ -12,3 +13,5 @@ With open-sourced MediaPipe framework and open CV.
 Backhand topspin slow motion 🏓.
 
 {{< video https://youtu.be/SAA0AaqcKzw >}}
+
+To be published.
