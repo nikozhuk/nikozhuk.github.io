@@ -16,7 +16,7 @@ comments:
       language: en   
 ---
 
-Per-layer embeddings (used in [Gemma4 models](https://ai.google.dev/gemma/docs/core/model_card_4)).
+Per-layer residual embedding injection used used in [Gemma4 models](https://ai.google.dev/gemma/docs/core/model_card_4).
 
 In a few words the idea - to fix a separate small vector of meaning representations (embeddings) for each layer of the artificial neural network, for every token. At the very first inference (generating an answer on the device) call, all of these per-layer vectors are looked up at once, only one time (which is one of the reasons the first model call is longer than the subsequent ones). The dimensionality of these per-layer vectors is much smaller than the main hidden state (e.g. 256 dimensions vs. 1536 or 2560). At each layer, the small per-layer vector is injected into the residual stream - so the layer is "reminded" of what this token is about, adding the "shades" of meaning when it's relevant.  And most importantly - this whole lookup table can be stored in flash memory rather than in RAM! (RAM is needed for computing operations over vectors and is therefore the bottleneck).
 
