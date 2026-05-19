@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/gemma_niti/index.html",
       "/posts/per_layer_embeddings/index.html",
       "/posts/nanoGPT/index.html",
       "/posts/tt_mediapipe/index.html",
