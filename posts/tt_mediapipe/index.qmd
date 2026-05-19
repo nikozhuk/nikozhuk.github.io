@@ -1,14 +1,12 @@
 ---
-title: "Pose Detection"
+title: "Pose Detection for Table Tennis"
 date: "2025-02-19"
 date-format: "MMMM YYYY"
 categories: [code,tt, video]
 image: nzhukov_tt.png
 ---
 
-Sceletal pose landmark detection for table tennis.
-
-With open-sourced MediaPipe framework and open CV. 
+Sceletal pose landmark detection with MediaPipe and OpenCV. 
 
 Backhand topspin slow motion 🏓.
 

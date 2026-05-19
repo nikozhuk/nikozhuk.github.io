@@ -1,5 +1,5 @@
 ---
-title: "Poetry NanoGPT"
+title: "NanoGPT for Poetry"
 date: "2025-02-19"
 date-format: "MMMM YYYY"
 categories: [code]

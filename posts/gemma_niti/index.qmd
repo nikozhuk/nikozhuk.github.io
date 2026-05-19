@@ -1,0 +1,12 @@
+---
+title: "Gemma Niti: Fully offline recovery assistant for patients after ischemic stroke"
+date: "2026-05-19"
+date-format: "MMMM YYYY"
+categories: [code]
+image: gemma_niti_cover.png
+---
+Runs Gemma 4 E2B model locally on Raspberry Pi 5.
+
+[Full code](https://github.com/nikozhuk/gemma-niti)
+
+[Link to Gemma 4 Good Hackathon submission on Kaggle](https://www.kaggle.com/competitions/gemma-4-good-hackathon/writeups/new-writeup-1778598619116)

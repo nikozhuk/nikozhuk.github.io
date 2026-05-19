@@ -1,10 +1,11 @@
 ---
-title: "Spatio-temporal Graph Node Prediction with MeshGraphNet"
+title: "MeshGraphNet for Fluid Flow Simulation"
 date: "2024-01-01"
 date-format: "MMMM YYYY"
 categories: [code]
+image: liquid_flow.png
 ---
 
-Application of MeshGraphNet for spatio-temporal Graph node prediction task.
+Application of MeshGraphNet (Pytorch Geometric) for Fluid Flow Simulation (spatio-temporal Graph node prediction task).
 
 To be described.

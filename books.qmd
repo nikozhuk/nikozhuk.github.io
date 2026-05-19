@@ -1,5 +1,5 @@
 ---                                                                        
-title: "GNN/ML 📚"
+title: "ML,GNN 📚"
 title-block-banner: images/ml_books_banner_split_horizontal_320h.png
 ---
 

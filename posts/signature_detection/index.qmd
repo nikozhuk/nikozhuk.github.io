@@ -1,11 +1,11 @@
 ---
-title: "Signature Detection (You Look Only Once, custom CNN)"
+title: "YOLO for Signature Detection"
 date: "2021-03-03"
 date-format: "MMMM YYYY"
 categories: [code]
 ---
 
-Application of You Look Only Once(YOLO) method and custom CNN for customer's signature detection.
+You Look Only Once(YOLO) method and custom CNN for customer's signature detection application
 
 1. Base model - connected components method (idea - the longest amount of pixels in documents except of the tables/lines - is signature).
 2. Custom CNN (with transfer learning approach).

@@ -8,4 +8,43 @@ title: "💻"
 }
 </style>                                                                          
 
-Projects in industry.
+Projekten im Unternehmenskontext.
+
+```{python}
+#| echo: false
+import pandas as pd
+from itables import show
+
+SHEET_ID = "1biR3sfazyxyKhLVVBfVgY5fjFxSF-3PjhzyquO9HbpQ"
+GID = "1047384214"
+url = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}"
+
+df = pd.read_csv(url)
+show(
+    df,
+    classes="display compact stripe hover",
+    style="width:100%; table-layout:auto; font-size:14px",
+    paging=True,
+    layout={
+        "topStart": None,
+        "topEnd": None,
+        "bottomStart": "info",
+        "bottomEnd": "paging",
+    },
+    columnDefs=[
+        {"className": "dt-left", "targets": "_all"},
+        {"width": "30%", "targets": "_all"},
+    ],
+)
+```
+
+```{=html}
+<style>
+table.dataTable td {
+  white-space: normal !important;
+  word-wrap: break-word;
+  vertical-align: top;
+  line-height: 1.4;
+}
+</style>
+```

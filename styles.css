@@ -8,6 +8,12 @@
 .navbar {
   min-height: 100px !important;
 }
+
+.navbar-nav .nav-link {
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
+}
                                      
   .quarto-post .thumbnail {
     max-width: 150px;                                                               

@@ -1,5 +1,5 @@
 ---
-title: "Elo Rating System"
+title: "Elo Rating System for 1.Bundesliga"
 date: "2024-09-9"
 date-format: "MMMM YYYY"
 categories: [code]

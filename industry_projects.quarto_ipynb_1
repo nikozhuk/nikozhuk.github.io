@@ -1,0 +1,83 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---                                                                        \n",
+        "title: \"💻\"\n",
+        "---\n",
+        "\n",
+        "<style>\n",
+        ".quarto-title h1.title {\n",
+        "  display: none;\n",
+        "}\n",
+        "</style>                                                                          \n",
+        "\n",
+        "Projekten im Unternehmenskontext."
+      ],
+      "id": "e081fcaa"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "import pandas as pd\n",
+        "from itables import show\n",
+        "\n",
+        "SHEET_ID = \"1biR3sfazyxyKhLVVBfVgY5fjFxSF-3PjhzyquO9HbpQ\"\n",
+        "GID = \"1047384214\"\n",
+        "url = f\"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}\"\n",
+        "\n",
+        "df = pd.read_csv(url)\n",
+        "show(\n",
+        "    df,\n",
+        "    classes=\"display compact stripe hover\",\n",
+        "    style=\"width:100%; table-layout:auto; font-size:14px\",\n",
+        "    paging=True,\n",
+        "    layout={\n",
+        "        \"topStart\": None,\n",
+        "        \"topEnd\": None,\n",
+        "        \"bottomStart\": \"info\",\n",
+        "        \"bottomEnd\": \"paging\",\n",
+        "    },\n",
+        "    columnDefs=[\n",
+        "        {\"className\": \"dt-left\", \"targets\": \"_all\"},\n",
+        "        {\"width\": \"30%\", \"targets\": \"_all\"},\n",
+        "    ],\n",
+        ")"
+      ],
+      "id": "d622010c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "```{=html}\n",
+        "<style>\n",
+        "table.dataTable td {\n",
+        "  white-space: normal !important;\n",
+        "  word-wrap: break-word;\n",
+        "  vertical-align: top;\n",
+        "  line-height: 1.4;\n",
+        "}\n",
+        "</style>\n",
+        "```"
+      ],
+      "id": "a1af01c6"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/home/nz/workspace/12_nikozhuk.github.io/.venv/share/jupyter/kernels/python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

@@ -1,5 +1,5 @@
 ---
-title: "Per Layer Embeddings"
+title: "Per Layer Embeddings Method"
 date: "2026-04-30"
 date-format: "MMMM YYYY"
 categories: [text]

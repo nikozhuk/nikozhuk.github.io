@@ -3,7 +3,7 @@ title: "Words Representation in Vector Space"
 author: ""
 date: "2022-11-01"
 date-format: "MMMM YYYY"
-categories: [code]
+categories: [code, text]
 image: vectors_original.png
 
 ---
