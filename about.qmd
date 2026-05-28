@@ -6,7 +6,7 @@ about:
   links:
     - icon: github
       text: Github
-      href: https://github.com
+      href: https://github.com/nikozhuk
     - icon: bluesky
       text: Bluesky
       href: https://bsky.app/profile/nikozhuk.bsky.social
@@ -21,7 +21,7 @@ about:
 
 ---
 
-I'm human, 
+I'm human, ML-researcher-engineer, 
 
 who did these projects 
 

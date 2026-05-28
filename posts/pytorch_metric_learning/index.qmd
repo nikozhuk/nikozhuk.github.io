@@ -1,0 +1,8 @@
+---
+title: "PyTorch Metric Learning"
+date: "2023-08-01"
+date-format: "MMMM YYYY"
+categories: [code]
+---
+
+Metric learning method with classifier.

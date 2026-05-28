@@ -5,7 +5,7 @@ date-format: "MMMM YYYY"
 categories: [code]
 ---
 
-Kaggle's pet's facial expression dataset with EfficientNet CNN.
+Kaggle's pet's facial expression dataset with EfficientNetB5 CNN.
 
 To be described.
 
