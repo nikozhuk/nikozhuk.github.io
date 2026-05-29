@@ -154,8 +154,8 @@
     "text": "The goal was to automatically detect customer signatures in document images (within a pipeline of AI-based document processing system).\nInput - scanned or digital document page, output - decision document signed or not.\nSignature in document workflow is important signal that the document confirmed, approved."
   },
   {
-    "objectID": "posts/signature_detection/index.html#ml-task",
-    "href": "posts/signature_detection/index.html#ml-task",
+    "objectID": "posts/signature_detection/index.html#task",
+    "href": "posts/signature_detection/index.html#task",
     "title": "Signature Detection in Documents: from heuristics to CNNs and YOLO",
     "section": "",
     "text": "The goal was to automatically detect customer signatures in document images (within a pipeline of AI-based document processing system).\nInput - scanned or digital document page, output - decision document signed or not.\nSignature in document workflow is important signal that the document confirmed, approved."
@@ -165,7 +165,7 @@
     "href": "posts/signature_detection/index.html#baseline-model-connected-components",
     "title": "Signature Detection in Documents: from heuristics to CNNs and YOLO",
     "section": "1. Baseline model: “connected components”",
-    "text": "1. Baseline model: “connected components”\nFirst idea - the signature often forms one of the largest pixel groups on a document, excluding tables and straight lines.\nThus, fast, simple, explainable baseline model was used - “Connected Components Labeling” and it’s implementation for signatures. I found the “right” threshold parameter for the given subset of documents.\nHowever the method does not work, fragile for a very “large” signatures, neither for the other types of documents (with tables, stamps, handwritten notes, scan artificats, …).\nAnd it also helped to understand the visual structure of the problem before training models."
+    "text": "1. Baseline model: “connected components”\nFirst idea - the signature often forms one of the largest pixel groups on a document, excluding tables and straight lines.\nThus, fast, simple, explainable baseline model was used - “Connected Components Labeling” and it’s implementation for signatures. I found the “right” threshold parameter for the given subset of documents.\nHowever the method does not work, fragile for a very “large” signatures, neither for the other types of documents (with tables, stamps, handwritten notes, scan artificats).\nAnd it also helped to understand the visual structure of the problem before training models."
   },
   {
     "objectID": "posts/signature_detection/index.html#custom-cnn",
