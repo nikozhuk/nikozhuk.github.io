@@ -5,8 +5,10 @@ date-format: "MMMM YYYY"
 categories: [text,video]
 ---
 
-Computer Vision system which eliminates rear and side mirrors of vehicles. AutoGenZ team - 2nd winner of Valeo Innovation Challenge 2025. 
+Our team AutoGenZ won 2nd place of Valeo Innovation Challenge 2015. With prototype called Mirrorless Safety Windshield System - computer vision system that replaces traditional car rear and side mirrors with cameras and combined the rear and side views into one panoramicc image, shown inside the car.
+
+![image](01.png)
+![image](02.png)
 
 {{< video https://youtu.be/8pBKTbdytjo >}}
 
-To be described.
