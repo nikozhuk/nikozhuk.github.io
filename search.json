@@ -165,28 +165,28 @@
     "href": "posts/signature_detection/index.html#baseline-model-connected-components",
     "title": "Signature Detection in Documents: from heuristics to CNNs and YOLO",
     "section": "1. Baseline model: “connected components”",
-    "text": "1. Baseline model: “connected components”\nFirst idea - the signature often forms one of the largest pixel groups on a document, excluding tables and straight lines.\nThus, fast, simple, explainable baseline model was used - “Connected Components Labeling” and it’s implementation for signatures. I found the “right” threshold parameter for the given subset of documents.\nHowever the method does not work, fragile for a very “large” signatures, neither for the other types of documents (with tables, stamps, handwritten notes, scan artificats).\nAnd it also helped to understand the visual structure of the problem before training models."
+    "text": "1. Baseline model: “connected components”\nFirst idea - the signature often forms one of the largest pixel groups on a document, excluding tables and straight lines.\nThus, fast, simple, explainable baseline model was used - “Connected Components Labeling” and it’s implementation for signatures. I found the “right” threshold parameter for the given subset of documents.\nHowever the method does not work, fragile for a very “large” signatures, neither for the other types of documents (with tables, stamps, handwritten notes, scan artifacts).\nAnd it also helped to understand the visual structure of the problem before training models."
   },
   {
     "objectID": "posts/signature_detection/index.html#custom-cnn",
     "href": "posts/signature_detection/index.html#custom-cnn",
     "title": "Signature Detection in Documents: from heuristics to CNNs and YOLO",
     "section": "2. Custom CNN",
-    "text": "2. Custom CNN\nAs next, the custom simple classification Inception V3 CNN model was trained.\nOn the candidate-regions extraction.\nBut signatures need also localize, since they appear in different positions and sizes in the documents. Moreover multiple signatures in documents are possible.\n\nDataset\nAt the beginning, there were also no labeled dataset. Therefore the first challenge was to find public available dataset.\nTherefore I used Tobacco800 document dataset which contains 1290 .TIFF images of scaned real documents with groundtruth annotaions for signatures and logos.\nAnnotations were reviewed with LabelImg and converted from PASCAL VOC XML annotations format into YOLO .txt format. At the end were around ~ 400 labeled images (275/60/58 -train/val/test) available for training."
+    "text": "2. Custom CNN\nAs next, the custom simple classification Inception V3 CNN model was trained.\nOn the candidate-regions extraction.\nBut signatures need also localize, since they appear in different positions and sizes in the documents. Moreover multiple signatures in documents are possible.\n\nDataset\nAt the beginning, there were also no labeled dataset. Therefore the first challenge was to find public available dataset.\nTherefore I used Tobacco800 document dataset which contains 1290 .TIFF images of scanned real documents with groundtruth annotaions for signatures and logos.\nAnnotations were reviewed with LabelImg and converted from PASCAL VOC XML annotations format into YOLO .txt format. At the end were around ~ 400 labeled images (275/60/58 -train/val/test) available for training."
   },
   {
     "objectID": "posts/signature_detection/index.html#yolo-object-detection-and-transfer-learning",
     "href": "posts/signature_detection/index.html#yolo-object-detection-and-transfer-learning",
     "title": "Signature Detection in Documents: from heuristics to CNNs and YOLO",
     "section": "3. YOLO object detection and transfer learning",
-    "text": "3. YOLO object detection and transfer learning\nThe final approach used YOLO - “You Look Only Once” model. Which predicts bounding boxes and confidence scores in one pass.\nAnd was simpler and faster in production.\n\n\n\nimage\n\n\nThe choice was also inspirated by Jordan Bramble’s work.\nThe YOLOv3 detector was trained using transfer learning from pretrained Darknet backbone weights from Joseph Redmon.\nAdam optimization, Tiny model, combined localization/objectness(confidence)/classification loss, mAP evaluation with configurable confidence and IoU thresholds.\nHere is full code."
+    "text": "3. YOLO object detection and transfer learning\nThe final approach used YOLO - “You Only Look Once” model. Which predicts bounding boxes and confidence scores in one pass.\nAnd was simpler and faster in production.\n\n\n\nimage\n\n\nThe choice was also inspirated by Jordan Bramble’s work.\nThe YOLOv3 detector was trained using transfer learning from pretrained Darknet backbone weights from Joseph Redmon.\nAdam optimization, Tiny model, combined localization/objectness(confidence)/classification loss, mAP evaluation with configurable confidence and IoU thresholds.\nHere is full code."
   },
   {
     "objectID": "posts/signature_detection/index.html#training-and-evaluation",
     "href": "posts/signature_detection/index.html#training-and-evaluation",
     "title": "Signature Detection in Documents: from heuristics to CNNs and YOLO",
     "section": "Training and evaluation",
-    "text": "Training and evaluation\nTraining took several ours on laptop’s GPU.\nThe model achieved 90.07% mAP at IoU 0.5 which were reliably for the task trained on only relatively small public proxy dataset.\nHowever, the result dropped to 37.94% mAP at IoU 0.75 for more precisely match predicted boundig box with ground-truth annotation. The drop suggests that the model usually found the correct signature area, but the bounding boxes were not always tight enough."
+    "text": "Training and evaluation\nTraining took several hours on laptop’s GPU.\nThe model achieved 90.07% mAP at IoU 0.5 which were reliably for the task trained on only relatively small public proxy dataset.\nHowever, the result dropped to 37.94% mAP at IoU 0.75 for more precisely match predicted bounding box with ground-truth annotation. The drop suggests that the model usually found the correct signature area, but the bounding boxes were not always tight enough."
   },
   {
     "objectID": "posts/tt_mediapipe/index.html",
