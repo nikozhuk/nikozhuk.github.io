@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Signature Detection in Documents: from heuristics to CNNs and YOLO</title>
+<title>Signature Detection in Documents: Heuristics -&gt; CNNs -&gt; YOLO</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -123,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Signature Detection in Documents: from heuristics to CNNs and YOLO</h1>
+      <h1 class="title">Signature Detection in Documents: Heuristics -&gt; CNNs -&gt; YOLO</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">code</div>
               </div>
@@ -156,6 +156,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<p>With YOLOv3 - “You Only Look Once” model.</p>
 <section id="task" class="level2">
 <h2 class="anchored" data-anchor-id="task">Task</h2>
 <p>The goal was to automatically detect customer signatures in document images (within a pipeline of AI-based document processing system).</p>
@@ -183,7 +184,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="yolo-object-detection-and-transfer-learning" class="level2">
 <h2 class="anchored" data-anchor-id="yolo-object-detection-and-transfer-learning">3. YOLO object detection and transfer learning</h2>
-<p>The final approach used YOLO - “You Only Look Once” model. Which predicts bounding boxes and confidence scores in one pass.</p>
+<p>The final approach used <a href="https://arxiv.org/pdf/1506.02640">YOLO - “You Only Look Once”</a> model. Which predicts bounding boxes and confidence scores in one pass.</p>
 <p>And was simpler and faster in production.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
