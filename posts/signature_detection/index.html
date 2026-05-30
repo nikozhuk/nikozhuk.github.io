@@ -166,8 +166,8 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="baseline-model-connected-components">1. Baseline model: “connected components”</h2>
 <p>First idea - the signature often forms one of the largest pixel groups on a document, excluding tables and straight lines.</p>
 <p>Thus, fast, simple, explainable baseline model was used - <a href="https://homepages.inf.ed.ac.uk/rbf/HIPR2/label.htm">“Connected Components Labeling”</a> and it’s <a href="https://homepages.inf.ed.ac.uk/rbf/HIPR2/label.htm">implementation for signatures</a>. I found the “right” threshold parameter for the given subset of documents.</p>
-<p>However the method does not work, fragile for a very “large” signatures, neither for the other types of documents (with tables, stamps, handwritten notes, scan artifacts).</p>
-<p>And it also helped to understand the visual structure of the problem before training models.</p>
+<p>However the method is fragile for a very “large” signatures, neither for the other types of documents (with tables, stamps, handwritten notes, scan artifacts).</p>
+<p>The baseline method also helped to understand the visual structure of the problem before training models.</p>
 </section>
 <section id="custom-cnn" class="level2">
 <h2 class="anchored" data-anchor-id="custom-cnn">2. Custom CNN</h2>
@@ -177,7 +177,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="dataset" class="level3">
 <h3 class="anchored" data-anchor-id="dataset">Dataset</h3>
 <p>At the beginning, there were also no labeled dataset. Therefore the first challenge was to find public available dataset.</p>
-<p>Therefore I used <a href="https://tc11.cvc.uab.es/datasets/Tobacco800_1">Tobacco800</a> document dataset which contains 1290 .TIFF images of scanned real documents with groundtruth annotaions for signatures and logos.</p>
+<p>Therefore I used <a href="https://tc11.cvc.uab.es/datasets/Tobacco800_1">Tobacco800</a> document dataset which contains 1290 .TIFF images of scanned real documents with groundtruth annotations for signatures and logos.</p>
 <p>Annotations were reviewed with <a href="https://github.com/HumanSignal/labelImg">LabelImg</a> and <a href="https://github.com/nikozhuk/signature_detection_YOLOv3/blob/main/1_PASCAL_VOC_to_Yolo_format.ipynb">converted from PASCAL VOC XML annotations format into YOLO .txt format</a>. At the end were around ~ 400 labeled images (275/60/58 -train/val/test) available for training.</p>
 </section>
 </section>
