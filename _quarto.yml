@@ -17,7 +17,7 @@ website:
       #- text: "Projekten 💻"
       #  href: industry_projects.qmd
       - icon: github
-        href: https://github.com/
+        href: https://github.com/nikozhuk
       - icon: bluesky
         href: https://bsky.app/profile/nikozhuk.bsky.social
   

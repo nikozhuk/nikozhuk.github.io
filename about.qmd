@@ -5,16 +5,12 @@ about:
   template: jolla
   links:
     - icon: github
-      text: Github
       href: https://github.com/nikozhuk
     - icon: bluesky
-      text: Bluesky
       href: https://bsky.app/profile/nikozhuk.bsky.social
     - icon: linkedin
-      text: LinkedIn
       href: https://www.linkedin.com/in/nikolai-zhukov
     - icon: twitter
-      text: Twitter
       href: https://twitter.com/Zhukovi
     
       
