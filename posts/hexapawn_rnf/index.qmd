@@ -7,7 +7,7 @@ categories: [visualisation, code]
 image: hexapawn_tree.png
 freeze: true 
 ---
-Zero-like reinforcement learning model, Monte Carlo Tree Search for chess, similar to the [DeepMind's AlphaZero](https://arxiv.org/pdf/1712.01815) approach.
+Zero-like reinforcement learning model, Monte Carlo Tree Search for hexapawn chess, similar to the [DeepMind's AlphaZero](https://arxiv.org/pdf/1712.01815) approach. Visualisation of tree search.
 
 Practical walktrough to understand the basics of the zero-like reinforcment learning method and [Monte Carlo Tree Search (MCTS)](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search). Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).
 

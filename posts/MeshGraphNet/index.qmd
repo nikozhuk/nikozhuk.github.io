@@ -1,11 +1,66 @@
 ---
-title: "MeshGraphNet for Fluid Flow Simulation"
+title: "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes"
 date: "2024-01-01"
 date-format: "MMMM YYYY"
 categories: [code]
 image: liquid_flow.png
 ---
 
-Application of MeshGraphNet (Pytorch Geometric) for Fluid Flow Simulation (spatio-temporal Graph node prediction task).
+## Task
+The goal was to understand how [Graph Neural Networks](../../books.qmd#gnns-books-and-courses) could be used for learning physical dynamics on simulation meshes.
 
-To be described.
+The original motivation was industrial: simulation of thermal expansion during laser cutting process.
+The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.
+
+The original data are simulation meshes. For the ML model, mesh is represented as graph:
+
+mesh vertices -> graph nodes
+mesh connectivity -> graph edges/adjacency matrix
+values on verticies -> node features
+relative geometry on verticies -> edge features
+
+The task is one-step forward dynamics prediction:
+$G(t)$ -  graph representation of the mesh at timestep $t$
+$ΔQ(t) = GNN(G(t))$
+$Q(t + 1) = Q(t) + ΔQ(t)$
+
+For CylinderFlow, Q corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion.
+
+## Why
+
+Classical [FEM](https://en.wikipedia.org/wiki/Finite_element_method) simulation is accurate and powerfull, but computational expensive. And by new geometry, boundary conditions usually require re-solving the problem.
+
+The ML question was whether a neural network can learn the physical dynamics from simulation data (act as simulator).
+
+MeshGraphNet is natural fit because FEM meshes are already graph-like.
+
+## 1. Dataset: CylinderFlow
+
+CylinderFlow dataset contains fluid flow around a cylinder on 2D triangular meshes generated in [COMSOL](https://www.comsol.com/video-training/getting-started/building-the-mesh-for-a-model-geometry-in-comsol-multiphysics).
+
+1,200 trajectories
+600 timesteps
+physical quantities: velocity/momentun and pressure
+
+![](../MeshGraphNet/cylinderflow_dataset.png)
+
+## 2. Model:MeshGraphNet
+
+MeshGraphNet - a Graph Neural Network follows encode-> process(message passing)-> decode architecture:
+
+*Encoder* : maps node and edge features of the graph into latent embeddings.
+
+*Processor* : performs several rounds of message passing. Neighboring nodes exchange information through graph edges and node/edge embeddings are updated. Aggregate and update node/edge embeddings to learn physical interactions.
+
+*Decoder* : maps final node embeddings to the predicted physical update ($ΔQ(t) = Decoder (H(t))$) on each node.
+
+State update then:
+$Q(t + 1) = Q(t) + ΔQ(t)$
+
+## 3. Implementation
+
+I used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from Isaac Ju, Robert Lupou and Ryan Kanfar (Stanford CS224W course project).
+
+[Open in Google Colab](https://colab.research.google.com/drive/1mZAWP6k9R0DE5NxPzF8yL2HpIUG3aoDC#scrollTo=5jRZNBna7hPV)
+
+[Here is original MeshGraphNet paper](https://arxiv.org/pdf/2010.03409) from T. Pfaff, Meire Fortunato, Alvaro Sanchez-Gonzalez and Peter W. Battaglia.

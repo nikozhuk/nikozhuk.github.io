@@ -17,7 +17,9 @@ about:
 
 ---
 
-I'm human, ML-researcher-engineer, 
+I'm human,
+
+[💻 ml-engineer](), [researcher](), [🏓tt-trainer](), [🎨 artist](), father 
 
 who did these projects 
 

@@ -5,7 +5,7 @@ date-format: "MMMM YYYY"
 categories: [code]
 image: gemma_niti_cover.png
 ---
-Runs Gemma 4 E2B model locally on Raspberry Pi 5.
+Runs open-weight Gemma 4 E2B model locally on Raspberry Pi 5.
 
 [Full code](https://github.com/nikozhuk/gemma-niti)
 
