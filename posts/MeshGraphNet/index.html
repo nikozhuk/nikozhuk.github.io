@@ -154,7 +154,7 @@ window.Quarto = {
     <div class="quarto-title column-body">
       <h1 class="title">Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">code</div>
+                <div class="quarto-category">text</div>
               </div>
                   </div>
   </div>
@@ -188,15 +188,15 @@ window.Quarto = {
 <section id="task" class="level2">
 <h2 class="anchored" data-anchor-id="task">Task</h2>
 <p>The goal was to understand how <a href="../../books.html#gnns-books-and-courses">Graph Neural Networks</a> could be used for learning physical dynamics on simulation meshes.</p>
-<p>The original motivation was industrial: simulation of thermal expansion during laser cutting process. The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.</p>
+<p>The original motivation was industrial: simulation of thermal expansion during the laser cutting process. The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.</p>
 <p>The original data are simulation meshes. For the ML model, mesh is represented as graph:</p>
-<p>mesh vertices -&gt; graph nodes mesh connectivity -&gt; graph edges/adjacency matrix values on verticies -&gt; node features relative geometry on verticies -&gt; edge features</p>
+<p>mesh vertices -&gt; graph nodes mesh connectivity -&gt; graph edges/adjacency matrix values on vertices -&gt; node features relative geometry on vertices -&gt; edge features</p>
 <p>The task is one-step forward dynamics prediction: <span class="math inline">\(G(t)\)</span> - graph representation of the mesh at timestep <span class="math inline">\(t\)</span> <span class="math inline">\(ΔQ(t) = GNN(G(t))\)</span> <span class="math inline">\(Q(t + 1) = Q(t) + ΔQ(t)\)</span></p>
 <p>For CylinderFlow, Q corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion.</p>
 </section>
 <section id="why" class="level2">
 <h2 class="anchored" data-anchor-id="why">Why</h2>
-<p>Classical <a href="https://en.wikipedia.org/wiki/Finite_element_method">FEM</a> simulation is accurate and powerfull, but computational expensive. And by new geometry, boundary conditions usually require re-solving the problem.</p>
+<p>Classical <a href="https://en.wikipedia.org/wiki/Finite_element_method">FEM</a> simulation is accurate, but computationally expensive. The cost grows with mesh resolution and simulation time. New gerometry, boundary conditions usually require re-solving the numerical problem.</p>
 <p>The ML question was whether a neural network can learn the physical dynamics from simulation data (act as simulator).</p>
 <p>MeshGraphNet is natural fit because FEM meshes are already graph-like.</p>
 </section>
@@ -216,9 +216,15 @@ window.Quarto = {
 </section>
 <section id="implementation" class="level2">
 <h2 class="anchored" data-anchor-id="implementation">3. Implementation</h2>
-<p>I used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from Isaac Ju, Robert Lupou and Ryan Kanfar (Stanford CS224W course project).</p>
+<p>I used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from Isaac Ju, Robert Lupoiu and Ryan Kanfar (Stanford CS224W course project).</p>
 <p><a href="https://colab.research.google.com/drive/1mZAWP6k9R0DE5NxPzF8yL2HpIUG3aoDC#scrollTo=5jRZNBna7hPV">Open in Google Colab</a></p>
 <p><a href="https://arxiv.org/pdf/2010.03409">Here is original MeshGraphNet paper</a> from T. Pfaff, Meire Fortunato, Alvaro Sanchez-Gonzalez and Peter W. Battaglia.</p>
+</section>
+<section id="result" class="level2">
+<h2 class="anchored" data-anchor-id="result">4. Result</h2>
+<p>The result was understanding and reproducing the MeshGraphNet-style pipeline for mesh-based physical simulation:</p>
+<p>simulation mesh-&gt;graph representation (node and edge features)-&gt;message passing GNN-&gt;next timestep physical update</p>
+<p>And clarified how similar approach could be applied to the original use case, where target physical quantity is temperature/thermal expansion instead of velocity/momentum and pressure in CylinderFlow dataset.</p>
 
 
 </section>
