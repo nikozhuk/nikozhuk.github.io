@@ -30,9 +30,9 @@
   {
     "objectID": "posts/per_layer_embeddings/index.html",
     "href": "posts/per_layer_embeddings/index.html",
-    "title": "Per Layer Embeddings Method",
+    "title": "Understanding Per Layer Embeddings Method",
     "section": "",
-    "text": "Per-layer residual embedding injection used used in Gemma4 models.\nIn a few words the idea - to fix a separate small vector of meaning representations (embeddings) for each layer of the artificial neural network, for every token. At the very first inference (generating an answer on the device) call, all of these per-layer vectors are looked up at once, only one time (which is one of the reasons the first model call is longer than the subsequent ones). The dimensionality of these per-layer vectors is much smaller than the main hidden state (e.g. 256 dimensions vs. 1536 or 2560). At each layer, the small per-layer vector is injected into the residual stream - so the layer is “reminded” of what this token is about, adding the “shades” of meaning when it’s relevant.  And most importantly - this whole lookup table can be stored in flash memory rather than in RAM! (RAM is needed for computing operations over vectors and is therefore the bottleneck).\nInstead of, during inference, the incoming token getting looked up in the embedding table at the input layer, and the that single embedding having to “drag” all of the token’s semantic context along with it through every layer of the network (how it was in most transformer-like models).\nThank you Maarten Grootendorst for visual explanation!"
+    "text": "Per-layer residual embedding injection used in Gemma4 models.\nIn a few words the idea - to fix a separate small vector of meaning representations (embeddings) for each layer of the artificial neural network, for every token. At the very first inference (generating an answer on the device) call, all of these per-layer vectors are looked up at once, only one time (which is one of the reasons the first model call is longer than the subsequent ones). The dimensionality of these per-layer vectors is much smaller than the main hidden state (e.g. 256 dimensions vs. 1536 or 2560). At each layer, the small per-layer vector is injected into the residual stream - so the layer is “reminded” of what this token is about, adding the “shades” of meaning when it’s relevant.  And most importantly - this whole lookup table can be stored in flash memory rather than in RAM! (RAM is needed for computing operations over vectors and is therefore the bottleneck).\nInstead of, during inference, the incoming token getting looked up in the embedding table at the input layer, and the that single embedding having to “drag” all of the token’s semantic context along with it through every layer of the network (how it was in most transformer-like models).\nThank you Maarten Grootendorst for visual explanation!"
   },
   {
     "objectID": "posts/lighthouse again works/index.html",
@@ -46,7 +46,7 @@
     "href": "posts/gemma_niti/index.html",
     "title": "Gemma Niti: Fully offline recovery assistant for patients after ischemic stroke",
     "section": "",
-    "text": "Runs Gemma 4 E2B model locally on Raspberry Pi 5.\nFull code\nLink to Gemma 4 Good Hackathon submission on Kaggle"
+    "text": "Runs open-weight Gemma 4 E2B model locally on Raspberry Pi 5.\nFull code\nLink to Gemma 4 Good Hackathon submission on Kaggle"
   },
   {
     "objectID": "posts/elo_rating/index.html",
@@ -58,9 +58,44 @@
   {
     "objectID": "posts/MeshGraphNet/index.html",
     "href": "posts/MeshGraphNet/index.html",
-    "title": "MeshGraphNet for Fluid Flow Simulation",
+    "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
     "section": "",
-    "text": "Application of MeshGraphNet (Pytorch Geometric) for Fluid Flow Simulation (spatio-temporal Graph node prediction task).\nTo be described."
+    "text": "The goal was to understand how Graph Neural Networks could be used for learning physical dynamics on simulation meshes.\nThe original motivation was industrial: simulation of thermal expansion during laser cutting process. The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.\nThe original data are simulation meshes. For the ML model, mesh is represented as graph:\nmesh vertices -&gt; graph nodes mesh connectivity -&gt; graph edges/adjacency matrix values on verticies -&gt; node features relative geometry on verticies -&gt; edge features\nThe task is one-step forward dynamics prediction: \\(G(t)\\) - graph representation of the mesh at timestep \\(t\\) \\(ΔQ(t) = GNN(G(t))\\) \\(Q(t + 1) = Q(t) + ΔQ(t)\\)\nFor CylinderFlow, Q corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion."
+  },
+  {
+    "objectID": "posts/MeshGraphNet/index.html#task",
+    "href": "posts/MeshGraphNet/index.html#task",
+    "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
+    "section": "",
+    "text": "The goal was to understand how Graph Neural Networks could be used for learning physical dynamics on simulation meshes.\nThe original motivation was industrial: simulation of thermal expansion during laser cutting process. The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.\nThe original data are simulation meshes. For the ML model, mesh is represented as graph:\nmesh vertices -&gt; graph nodes mesh connectivity -&gt; graph edges/adjacency matrix values on verticies -&gt; node features relative geometry on verticies -&gt; edge features\nThe task is one-step forward dynamics prediction: \\(G(t)\\) - graph representation of the mesh at timestep \\(t\\) \\(ΔQ(t) = GNN(G(t))\\) \\(Q(t + 1) = Q(t) + ΔQ(t)\\)\nFor CylinderFlow, Q corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion."
+  },
+  {
+    "objectID": "posts/MeshGraphNet/index.html#why",
+    "href": "posts/MeshGraphNet/index.html#why",
+    "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
+    "section": "Why",
+    "text": "Why\nClassical FEM simulation is accurate and powerfull, but computational expensive. And by new geometry, boundary conditions usually require re-solving the problem.\nThe ML question was whether a neural network can learn the physical dynamics from simulation data (act as simulator).\nMeshGraphNet is natural fit because FEM meshes are already graph-like."
+  },
+  {
+    "objectID": "posts/MeshGraphNet/index.html#dataset-cylinderflow",
+    "href": "posts/MeshGraphNet/index.html#dataset-cylinderflow",
+    "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
+    "section": "1. Dataset: CylinderFlow",
+    "text": "1. Dataset: CylinderFlow\nCylinderFlow dataset contains fluid flow around a cylinder on 2D triangular meshes generated in COMSOL.\n1,200 trajectories 600 timesteps physical quantities: velocity/momentun and pressure"
+  },
+  {
+    "objectID": "posts/MeshGraphNet/index.html#modelmeshgraphnet",
+    "href": "posts/MeshGraphNet/index.html#modelmeshgraphnet",
+    "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
+    "section": "2. Model:MeshGraphNet",
+    "text": "2. Model:MeshGraphNet\nMeshGraphNet - a Graph Neural Network follows encode-&gt; process(message passing)-&gt; decode architecture:\nEncoder : maps node and edge features of the graph into latent embeddings.\nProcessor : performs several rounds of message passing. Neighboring nodes exchange information through graph edges and node/edge embeddings are updated. Aggregate and update node/edge embeddings to learn physical interactions.\nDecoder : maps final node embeddings to the predicted physical update (\\(ΔQ(t) = Decoder (H(t))\\)) on each node.\nState update then: \\(Q(t + 1) = Q(t) + ΔQ(t)\\)"
+  },
+  {
+    "objectID": "posts/MeshGraphNet/index.html#implementation",
+    "href": "posts/MeshGraphNet/index.html#implementation",
+    "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
+    "section": "3. Implementation",
+    "text": "3. Implementation\nI used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from Isaac Ju, Robert Lupou and Ryan Kanfar (Stanford CS224W course project).\nOpen in Google Colab\nHere is original MeshGraphNet paper from T. Pfaff, Meire Fortunato, Alvaro Sanchez-Gonzalez and Peter W. Battaglia."
   },
   {
     "objectID": "industry_projects.html",
@@ -95,14 +130,14 @@
     "href": "about.html",
     "title": "Hi, there 🤲",
     "section": "",
-    "text": "I’m human, ML-researcher-engineer,\nwho did these projects\nby dancing with curiosity.\nLet’s talk"
+    "text": "I’m human,\n💻 ml-engineer, researcher, 🏓tt-trainer, 🎨 artist, father\nwho did these projects\nby dancing with curiosity.\nLet’s talk"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Nikolai Zhukov",
     "section": "",
-    "text": "Gemma Niti: Fully offline recovery assistant for patients after ischemic stroke\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMay 2026\n\n\n\n\n\n\n\n\n\n\n\n\nPer Layer Embeddings Method\n\n\n\ntext\n\n\n\n\n\n\n\n\n\nApril 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNanoGPT for Poetry\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nPose Detection for Table Tennis\n\n\n\ncode\n\ntt\n\nvideo\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nElo Rating System for 1.Bundesliga\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nSeptember 2024\n\n\n\n\n\n\n\n\n\n\n\n\nPet’s Facial Expression Detection App\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nJuly 2024\n\n\n\n\n\n\n\n\n\n\n\n\nReinforcement Learning for Chess\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nMeshGraphNet for Fluid Flow Simulation\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSeptember 2023\n\n\n\n\n\n\n\n\n\n\n\n\nPyTorch Metric Learning\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nAugust 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWords Representation in Vector Space\n\n\n\ncode\n\ntext\n\n\n\n\n\n\n\n\n\nNovember 2022\n\n\n\n\n\n\n\n\n\n\n\n\nSignature Detection in Documents: Heuristics -&gt; CNNs -&gt; YOLO\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2021\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJanuary 2021\n\n\n\n\n\n\n\n\n\n\n\n\nShapley Values Explaining Machine Learning Models\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2020\n\n\n\n\n\n\n\n\n\n\n\n\nExplainable Machine Learning in Praxis\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nFebruary 2020\n\n\n\n\n\n\n\n\n\n\n\n\nMirrorless Safety Windshield System\n\n\n\ntext\n\nvideo\n\n\n\n\n\n\n\n\n\nMay 2015\n\n\n\n\n\nNo matching items"
+    "text": "Gemma Niti: Fully offline recovery assistant for patients after ischemic stroke\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMay 2026\n\n\n\n\n\n\n\n\n\n\n\n\nUnderstanding Per Layer Embeddings Method\n\n\n\ntext\n\n\n\n\n\n\n\n\n\nApril 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNanoGPT for Poetry\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nPose Detection for Table Tennis\n\n\n\ncode\n\ntt\n\nvideo\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nElo Rating System for 1.Bundesliga\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nSeptember 2024\n\n\n\n\n\n\n\n\n\n\n\n\nPet’s Facial Expression Detection App\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nJuly 2024\n\n\n\n\n\n\n\n\n\n\n\n\nReinforcement Learning for Chess\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nUnderstanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSeptember 2023\n\n\n\n\n\n\n\n\n\n\n\n\nPyTorch Metric Learning\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nAugust 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWords Representation in Vector Space\n\n\n\ncode\n\ntext\n\n\n\n\n\n\n\n\n\nNovember 2022\n\n\n\n\n\n\n\n\n\n\n\n\nSignature Detection in Documents: Heuristics -&gt; CNNs -&gt; YOLO\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2021\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJanuary 2021\n\n\n\n\n\n\n\n\n\n\n\n\nShapley Values Explaining Machine Learning Models\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2020\n\n\n\n\n\n\n\n\n\n\n\n\nExplainable Machine Learning in Praxis\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nFebruary 2020\n\n\n\n\n\n\n\n\n\n\n\n\nMirrorless Safety Windshield System\n\n\n\ntext\n\nvideo\n\n\n\n\n\n\n\n\n\nMay 2015\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "pics.html",
@@ -130,7 +165,7 @@
     "href": "posts/hexapawn_rnf/index.html",
     "title": "Reinforcement Learning for Chess",
     "section": "",
-    "text": "Zero-like reinforcement learning model, Monte Carlo Tree Search for chess, similar to the DeepMind’s AlphaZero approach.\nPractical walktrough to understand the basics of the zero-like reinforcment learning method and Monte Carlo Tree Search (MCTS). Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).\n\nHigh-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book “Neural Networks for Chess”.\n\nHere is full implementation\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…\n\n\n\n\n\n  \n    Hexapawn · MCTS Visualizer\n    AlphaZero-style search  ·  100 simulations  ·  model_it10.keras\n  \n  Step 0 / 101\n\n\n\n  \n  \n    \n      Board position\n      \n    \n\n    \n      Root expansion\n      \n    \n\n    \n      Legend\n      Selection path\n      Expansion (neural net)\n      Backup propagation\n      Unvisited node\n      High Q (White wins)\n      Low Q (Black wins)\n    \n  \n\n  \n  \n    Loading…\n  \n\n\n\n  \n    ↺ Reset\n    ◀ Prev\n    ▶ Next\n    ⏵ Auto\n    ⏩ End\n  \n  \n    Step\n    \n  \n  \n    Speed\n    \n  \n  \n  0 / 101"
+    "text": "Zero-like reinforcement learning model, Monte Carlo Tree Search for hexapawn chess, similar to the DeepMind’s AlphaZero approach. Visualisation of tree search.\nPractical walktrough to understand the basics of the zero-like reinforcment learning method and Monte Carlo Tree Search (MCTS). Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).\n\nHigh-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book “Neural Networks for Chess”.\n\nHere is full implementation\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…\n\n\n\n\n\n  \n    Hexapawn · MCTS Visualizer\n    AlphaZero-style search  ·  100 simulations  ·  model_it10.keras\n  \n  Step 0 / 101\n\n\n\n  \n  \n    \n      Board position\n      \n    \n\n    \n      Root expansion\n      \n    \n\n    \n      Legend\n      Selection path\n      Expansion (neural net)\n      Backup propagation\n      Unvisited node\n      High Q (White wins)\n      Low Q (Black wins)\n    \n  \n\n  \n  \n    Loading…\n  \n\n\n\n  \n    ↺ Reset\n    ◀ Prev\n    ▶ Next\n    ⏵ Auto\n    ⏩ End\n  \n  \n    Step\n    \n  \n  \n    Speed\n    \n  \n  \n  0 / 101"
   },
   {
     "objectID": "posts/nanoGPT/index.html",
