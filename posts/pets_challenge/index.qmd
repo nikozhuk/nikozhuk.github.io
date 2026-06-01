@@ -7,5 +7,20 @@ categories: [code]
 
 Kaggle's pet's facial expression dataset with EfficientNetB5 CNN.
 
-To be described.
+<script type="module"
+    src="https://gradio.s3-us-west-2.amazonaws.com/6.15.2/gradio.js"></script>
 
+  <gradio-app 
+  src="https://happybugsbunny-pets-emotion-classification.hf.space/"></gradio-app>
+
+A tiny web app that classify a pet's emotions fro a photo.
+Upload an image, get the predicted emotion + confidence.
+
+End-to-end pipeline:
+1. Training model
+2. Wrap it in web interface
+3. Deploy
+
+The model is EfficientNetB5 CNN, transfer learning on balanced dataset. Gradio App on Hugging Face Space (free CPU tier).
+
+[Full code here](https://github.com/nikozhuk/face-classification).
