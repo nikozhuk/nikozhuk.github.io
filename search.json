@@ -186,7 +186,7 @@
     "href": "posts/pets_challenge/index.html",
     "title": "Pet’s Facial Expression Detection App",
     "section": "",
-    "text": "Kaggle’s pet’s facial expression dataset with EfficientNetB5 CNN."
+    "text": "Kaggle’s pet’s facial expression dataset with EfficientNetB5 CNN.\n\n\nA tiny web app that classify a pet’s emotions fro a photo. Upload an image, get the predicted emotion + confidence.\nEnd-to-end pipeline: 1. Training model 2. Wrap it in web interface 3. Deploy\nThe model is EfficientNetB5 CNN, transfer learning on balanced dataset. Gradio App on Hugging Face Space (free CPU tier).\nFull code here."
   },
   {
     "objectID": "posts/signature_detection/index.html",
