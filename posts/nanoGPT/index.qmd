@@ -12,3 +12,5 @@ Nano Generative Pre-trained Transformer (GPT) on W.Shakespear and A. Pushkin dat
 <iframe src="NanoGPT_on_W.pdf" width="100%" height="600px"></iframe>  
 
 To be described.
+
+[GitHub repository](https://github.com/nikozhuk/nanoGPT_tiny_pushkin)

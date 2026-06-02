@@ -4,8 +4,9 @@ date: "2024-07-19"
 date-format: "MMMM YYYY"
 categories: [code]
 ---
-
-Kaggle's pet's facial expression dataset with EfficientNetB5 CNN.
+## A tiny web app 
+that classify a pet's emotions by a photo.
+Upload an image, get the predicted emotion + confidence. Trained [EfficientNetB5](https://www.tensorflow.org/api_docs/python/tf/keras/applications/EfficientNetB5) CNN on [Kaggle's pet's facial expression dataset](https://www.kaggle.com/datasets/anshtanwar/pets-facial-expression-dataset).
 
 <script type="module"
     src="https://gradio.s3-us-west-2.amazonaws.com/6.15.2/gradio.js"></script>
@@ -13,14 +14,23 @@ Kaggle's pet's facial expression dataset with EfficientNetB5 CNN.
   <gradio-app 
   src="https://happybugsbunny-pets-emotion-classification.hf.space/"></gradio-app>
 
-A tiny web app that classify a pet's emotions fro a photo.
-Upload an image, get the predicted emotion + confidence.
+End-to-end pipeline:  
+1. Training of model  
+2. Wrapping in web interface   
+3. Deployment  
 
-End-to-end pipeline:
-1. Training model
-2. Wrap it in web interface
-3. Deploy
+## 1. Training
 
-The model is EfficientNetB5 CNN, transfer learning on balanced dataset. Gradio App on Hugging Face Space (free CPU tier).
+Base model -ResNet50. Then transfer learning on InceptionV3, then balanced dataset, EfficientNetB5.
 
-[Full code here](https://github.com/nikozhuk/face-classification).
+[The final training colab notebook](https://colab.research.google.com/drive/185ju4ADO7hA9_3aP3Hp_gf7lmL8XNInU?usp=sharing).
+
+
+## 2. Web interface and Deployment
+
+A FastAPI backend serves a POST/predict/image endpoint that runs uploaded images through a pre-trained EfficientNETB5 Keras model and returns on of four pet emotions (angry, other, sad, happy) with confidence score. A React frontend uploads the image and displays the prediction.
+
+Almost identical Gradio App was deployed on Hugging Face Space (free CPU tier).
+
+
+[Web-app code here](https://github.com/nikozhuk/face-classification).

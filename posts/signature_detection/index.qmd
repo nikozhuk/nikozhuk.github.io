@@ -8,7 +8,7 @@ categories: [code]
 With YOLOv3 - "You Only Look Once" model.
 
 
-## Task
+## 
 The goal was to automatically detect customer signatures in document images (within a pipeline of AI-based document processing system).
 
 Input - scanned or digital document page, output - decision document signed or not.

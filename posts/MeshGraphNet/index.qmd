@@ -7,63 +7,61 @@ image: liquid_flow.png
 ---
 
 ## Task
-The goal was to understand how [Graph Neural Networks](../../books.qmd#gnns-books-and-courses) could be used for learning physical dynamics on simulation meshes.
-
-The original motivation was industrial: simulation of thermal expansion during the laser cutting process.
-The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.
+The goal was to understand how [Graph Neural Networks](../../books.qmd#gnns-books-and-courses) could be used for learning physical dynamics on simulation meshes.The original motivation was industrial: simulation of thermal expansion during the laser cutting process.The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.
 
 The original data are simulation meshes. For the ML model, mesh is represented as graph:
 
-mesh vertices -> graph nodes
-mesh connectivity -> graph edges/adjacency matrix
-values on vertices -> node features
-relative geometry on vertices -> edge features
+mesh vertices -> graph nodes  
+mesh connectivity -> graph edges/adjacency matrix  
+values on vertices -> node features  
+relative geometry on vertices -> edge features  
+
 
 The task is one-step forward dynamics prediction:
-$G(t)$ -  graph representation of the mesh at timestep $t$
-$ΔQ(t) = GNN(G(t))$
-$Q(t + 1) = Q(t) + ΔQ(t)$
 
-For CylinderFlow, Q corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion.
+$G(t)$ -  graph representation of the mesh at timestep $t$
+
+
+$$ΔQ(t) = GNN(G(t))$$
+
+$$Q(t + 1) = Q(t) + ΔQ(t)$$
+
+For CylinderFlow example, $Q$ corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion.
 
 ## Why
 
 Classical [FEM](https://en.wikipedia.org/wiki/Finite_element_method) simulation is accurate, but computationally expensive. The cost grows with mesh resolution and simulation time. New gerometry, boundary conditions usually require re-solving the numerical problem.
 
-The ML question was whether a neural network can learn the physical dynamics from simulation data (act as simulator).
-
-MeshGraphNet is natural fit because FEM meshes are already graph-like.
+The ML question was whether a neural network can learn the physical dynamics from simulation data (act as simulator). And MeshGraphNet is natural fit because FEM meshes are already graph-like.
 
 ## 1. Dataset: CylinderFlow
 
-CylinderFlow dataset contains fluid flow around a cylinder on 2D triangular meshes generated in [COMSOL](https://www.comsol.com/video-training/getting-started/building-the-mesh-for-a-model-geometry-in-comsol-multiphysics).
+[CylinderFlow dataset](https://github.com/google-deepmind/deepmind-research/blob/master/meshgraphnets/download_dataset.sh) contains fluid flow around a cylinder on 2D triangular meshes generated in [COMSOL](https://www.comsol.com/video-training/getting-started/building-the-mesh-for-a-model-geometry-in-comsol-multiphysics).
 
-1,200 trajectories
-600 timesteps
-physical quantities: velocity/momentun and pressure
+1,200 trajectories  
+600 timesteps  
+physical quantities: velocity/momentun and pressure  
 
 ![](../MeshGraphNet/cylinderflow_dataset.png)
 
-## 2. Model:MeshGraphNet
+## 2. Model: MeshGraphNet
 
-MeshGraphNet - a Graph Neural Network follows encode-> process(message passing)-> decode architecture:
+MeshGraphNet - a Graph Neural Network follows *encode-> process(message passing)-> decode* architecture:
 
-*Encoder* : maps node and edge features of the graph into latent embeddings.
+**Encoder** : maps node and edge features of the graph into latent embeddings.
 
-*Processor* : performs several rounds of message passing. Neighboring nodes exchange information through graph edges and node/edge embeddings are updated. Aggregate and update node/edge embeddings to learn physical interactions.
+**Processor** : performs several rounds of *message passing*. Neighboring nodes exchange information through graph edges and node/edge embeddings are updated. Aggregate and update node/edge embeddings to learn physical interactions.
 
-*Decoder* : maps final node embeddings to the predicted physical update ($ΔQ(t) = Decoder (H(t))$) on each node.
+**Decoder** : maps final node embeddings to the predicted physical update on each node: $ΔQ(t) = Decoder (H(t))$.
 
 State update then:
-$Q(t + 1) = Q(t) + ΔQ(t)$
+$$Q(t + 1) = Q(t) + ΔQ(t)$$
 
 ## 3. Implementation
 
-I used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from Isaac Ju, Robert Lupoiu and Ryan Kanfar (Stanford CS224W course project).
+I used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from [Isaac Ju](https://scholar.google.com/citations?user=NldX0YsAAAAJ&hl=en), [Robert Lupoiu](https://robertlupoiu.com/) and [Ryan Kanfar](https://www.linkedin.com/in/rayankanfar/) ([Stanford CS224W course project](https://medium.com/stanford-cs224w/learning-mesh-based-flow-simulations-on-graph-networks-44983679cf2d)). [Open in Google Colab](https://colab.research.google.com/drive/1mZAWP6k9R0DE5NxPzF8yL2HpIUG3aoDC#scrollTo=5jRZNBna7hPV)
 
-[Open in Google Colab](https://colab.research.google.com/drive/1mZAWP6k9R0DE5NxPzF8yL2HpIUG3aoDC#scrollTo=5jRZNBna7hPV)
-
-[Here is original MeshGraphNet paper](https://arxiv.org/pdf/2010.03409) from T. Pfaff, Meire Fortunato, Alvaro Sanchez-Gonzalez and Peter W. Battaglia.
+[Here is original Learning Mesh-Based Simulation with Graph Networks paper](https://arxiv.org/pdf/2010.03409) from [Tobias Pfaff](https://tobiaspfaff.com/), [Meire Fortunato](https://scholar.google.com/citations?user=_fMHSIUAAAAJ&hl=en), [Alvaro Sanchez-Gonzalez](https://scholar.google.com/citations?user=d1oQ8NcAAAAJ&hl=en)and [Peter W. Battaglia](https://scholar.google.com/citations?user=nQ7Ij30AAAAJ&hl=en).
 
 ## 4. Result
 

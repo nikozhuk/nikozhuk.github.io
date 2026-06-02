@@ -13,3 +13,5 @@ Backhand topspin slow motion 🏓.
 {{< video https://youtu.be/SAA0AaqcKzw >}}
 
 To be published.
+
+[Jupyter Notebook](https://github.com/nikozhuk/mediapipe.git)
