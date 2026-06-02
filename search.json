@@ -25,7 +25,7 @@
     "href": "posts/pytorch_metric_learning/index.html",
     "title": "PyTorch Metric Learning",
     "section": "",
-    "text": "Metric learning method with classifier."
+    "text": "Metric learning method with classifier (PyTorch implementation).\nTo be described."
   },
   {
     "objectID": "posts/per_layer_embeddings/index.html",
@@ -46,7 +46,7 @@
     "href": "posts/gemma_niti/index.html",
     "title": "Gemma Niti: Fully offline recovery assistant for patients after ischemic stroke",
     "section": "",
-    "text": "Runs open-weight Gemma 4 E2B model locally on Raspberry Pi 5.\nFull code\nLink to Gemma 4 Good Hackathon submission on Kaggle"
+    "text": "Runs open-weight Gemma 4 E2B model locally on Raspberry Pi 5.\nGitHub repository\nLink to Gemma 4 Good Hackathon submission on Kaggle"
   },
   {
     "objectID": "posts/elo_rating/index.html",
@@ -60,42 +60,42 @@
     "href": "posts/MeshGraphNet/index.html",
     "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
     "section": "",
-    "text": "The goal was to understand how Graph Neural Networks could be used for learning physical dynamics on simulation meshes.\nThe original motivation was industrial: simulation of thermal expansion during the laser cutting process. The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.\nThe original data are simulation meshes. For the ML model, mesh is represented as graph:\nmesh vertices -&gt; graph nodes mesh connectivity -&gt; graph edges/adjacency matrix values on vertices -&gt; node features relative geometry on vertices -&gt; edge features\nThe task is one-step forward dynamics prediction: \\(G(t)\\) - graph representation of the mesh at timestep \\(t\\) \\(ΔQ(t) = GNN(G(t))\\) \\(Q(t + 1) = Q(t) + ΔQ(t)\\)\nFor CylinderFlow, Q corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion."
+    "text": "The goal was to understand how Graph Neural Networks could be used for learning physical dynamics on simulation meshes.The original motivation was industrial: simulation of thermal expansion during the laser cutting process.The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.\nThe original data are simulation meshes. For the ML model, mesh is represented as graph:\nmesh vertices -&gt; graph nodes\nmesh connectivity -&gt; graph edges/adjacency matrix\nvalues on vertices -&gt; node features\nrelative geometry on vertices -&gt; edge features\nThe task is one-step forward dynamics prediction:\n\\(G(t)\\) - graph representation of the mesh at timestep \\(t\\)\n\\[ΔQ(t) = GNN(G(t))\\]\n\\[Q(t + 1) = Q(t) + ΔQ(t)\\]\nFor CylinderFlow example, \\(Q\\) corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion."
   },
   {
     "objectID": "posts/MeshGraphNet/index.html#task",
     "href": "posts/MeshGraphNet/index.html#task",
     "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
     "section": "",
-    "text": "The goal was to understand how Graph Neural Networks could be used for learning physical dynamics on simulation meshes.\nThe original motivation was industrial: simulation of thermal expansion during the laser cutting process. The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.\nThe original data are simulation meshes. For the ML model, mesh is represented as graph:\nmesh vertices -&gt; graph nodes mesh connectivity -&gt; graph edges/adjacency matrix values on vertices -&gt; node features relative geometry on vertices -&gt; edge features\nThe task is one-step forward dynamics prediction: \\(G(t)\\) - graph representation of the mesh at timestep \\(t\\) \\(ΔQ(t) = GNN(G(t))\\) \\(Q(t + 1) = Q(t) + ΔQ(t)\\)\nFor CylinderFlow, Q corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion."
+    "text": "The goal was to understand how Graph Neural Networks could be used for learning physical dynamics on simulation meshes.The original motivation was industrial: simulation of thermal expansion during the laser cutting process.The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.\nThe original data are simulation meshes. For the ML model, mesh is represented as graph:\nmesh vertices -&gt; graph nodes\nmesh connectivity -&gt; graph edges/adjacency matrix\nvalues on vertices -&gt; node features\nrelative geometry on vertices -&gt; edge features\nThe task is one-step forward dynamics prediction:\n\\(G(t)\\) - graph representation of the mesh at timestep \\(t\\)\n\\[ΔQ(t) = GNN(G(t))\\]\n\\[Q(t + 1) = Q(t) + ΔQ(t)\\]\nFor CylinderFlow example, \\(Q\\) corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion."
   },
   {
     "objectID": "posts/MeshGraphNet/index.html#why",
     "href": "posts/MeshGraphNet/index.html#why",
     "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
     "section": "Why",
-    "text": "Why\nClassical FEM simulation is accurate, but computationally expensive. The cost grows with mesh resolution and simulation time. New gerometry, boundary conditions usually require re-solving the numerical problem.\nThe ML question was whether a neural network can learn the physical dynamics from simulation data (act as simulator).\nMeshGraphNet is natural fit because FEM meshes are already graph-like."
+    "text": "Why\nClassical FEM simulation is accurate, but computationally expensive. The cost grows with mesh resolution and simulation time. New gerometry, boundary conditions usually require re-solving the numerical problem.\nThe ML question was whether a neural network can learn the physical dynamics from simulation data (act as simulator). And MeshGraphNet is natural fit because FEM meshes are already graph-like."
   },
   {
     "objectID": "posts/MeshGraphNet/index.html#dataset-cylinderflow",
     "href": "posts/MeshGraphNet/index.html#dataset-cylinderflow",
     "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
     "section": "1. Dataset: CylinderFlow",
-    "text": "1. Dataset: CylinderFlow\nCylinderFlow dataset contains fluid flow around a cylinder on 2D triangular meshes generated in COMSOL.\n1,200 trajectories 600 timesteps physical quantities: velocity/momentun and pressure"
+    "text": "1. Dataset: CylinderFlow\nCylinderFlow dataset contains fluid flow around a cylinder on 2D triangular meshes generated in COMSOL.\n1,200 trajectories\n600 timesteps\nphysical quantities: velocity/momentun and pressure"
   },
   {
-    "objectID": "posts/MeshGraphNet/index.html#modelmeshgraphnet",
-    "href": "posts/MeshGraphNet/index.html#modelmeshgraphnet",
+    "objectID": "posts/MeshGraphNet/index.html#model-meshgraphnet",
+    "href": "posts/MeshGraphNet/index.html#model-meshgraphnet",
     "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
-    "section": "2. Model:MeshGraphNet",
-    "text": "2. Model:MeshGraphNet\nMeshGraphNet - a Graph Neural Network follows encode-&gt; process(message passing)-&gt; decode architecture:\nEncoder : maps node and edge features of the graph into latent embeddings.\nProcessor : performs several rounds of message passing. Neighboring nodes exchange information through graph edges and node/edge embeddings are updated. Aggregate and update node/edge embeddings to learn physical interactions.\nDecoder : maps final node embeddings to the predicted physical update (\\(ΔQ(t) = Decoder (H(t))\\)) on each node.\nState update then: \\(Q(t + 1) = Q(t) + ΔQ(t)\\)"
+    "section": "2. Model: MeshGraphNet",
+    "text": "2. Model: MeshGraphNet\nMeshGraphNet - a Graph Neural Network follows encode-&gt; process(message passing)-&gt; decode architecture:\nEncoder : maps node and edge features of the graph into latent embeddings.\nProcessor : performs several rounds of message passing. Neighboring nodes exchange information through graph edges and node/edge embeddings are updated. Aggregate and update node/edge embeddings to learn physical interactions.\nDecoder : maps final node embeddings to the predicted physical update on each node: \\(ΔQ(t) = Decoder (H(t))\\).\nState update then: \\[Q(t + 1) = Q(t) + ΔQ(t)\\]"
   },
   {
     "objectID": "posts/MeshGraphNet/index.html#implementation",
     "href": "posts/MeshGraphNet/index.html#implementation",
     "title": "Understanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes",
     "section": "3. Implementation",
-    "text": "3. Implementation\nI used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from Isaac Ju, Robert Lupoiu and Ryan Kanfar (Stanford CS224W course project).\nOpen in Google Colab\nHere is original MeshGraphNet paper from T. Pfaff, Meire Fortunato, Alvaro Sanchez-Gonzalez and Peter W. Battaglia."
+    "text": "3. Implementation\nI used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from Isaac Ju, Robert Lupoiu and Ryan Kanfar (Stanford CS224W course project). Open in Google Colab\nHere is original Learning Mesh-Based Simulation with Graph Networks paper from Tobias Pfaff, Meire Fortunato, Alvaro Sanchez-Gonzalezand Peter W. Battaglia."
   },
   {
     "objectID": "posts/MeshGraphNet/index.html#result",
@@ -172,21 +172,56 @@
     "href": "posts/hexapawn_rnf/index.html",
     "title": "Reinforcement Learning for Chess",
     "section": "",
-    "text": "Zero-like reinforcement learning model, Monte Carlo Tree Search for hexapawn chess, similar to the DeepMind’s AlphaZero approach. Visualisation of tree search.\nPractical walktrough to understand the basics of the zero-like reinforcment learning method and Monte Carlo Tree Search (MCTS). Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).\n\nHigh-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book “Neural Networks for Chess”.\n\nHere is full implementation\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…\n\n\n\n\n\n  \n    Hexapawn · MCTS Visualizer\n    AlphaZero-style search  ·  100 simulations  ·  model_it10.keras\n  \n  Step 0 / 101\n\n\n\n  \n  \n    \n      Board position\n      \n    \n\n    \n      Root expansion\n      \n    \n\n    \n      Legend\n      Selection path\n      Expansion (neural net)\n      Backup propagation\n      Unvisited node\n      High Q (White wins)\n      Low Q (Black wins)\n    \n  \n\n  \n  \n    Loading…\n  \n\n\n\n  \n    ↺ Reset\n    ◀ Prev\n    ▶ Next\n    ⏵ Auto\n    ⏩ End\n  \n  \n    Step\n    \n  \n  \n    Speed\n    \n  \n  \n  0 / 101"
+    "text": "Zero-like reinforcement learning model, Monte Carlo Tree Search for hexapawn chess, similar to the DeepMind’s AlphaZero approach. And visualisation of tree search.\nPractical walktrough to understand the basics of the zero-like reinforcment learning method and Monte Carlo Tree Search (MCTS). Which is possible then was transfered to real industrial NP-hard combinatorial optimization problem - finding the best topologies for industrial network devices."
+  },
+  {
+    "objectID": "posts/hexapawn_rnf/index.html#self-play-with-reinforcement-learning",
+    "href": "posts/hexapawn_rnf/index.html#self-play-with-reinforcement-learning",
+    "title": "Reinforcement Learning for Chess",
+    "section": "Self play with reinforcement learning",
+    "text": "Self play with reinforcement learning\nHigh-level training loop of the zero-like reinforcement learning pipeline.\n\nTraining without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…\n \nHere is full implementation of the method for small chess game Hexapawn, thank you Dominik Klein and his book “Neural Networks for Chess”."
+  },
+  {
+    "objectID": "posts/hexapawn_rnf/index.html#mcts-visualizer",
+    "href": "posts/hexapawn_rnf/index.html#mcts-visualizer",
+    "title": "Reinforcement Learning for Chess",
+    "section": "MCTS visualizer",
+    "text": "MCTS visualizer\n\n\n\n\n  \n    Hexapawn · MCTS Visualizer\n    AlphaZero-style search  ·  100 simulations  ·  model_it10.keras\n  \n  Step 0 / 101\n\n\n\n  \n  \n    \n      Board position\n      \n    \n\n    \n      Root expansion\n      \n    \n\n    \n      Legend\n      Selection path\n      Expansion (neural net)\n      Backup propagation\n      Unvisited node\n      High Q (White wins)\n      Low Q (Black wins)\n    \n  \n\n  \n  \n    Loading…\n  \n\n\n\n  \n    ↺ Reset\n    ◀ Prev\n    ▶ Next\n    ⏵ Auto\n    ⏩ End\n  \n  \n    Step\n    \n  \n  \n    Speed\n    \n  \n  \n  0 / 101"
   },
   {
     "objectID": "posts/nanoGPT/index.html",
     "href": "posts/nanoGPT/index.html",
     "title": "NanoGPT for Poetry",
     "section": "",
-    "text": "Nano Generative Pre-trained Transformer (GPT) on W.Shakespear and A. Pushkin datasets.\n\n\nTo be described."
+    "text": "Nano Generative Pre-trained Transformer (GPT) on W.Shakespear and A. Pushkin datasets.\n\n\nTo be described.\nGitHub repository"
   },
   {
     "objectID": "posts/pets_challenge/index.html",
     "href": "posts/pets_challenge/index.html",
     "title": "Pet’s Facial Expression Detection App",
     "section": "",
-    "text": "Kaggle’s pet’s facial expression dataset with EfficientNetB5 CNN.\n\n\nA tiny web app that classify a pet’s emotions fro a photo. Upload an image, get the predicted emotion + confidence.\nEnd-to-end pipeline: 1. Training model 2. Wrap it in web interface 3. Deploy\nThe model is EfficientNetB5 CNN, transfer learning on balanced dataset. Gradio App on Hugging Face Space (free CPU tier).\nFull code here."
+    "text": "that classify a pet’s emotions by a photo. Upload an image, get the predicted emotion + confidence. Trained EfficientNetB5 CNN on Kaggle’s pet’s facial expression dataset.\n\n\nEnd-to-end pipeline:\n1. Training of model\n2. Wrapping in web interface\n3. Deployment"
+  },
+  {
+    "objectID": "posts/pets_challenge/index.html#a-tiny-web-app",
+    "href": "posts/pets_challenge/index.html#a-tiny-web-app",
+    "title": "Pet’s Facial Expression Detection App",
+    "section": "",
+    "text": "that classify a pet’s emotions by a photo. Upload an image, get the predicted emotion + confidence. Trained EfficientNetB5 CNN on Kaggle’s pet’s facial expression dataset.\n\n\nEnd-to-end pipeline:\n1. Training of model\n2. Wrapping in web interface\n3. Deployment"
+  },
+  {
+    "objectID": "posts/pets_challenge/index.html#training",
+    "href": "posts/pets_challenge/index.html#training",
+    "title": "Pet’s Facial Expression Detection App",
+    "section": "1. Training",
+    "text": "1. Training\nBase model -ResNet50. Then transfer learning on InceptionV3, then balanced dataset, EfficientNetB5.\nThe final training colab notebook."
+  },
+  {
+    "objectID": "posts/pets_challenge/index.html#web-interface-and-deployment",
+    "href": "posts/pets_challenge/index.html#web-interface-and-deployment",
+    "title": "Pet’s Facial Expression Detection App",
+    "section": "2. Web interface and Deployment",
+    "text": "2. Web interface and Deployment\nA FastAPI backend serves a POST/predict/image endpoint that runs uploaded images through a pre-trained EfficientNETB5 Keras model and returns on of four pet emotions (angry, other, sad, happy) with confidence score. A React frontend uploads the image and displays the prediction.\nAlmost identical Gradio App was deployed on Hugging Face Space (free CPU tier).\nWeb-app code here."
   },
   {
     "objectID": "posts/signature_detection/index.html",
@@ -196,11 +231,11 @@
     "text": "With YOLOv3 - “You Only Look Once” model."
   },
   {
-    "objectID": "posts/signature_detection/index.html#task",
-    "href": "posts/signature_detection/index.html#task",
+    "objectID": "posts/signature_detection/index.html#section",
+    "href": "posts/signature_detection/index.html#section",
     "title": "Signature Detection in Documents: Heuristics -> CNNs -> YOLO",
-    "section": "Task",
-    "text": "Task\nThe goal was to automatically detect customer signatures in document images (within a pipeline of AI-based document processing system).\nInput - scanned or digital document page, output - decision document signed or not.\nSignature in document workflow is important signal that the document confirmed, approved."
+    "section": "",
+    "text": "The goal was to automatically detect customer signatures in document images (within a pipeline of AI-based document processing system).\nInput - scanned or digital document page, output - decision document signed or not.\nSignature in document workflow is important signal that the document confirmed, approved."
   },
   {
     "objectID": "posts/signature_detection/index.html#baseline-model-connected-components",
@@ -235,7 +270,7 @@
     "href": "posts/tt_mediapipe/index.html",
     "title": "Pose Detection for Table Tennis",
     "section": "",
-    "text": "Sceletal pose landmark detection with MediaPipe and OpenCV.\nBackhand topspin slow motion 🏓.\n\nTo be published."
+    "text": "Sceletal pose landmark detection with MediaPipe and OpenCV.\nBackhand topspin slow motion 🏓.\n\nTo be published.\nJupyter Notebook"
   },
   {
     "objectID": "posts/welcome/index.html",

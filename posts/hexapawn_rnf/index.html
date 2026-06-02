@@ -158,14 +158,18 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Zero-like reinforcement learning model, Monte Carlo Tree Search for hexapawn chess, similar to the <a href="https://arxiv.org/pdf/1712.01815">DeepMind’s AlphaZero</a> approach. Visualisation of tree search.</p>
-<p>Practical walktrough to understand the basics of the zero-like reinforcment learning method and <a href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search">Monte Carlo Tree Search (MCTS)</a>. Which is possible then transfer to you own NP-hard combinatorial optimization problem (like finding the best topologies for industrial network devices).</p>
+<p>Zero-like reinforcement learning model, Monte Carlo Tree Search for hexapawn chess, similar to the <a href="https://arxiv.org/pdf/1712.01815">DeepMind’s AlphaZero</a> approach. And visualisation of tree search.</p>
+<p>Practical walktrough to understand the basics of the zero-like reinforcment learning method and <a href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search">Monte Carlo Tree Search (MCTS)</a>. Which is possible then was transfered to real industrial NP-hard combinatorial optimization problem - finding the best topologies for industrial network devices.</p>
+<section id="self-play-with-reinforcement-learning" class="level2">
+<h2 class="anchored" data-anchor-id="self-play-with-reinforcement-learning">Self play with reinforcement learning</h2>
+<p>High-level training loop of the zero-like reinforcement learning pipeline.</p>
 <p><img src="hexapawn_rnf_nz.png" class="img-fluid"></p>
-<p>High-level training loop of the zero-like reinforcement learning pipeline. Thank you Dominik Klein and his book <a href="https://github.com/asdfjkl/neural_network_chess">“Neural Networks for Chess”</a>.</p>
-<!-- {{< embed rnf_mcts.ipynb >}} -->
-<p><a href="https://github.com/nikozhuk/neural_network_chess/blob/main/chapter_05/">Here is full implementation</a></p>
 <p>Training without input data: in zero-sum self-play game two players play against each other for a bit. The game results compared with the model’s predictions, the network is updated, then self-play again with the updated predictions, then network updated, then self-play, … self-learning…</p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/zd_oyTIjR08" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p></p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/zd_oyTIjR08" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div> <!-- {{< embed rnf_mcts.ipynb >}} --><p></p>
+<p><a href="https://github.com/nikozhuk/neural_network_chess/blob/main/chapter_05/">Here is full implementation of the method for small chess game Hexapawn</a>, thank you Dominik Klein and his book <a href="https://github.com/asdfjkl/neural_network_chess">“Neural Networks for Chess”</a>.</p>
+</section>
+<section id="mcts-visualizer" class="level2">
+<h2 class="anchored" data-anchor-id="mcts-visualizer">MCTS visualizer</h2>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 #mcts-wrap{font-family:system-ui,sans-serif;background:#f8f8f6;color:#1a1a1a;
@@ -665,6 +669,7 @@ renderTree();
 
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

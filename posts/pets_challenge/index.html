@@ -156,15 +156,29 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Kaggle’s pet’s facial expression dataset with EfficientNetB5 CNN.</p>
+<section id="a-tiny-web-app" class="level2">
+<h2 class="anchored" data-anchor-id="a-tiny-web-app">A tiny web app</h2>
+<p>that classify a pet’s emotions by a photo. Upload an image, get the predicted emotion + confidence. Trained <a href="https://www.tensorflow.org/api_docs/python/tf/keras/applications/EfficientNetB5">EfficientNetB5</a> CNN on <a href="https://www.kaggle.com/datasets/anshtanwar/pets-facial-expression-dataset">Kaggle’s pet’s facial expression dataset</a>.</p>
 <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/6.15.2/gradio.js"></script>
 <p><gradio-app src="https://happybugsbunny-pets-emotion-classification.hf.space/"></gradio-app></p>
-<p>A tiny web app that classify a pet’s emotions fro a photo. Upload an image, get the predicted emotion + confidence.</p>
-<p>End-to-end pipeline: 1. Training model 2. Wrap it in web interface 3. Deploy</p>
-<p>The model is EfficientNetB5 CNN, transfer learning on balanced dataset. Gradio App on Hugging Face Space (free CPU tier).</p>
-<p><a href="https://github.com/nikozhuk/face-classification">Full code here</a>.</p>
+<p>End-to-end pipeline:<br>
+1. Training of model<br>
+2. Wrapping in web interface<br>
+3. Deployment</p>
+</section>
+<section id="training" class="level2">
+<h2 class="anchored" data-anchor-id="training">1. Training</h2>
+<p>Base model -ResNet50. Then transfer learning on InceptionV3, then balanced dataset, EfficientNetB5.</p>
+<p><a href="https://colab.research.google.com/drive/185ju4ADO7hA9_3aP3Hp_gf7lmL8XNInU?usp=sharing">The final training colab notebook</a>.</p>
+</section>
+<section id="web-interface-and-deployment" class="level2">
+<h2 class="anchored" data-anchor-id="web-interface-and-deployment">2. Web interface and Deployment</h2>
+<p>A FastAPI backend serves a POST/predict/image endpoint that runs uploaded images through a pre-trained EfficientNETB5 Keras model and returns on of four pet emotions (angry, other, sad, happy) with confidence score. A React frontend uploads the image and displays the prediction.</p>
+<p>Almost identical Gradio App was deployed on Hugging Face Space (free CPU tier).</p>
+<p><a href="https://github.com/nikozhuk/face-classification">Web-app code here</a>.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

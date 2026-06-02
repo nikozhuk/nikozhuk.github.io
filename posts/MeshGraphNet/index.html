@@ -187,38 +187,43 @@ window.Quarto = {
 
 <section id="task" class="level2">
 <h2 class="anchored" data-anchor-id="task">Task</h2>
-<p>The goal was to understand how <a href="../../books.html#gnns-books-and-courses">Graph Neural Networks</a> could be used for learning physical dynamics on simulation meshes.</p>
-<p>The original motivation was industrial: simulation of thermal expansion during the laser cutting process. The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.</p>
+<p>The goal was to understand how <a href="../../books.html#gnns-books-and-courses">Graph Neural Networks</a> could be used for learning physical dynamics on simulation meshes.The original motivation was industrial: simulation of thermal expansion during the laser cutting process.The practical experiment was done on CylinderFlow dataset to understand the MeshGraphNet.</p>
 <p>The original data are simulation meshes. For the ML model, mesh is represented as graph:</p>
-<p>mesh vertices -&gt; graph nodes mesh connectivity -&gt; graph edges/adjacency matrix values on vertices -&gt; node features relative geometry on vertices -&gt; edge features</p>
-<p>The task is one-step forward dynamics prediction: <span class="math inline">\(G(t)\)</span> - graph representation of the mesh at timestep <span class="math inline">\(t\)</span> <span class="math inline">\(ΔQ(t) = GNN(G(t))\)</span> <span class="math inline">\(Q(t + 1) = Q(t) + ΔQ(t)\)</span></p>
-<p>For CylinderFlow, Q corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion.</p>
+<p>mesh vertices -&gt; graph nodes<br>
+mesh connectivity -&gt; graph edges/adjacency matrix<br>
+values on vertices -&gt; node features<br>
+relative geometry on vertices -&gt; edge features</p>
+<p>The task is one-step forward dynamics prediction:</p>
+<p><span class="math inline">\(G(t)\)</span> - graph representation of the mesh at timestep <span class="math inline">\(t\)</span></p>
+<p><span class="math display">\[ΔQ(t) = GNN(G(t))\]</span></p>
+<p><span class="math display">\[Q(t + 1) = Q(t) + ΔQ(t)\]</span></p>
+<p>For CylinderFlow example, <span class="math inline">\(Q\)</span> corresponds mainly to the momentum / velocity field on mesh nodes, while pressure is predicted directly as an auxiliary quantity. For the laser-cutting use case, the analogous target would be temperature or thermal expansion.</p>
 </section>
 <section id="why" class="level2">
 <h2 class="anchored" data-anchor-id="why">Why</h2>
 <p>Classical <a href="https://en.wikipedia.org/wiki/Finite_element_method">FEM</a> simulation is accurate, but computationally expensive. The cost grows with mesh resolution and simulation time. New gerometry, boundary conditions usually require re-solving the numerical problem.</p>
-<p>The ML question was whether a neural network can learn the physical dynamics from simulation data (act as simulator).</p>
-<p>MeshGraphNet is natural fit because FEM meshes are already graph-like.</p>
+<p>The ML question was whether a neural network can learn the physical dynamics from simulation data (act as simulator). And MeshGraphNet is natural fit because FEM meshes are already graph-like.</p>
 </section>
 <section id="dataset-cylinderflow" class="level2">
 <h2 class="anchored" data-anchor-id="dataset-cylinderflow">1. Dataset: CylinderFlow</h2>
-<p>CylinderFlow dataset contains fluid flow around a cylinder on 2D triangular meshes generated in <a href="https://www.comsol.com/video-training/getting-started/building-the-mesh-for-a-model-geometry-in-comsol-multiphysics">COMSOL</a>.</p>
-<p>1,200 trajectories 600 timesteps physical quantities: velocity/momentun and pressure</p>
+<p><a href="https://github.com/google-deepmind/deepmind-research/blob/master/meshgraphnets/download_dataset.sh">CylinderFlow dataset</a> contains fluid flow around a cylinder on 2D triangular meshes generated in <a href="https://www.comsol.com/video-training/getting-started/building-the-mesh-for-a-model-geometry-in-comsol-multiphysics">COMSOL</a>.</p>
+<p>1,200 trajectories<br>
+600 timesteps<br>
+physical quantities: velocity/momentun and pressure</p>
 <p><img src="../MeshGraphNet/cylinderflow_dataset.png" class="img-fluid"></p>
 </section>
-<section id="modelmeshgraphnet" class="level2">
-<h2 class="anchored" data-anchor-id="modelmeshgraphnet">2. Model:MeshGraphNet</h2>
-<p>MeshGraphNet - a Graph Neural Network follows encode-&gt; process(message passing)-&gt; decode architecture:</p>
-<p><em>Encoder</em> : maps node and edge features of the graph into latent embeddings.</p>
-<p><em>Processor</em> : performs several rounds of message passing. Neighboring nodes exchange information through graph edges and node/edge embeddings are updated. Aggregate and update node/edge embeddings to learn physical interactions.</p>
-<p><em>Decoder</em> : maps final node embeddings to the predicted physical update (<span class="math inline">\(ΔQ(t) = Decoder (H(t))\)</span>) on each node.</p>
-<p>State update then: <span class="math inline">\(Q(t + 1) = Q(t) + ΔQ(t)\)</span></p>
+<section id="model-meshgraphnet" class="level2">
+<h2 class="anchored" data-anchor-id="model-meshgraphnet">2. Model: MeshGraphNet</h2>
+<p>MeshGraphNet - a Graph Neural Network follows <em>encode-&gt; process(message passing)-&gt; decode</em> architecture:</p>
+<p><strong>Encoder</strong> : maps node and edge features of the graph into latent embeddings.</p>
+<p><strong>Processor</strong> : performs several rounds of <em>message passing</em>. Neighboring nodes exchange information through graph edges and node/edge embeddings are updated. Aggregate and update node/edge embeddings to learn physical interactions.</p>
+<p><strong>Decoder</strong> : maps final node embeddings to the predicted physical update on each node: <span class="math inline">\(ΔQ(t) = Decoder (H(t))\)</span>.</p>
+<p>State update then: <span class="math display">\[Q(t + 1) = Q(t) + ΔQ(t)\]</span></p>
 </section>
 <section id="implementation" class="level2">
 <h2 class="anchored" data-anchor-id="implementation">3. Implementation</h2>
-<p>I used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from Isaac Ju, Robert Lupoiu and Ryan Kanfar (Stanford CS224W course project).</p>
-<p><a href="https://colab.research.google.com/drive/1mZAWP6k9R0DE5NxPzF8yL2HpIUG3aoDC#scrollTo=5jRZNBna7hPV">Open in Google Colab</a></p>
-<p><a href="https://arxiv.org/pdf/2010.03409">Here is original MeshGraphNet paper</a> from T. Pfaff, Meire Fortunato, Alvaro Sanchez-Gonzalez and Peter W. Battaglia.</p>
+<p>I used and studied a public PyTorch Geometric implementation of MeshGraphNet-style model on CylinderFlow dataset from <a href="https://scholar.google.com/citations?user=NldX0YsAAAAJ&amp;hl=en">Isaac Ju</a>, <a href="https://robertlupoiu.com/">Robert Lupoiu</a> and <a href="https://www.linkedin.com/in/rayankanfar/">Ryan Kanfar</a> (<a href="https://medium.com/stanford-cs224w/learning-mesh-based-flow-simulations-on-graph-networks-44983679cf2d">Stanford CS224W course project</a>). <a href="https://colab.research.google.com/drive/1mZAWP6k9R0DE5NxPzF8yL2HpIUG3aoDC#scrollTo=5jRZNBna7hPV">Open in Google Colab</a></p>
+<p><a href="https://arxiv.org/pdf/2010.03409">Here is original Learning Mesh-Based Simulation with Graph Networks paper</a> from <a href="https://tobiaspfaff.com/">Tobias Pfaff</a>, <a href="https://scholar.google.com/citations?user=_fMHSIUAAAAJ&amp;hl=en">Meire Fortunato</a>, <a href="https://scholar.google.com/citations?user=d1oQ8NcAAAAJ&amp;hl=en">Alvaro Sanchez-Gonzalez</a>and <a href="https://scholar.google.com/citations?user=nQ7Ij30AAAAJ&amp;hl=en">Peter W. Battaglia</a>.</p>
 </section>
 <section id="result" class="level2">
 <h2 class="anchored" data-anchor-id="result">4. Result</h2>
