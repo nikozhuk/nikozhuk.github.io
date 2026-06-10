@@ -1,6 +1,6 @@
 ---
 title: "Towards Understanding Geometry of Time"
-date: "2026-06-01"
+date: "2026-06-05"
 date-format: "MMMM YYYY"
 categories: [code,visualisation]
 image: weekdays_visialisation.png
