@@ -1,0 +1,16 @@
+---
+title: "Finding Joy in Gemma2 2B"
+date: "2026-06-01"
+date-format: "MMMM YYYY"
+categories: [code,visualisation]
+image: emotions_vizualisation.png
+---
+Reproducing emotion-concept features on an open-weight model with Sparse Autoencoder (SAE). Based on latest paper ["Emotion Concepts and their Function in a Large Language Model"](https://transformer-circuits.pub/2026/emotions)
+
+
+
+ {{< embed copy_interp-emotions-01_with_output_cells.ipynb >}}
+
+[Run in Kaggle](https://github.com/nikozhuk/interp_emotions/blob/main/interp-emotions-01.ipynb)
+
+ //just for info here, what [enjoyment](https://atlasofemotions.org/#triggers/enjoyment) is really is 🤲
