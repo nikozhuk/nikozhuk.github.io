@@ -1,0 +1,17 @@
+---
+title: "Towards Understanding Geometry of Time"
+date: "2026-06-01"
+date-format: "MMMM YYYY"
+categories: [code,visualisation]
+image: weekdays_visialisation.png
+---
+## Geometric structure of temporal concepts and the limits of sparse autoencoders decompostion. 
+
+Shattering of "time" with SAE (details to be described).
+
+
+
+ {{< embed copy_temporal-interp-research-01_with_output_cells.ipynb >}}
+
+[Run in Kaggle](https://github.com/nikozhuk/interp_emotions/blob/main/temporal-interp-research-01.ipynb)
+
