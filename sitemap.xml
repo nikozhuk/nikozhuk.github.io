@@ -13,76 +13,80 @@
     <lastmod>2026-04-13T09:17:16.275Z</lastmod>
   </url>
   <url>
-    <loc>https://nikozhuk.github.io/posts/pytorch_metric_learning/index.html</loc>
-    <lastmod>2026-06-02T11:35:04.638Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/per_layer_embeddings/index.html</loc>
-    <lastmod>2026-05-31T18:24:20.964Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/lighthouse again works/index.html</loc>
-    <lastmod>2026-05-19T12:15:30.161Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/gemma_niti/index.html</loc>
-    <lastmod>2026-06-02T13:31:48.836Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/emotions/index.html</loc>
-    <lastmod>2026-06-10T11:17:17.868Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/Shapley_values/index.html</loc>
-    <lastmod>2026-05-19T12:21:33.233Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/pics.html</loc>
-    <lastmod>2026-04-13T08:37:36.624Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/index.html</loc>
-    <lastmod>2026-05-06T13:00:15.504Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/about.html</loc>
-    <lastmod>2026-05-31T12:03:00.764Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/books.html</loc>
-    <lastmod>2026-05-19T12:19:42.976Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/industry_projects.html</loc>
-    <lastmod>2026-05-07T10:20:01.271Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/MeshGraphNet/index.html</loc>
-    <lastmod>2026-06-02T12:09:27.264Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/elo_rating/index.html</loc>
-    <lastmod>2026-05-19T11:50:47.546Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/explainable_ml/index.html</loc>
-    <lastmod>2026-05-25T15:08:32.424Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/hexapawn_rnf/index.html</loc>
-    <lastmod>2026-06-02T12:30:21.759Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nikozhuk.github.io/posts/nanoGPT/index.html</loc>
-    <lastmod>2026-06-02T13:15:18.899Z</lastmod>
+    <loc>https://nikozhuk.github.io/posts/signature_detection/index.html</loc>
+    <lastmod>2026-06-02T11:33:48.547Z</lastmod>
   </url>
   <url>
     <loc>https://nikozhuk.github.io/posts/pets_challenge/index.html</loc>
     <lastmod>2026-06-02T13:11:05.278Z</lastmod>
   </url>
   <url>
-    <loc>https://nikozhuk.github.io/posts/signature_detection/index.html</loc>
-    <lastmod>2026-06-02T11:33:48.547Z</lastmod>
+    <loc>https://nikozhuk.github.io/posts/nanoGPT/index.html</loc>
+    <lastmod>2026-06-02T13:15:18.899Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/hexapawn_rnf/index.html</loc>
+    <lastmod>2026-06-02T12:30:21.759Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/explainable_ml/index.html</loc>
+    <lastmod>2026-05-25T15:08:32.424Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/elo_rating/index.html</loc>
+    <lastmod>2026-05-19T11:50:47.546Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/MeshGraphNet/index.html</loc>
+    <lastmod>2026-06-02T12:09:27.264Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/industry_projects.html</loc>
+    <lastmod>2026-05-07T10:20:01.271Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/books.html</loc>
+    <lastmod>2026-05-19T12:19:42.976Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/about.html</loc>
+    <lastmod>2026-05-31T12:03:00.764Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/index.html</loc>
+    <lastmod>2026-05-06T13:00:15.504Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/pics.html</loc>
+    <lastmod>2026-04-13T08:37:36.624Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/Shapley_values/index.html</loc>
+    <lastmod>2026-05-19T12:21:33.233Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/emotions/index.html</loc>
+    <lastmod>2026-06-10T11:35:34.308Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/gemma_niti/index.html</loc>
+    <lastmod>2026-06-02T13:31:48.836Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/lighthouse again works/index.html</loc>
+    <lastmod>2026-05-19T12:15:30.161Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/per_layer_embeddings/index.html</loc>
+    <lastmod>2026-05-31T18:24:20.964Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/pytorch_metric_learning/index.html</loc>
+    <lastmod>2026-06-02T11:35:04.638Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nikozhuk.github.io/posts/time/index.html</loc>
+    <lastmod>2026-06-10T11:34:59.623Z</lastmod>
   </url>
   <url>
     <loc>https://nikozhuk.github.io/posts/tt_mediapipe/index.html</loc>
