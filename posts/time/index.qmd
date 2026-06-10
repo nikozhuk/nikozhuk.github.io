@@ -7,7 +7,9 @@ image: weekdays_visialisation.png
 ---
 ## Geometric structure of temporal concepts and the limits of sparse autoencoders decompostion. 
 
-Shattering of "time" with SAE (details to be described).
+Shattering of "time" with SAE.
+
+(details to be described).
 
 
 
