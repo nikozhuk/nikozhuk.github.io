@@ -4,6 +4,17 @@ date: "2026-06-01"
 date-format: "MMMM YYYY"
 categories: [code,visualisation]
 image: emotions_vizualisation.png
+comments:                
+    giscus:
+      repo: nikozhuk/nikozhuk.github.io                                                                  
+      repo-id: "R_kgDOKT9Kww"
+      category: General
+      category-id: "DIC_kwDOKT9Kw84C8GWG"                                                                
+      mapping: pathname                                                                                      
+      reactions-enabled: true
+      input-position: top                                                                                
+      theme: preferred_color_scheme
+      language: en
 ---
 ## Reproducing emotion-concept features on an open-weight model with Sparse Autoencoder (SAE). 
 Based on latest paper ["Emotion Concepts and their Function in a Large Language Model"](https://transformer-circuits.pub/2026/emotions).

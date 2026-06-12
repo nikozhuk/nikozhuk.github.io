@@ -4,6 +4,17 @@ date: "2026-06-05"
 date-format: "MMMM YYYY"
 categories: [code,visualisation]
 image: weekdays_visialisation.png
+comments:                
+    giscus:
+      repo: nikozhuk/nikozhuk.github.io                                                                  
+      repo-id: "R_kgDOKT9Kww"
+      category: General
+      category-id: "DIC_kwDOKT9Kw84C8GWG"                                                                
+      mapping: pathname                                                                                      
+      reactions-enabled: true
+      input-position: top                                                                                
+      theme: preferred_color_scheme
+      language: en
 ---
 ## Geometric structure of temporal concepts and the limits of sparse autoencoders decompostion. 
 
