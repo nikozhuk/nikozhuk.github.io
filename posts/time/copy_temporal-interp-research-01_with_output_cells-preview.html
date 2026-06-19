@@ -282,6 +282,7 @@
   <li><a href="#temporal-category-means-at-layer-20" id="toc-temporal-category-means-at-layer-20" class="nav-link" data-scroll-target="#temporal-category-means-at-layer-20">Temporal category means at layer 20</a></li>
   <li><a href="#top-differential-features-per-category" id="toc-top-differential-features-per-category" class="nav-link" data-scroll-target="#top-differential-features-per-category">top differential features per category</a></li>
   <li><a href="#temporal-geometry-pca" id="toc-temporal-geometry-pca" class="nav-link" data-scroll-target="#temporal-geometry-pca">temporal geometry PCA</a></li>
+  <li><a href="#pre-prompt-scatter" id="toc-pre-prompt-scatter" class="nav-link" data-scroll-target="#pre-prompt-scatter">Pre-prompt scatter</a></li>
   </ul>
 </nav>
 </nav>
@@ -294,7 +295,7 @@
      <div id="cell-1" class="cell markdown">
 
 </div>
-<p>::: {#cell-2 .cell _uuid=‘8f2839f25d086af736a60e9eeb907d3b93b6e0e5’ _cell_guid=‘b1076dfc-b9ad-4769-8c92-a6c4dae69d19’ trusted=‘true’ quarto-private-1=‘{“key”:“execution”,“value”:{“iopub.status.busy”:“2026-06-05T16:26:06.469984Z”,“iopub.execute_input”:“2026-06-05T16:26:06.470766Z”,“iopub.status.idle”:“2026-06-05T16:26:06.533880Z”,“shell.execute_reply.started”:“2026-06-05T16:26:06.470733Z”,“shell.execute_reply”:“2026-06-05T16:26:06.533091Z”}}’ execution_count=11}</p>
+<p>::: {#cell-2 .cell _uuid=‘8f2839f25d086af736a60e9eeb907d3b93b6e0e5’ _cell_guid=‘b1076dfc-b9ad-4769-8c92-a6c4dae69d19’ trusted=‘true’ quarto-private-1=‘{“key”:“execution”,“value”:{“iopub.status.busy”:“2026-06-19T11:25:44.713263Z”,“iopub.execute_input”:“2026-06-19T11:25:44.714087Z”,“iopub.status.idle”:“2026-06-19T11:25:45.430611Z”,“shell.execute_reply.started”:“2026-06-19T11:25:44.714037Z”,“shell.execute_reply”:“2026-06-19T11:25:45.429740Z”}}’ execution_count=1}</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This Python 3 environment comes with many helpful analytics libraries installed# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python# For example, here's several helpful packages to loadimport numpy as np # linear algebraimport pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)# Input data files are available in the read-only "../input/" directory# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directoryimport osfor dirname, _, filenames in os.walk('/kaggle/input'):    for filename in filenames:        print(os.path.join(dirname, filename))# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save &amp; Run All" # You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session# Use the kagglehub client library to attach Kaggle resources like competitions, datasets, and models to your session# Learn more about kagglehub: https://github.com/Kaggle/kagglehub/blob/main/README.mdimport kagglehub# kagglehub.dataset_download('&lt;owner&gt;/&lt;dataset-slug&gt;')</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>/kaggle/input/datasets/nikolazhuk/interp-emotions-prompts/prompts/joy.py
@@ -307,7 +308,7 @@
 <h2 class="anchored" data-anchor-id="environment-setup">Environment setup</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-4" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:26:12.136273Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:26:12.137225Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:26:12.235247Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:26:12.137185Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:26:12.234615Z&quot;}}" data-execution_count="12">
+<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div id="cell-4" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:25:47.990957Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:25:47.991977Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:25:50.061991Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:25:47.991942Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:25:50.061132Z&quot;}}" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tier-2 leaf libs pinned exactly. Tier-1 (torch/CUDA/python) inherited from the# pinned Kaggle image — do NOT pip-install torch here or you'll break the GPU.#%pip install -q "sae-lens==6.44.2" "transformer-lens==2.18.0" "sae-dashboard==0.7.2" "numpy==1.26.4"import osos.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"os.environ["HF_HOME"] = "/tmp/hf"          # ephemeral scratch, not /contentfrom kaggle_secrets import UserSecretsClientos.environ["HF_TOKEN"] = UserSecretsClient().get_secret("HF_TOKEN")import torchtorch.set_grad_enabled(False)device = "cuda" if torch.cuda.is_available() else "cpu"# Fail fast if the leaf install disturbed tier-1:print("torch", torch.__version__, "| cuda", torch.version.cuda, "| device", device)assert device == "cuda", "GPU not visible — check Accelerator setting / install didn't swap torch"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>torch 2.10.0+cu128 | cuda 12.8 | device cuda</code></pre>
@@ -318,21 +319,21 @@
 <h2 class="anchored" data-anchor-id="load-model-and-sae">Load model and SAE</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div id="cell-6" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:15:18.800876Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:15:18.801634Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:17:29.322256Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:15:18.801605Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:17:29.321427Z&quot;}}" data-execution_count="2">
+<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div id="cell-6" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:25:51.980126Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:25:51.980821Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:27:52.461833Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:25:51.980792Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:27:52.461017Z&quot;}}" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sae_lens <span class="im">import</span> SAE, HookedSAETransformer<span class="co"># This avoids staging model in CPU RAM during loadmodel = HookedSAETransformer.from_pretrained(    "google/gemma-2-2b",    dtype=torch.float32,    device=device,    fold_ln=False,    center_writing_weights=False,    center_unembed=False,    move_to_device=True,)model.eval()print(f"n_layers={model.cfg.n_layers}, d_model={model.cfg.d_model}")sae, cfg_dict, sparsity = SAE.from_pretrained(    release="gemma-scope-2b-pt-res-canonical",    sae_id="layer_20/width_16k/canonical",    device=device)sae = sae.to(torch.bfloat16)allocated = torch.cuda.memory_allocated() / 1e9print(f"GPU allocated: {allocated:.1f}GB / 15GB")print(f"SAE d_sae: {sae.cfg.d_sae}, d_in: {sae.cfg.d_in}")print(sae.cfg.__dict__)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2026-06-05 16:15:28.551388: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+<pre><code>2026-06-19 11:25:59.067492: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-E0000 00:00:1780676128.757325     142 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
-E0000 00:00:1780676128.819082     142 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
-W0000 00:00:1780676129.321764     142 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-W0000 00:00:1780676129.321801     142 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-W0000 00:00:1780676129.321804     142 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-W0000 00:00:1780676129.321806     142 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.</code></pre>
+E0000 00:00:1781868359.292954     155 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1781868359.365838     155 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+W0000 00:00:1781868359.901793     155 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1781868359.901833     155 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1781868359.901836     155 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1781868359.901838     155 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"4decd9d8dfc64f0996d06d82166e94b2","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"e8025b947784448ca8caf24aa673b6aa","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-stderr">
@@ -340,57 +341,57 @@ W0000 00:00:1780676129.321806     142 computation_placer.cc:177] computation pla
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"8a633ea1b6304f7f9da3f8d0fae2d6eb","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"841088950e7b421f9dc7a37dde08417b","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"6cce8c2ae9b64d48b934011498638671","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"117894c64f474fccad5e53858abd647b","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"e20dbd46e80042cea79461d017d03b24","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"704e71db870c4b7fad3470466658135a","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"83c1141171d14976915854d9852a0b0b","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"617af67e1b3b4c328a03604ee91ec9fe","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"6d43727671124575a9bd2a24c5181b0e","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"40070680bf4d463798221ee48dddfd51","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"700aa14a1b8e44b6bee8659e124fbc1a","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"eeca547e441b4833ae97282339fa40dd","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"4c99c108b5f84bc49f5debc14e5cbb42","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"d303273004404c21b9287ddbbad8d572","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"06c0f04a5bef4723adb209b0ec6ac66e","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"4d7d69db189342d6890a2aaea040f1da","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"39bfc2a9af254310925b6775b2b4ef9e","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"cc7a853dd503440d927873cd66edae5c","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"8bfec9dea52e4b81a55e134e6331a4e6","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"2edb9574383f453fabe6d707de7cc31f","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"4a1aee7212e54d979356562068f9f188","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"c7b7bf4c09c74c858ea2288356b397a5","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-stdout">
@@ -399,7 +400,7 @@ n_layers=26, d_model=2304</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"20034a07f8af4a17a2130017d48ad7b4","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"c79623e998d5472dbd4ddc8b59d4daed","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-stdout">
@@ -408,7 +409,7 @@ SAE d_sae: 16384, d_in: 2304
 {'d_in': 2304, 'd_sae': 16384, 'dtype': 'bfloat16', 'device': 'cuda', 'apply_b_dec_to_input': False, 'normalize_activations': 'none', 'reshape_activations': 'none', 'metadata': SAEMetadata({'sae_lens_version': '6.44.2', 'sae_lens_training_version': None, 'model_name': 'gemma-2-2b', 'hook_name': 'blocks.20.hook_resid_post', 'hook_head_index': None, 'prepend_bos': True, 'dataset_path': 'monology/pile-uncopyrighted', 'context_size': 1024, 'neuronpedia_id': 'gemma-2-2b/20-gemmascope-res-16k'})}</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_142/1363097899.py:17: DeprecationWarning: Unpacking SAE objects is deprecated. SAE.from_pretrained() now returns only the SAE object. Use SAE.from_pretrained_with_cfg_and_sparsity() to get the config dict and sparsity as well.
+<pre><code>/tmp/ipykernel_155/1363097899.py:17: DeprecationWarning: Unpacking SAE objects is deprecated. SAE.from_pretrained() now returns only the SAE object. Use SAE.from_pretrained_with_cfg_and_sparsity() to get the config dict and sparsity as well.
   sae, cfg_dict, sparsity = SAE.from_pretrained(</code></pre>
 </div>
 </div></div>
@@ -417,7 +418,7 @@ SAE d_sae: 16384, d_in: 2304
 <h2 class="anchored" data-anchor-id="reproduction-of-days-of-weeksfrom-papernot-all-language-model-features-areone-dimensionally-linear-httpsarxiv.orgpdf2405.14860residual-pca-at-layer-15">Reproduction of days-of-weeksFrom paper:NOT ALL LANGUAGE MODEL FEATURES AREONE-DIMENSIONALLY LINEAR: https://arxiv.org/pdf/2405.14860(residual PCA at layer 15)</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [27]:</pre></div><div id="cell-8" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T17:17:53.043731Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T17:17:53.044264Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T17:17:57.640645Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T17:17:53.044214Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T17:17:57.639909Z&quot;}}" data-execution_count="27">
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-8" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:34.774557Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:34.775764Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:39.578657Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:34.775728Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:39.577756Z&quot;}}" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> npfrom sklearn.decomposition <span class="im">import</span> PCAimport matplotlib.pyplot <span class="im">as</span> pltDAYS <span class="op">=</span> [<span class="st">"Monday"</span>, <span class="st">"Tuesday"</span>, <span class="st">"Wednesday"</span>, <span class="st">"Thursday"</span>, <span class="st">"Friday"</span>, <span class="st">"Saturday"</span>, <span class="st">"Sunday"</span>]<span class="co"># Multiple templates per day to average out template-specific variationTEMPLATES = [    "Today is {}",    "She said it was {}",    "Yesterday was {}",    "I'll see you on {}",    "The meeting is on {}",    "He arrived on {}",    "The deadline was {}",    "School starts on {}",]LAYER = 20def last_token_resid(prompt: str, layer: int = LAYER) -&gt; np.ndarray:    tokens = model.to_tokens(prompt)    _, cache = model.run_with_cache(        tokens,        names_filter=f"blocks.{layer}.hook_resid_post",        return_type=None,    )    return cache[f"blocks.{layer}.hook_resid_post"][0, -1].float().cpu().numpy()# (7, n_templates, d_model)day_vecs = np.stack([    np.stack([last_token_resid(t.format(d)) for t in TEMPLATES])    for d in DAYS])# Mean across templates → (7, d_model)day_means = day_vecs.mean(axis=1)# PCA to 4 components (we'll plot 1-2, but 3-4 are diagnostic)pca = PCA(n_components=4)day_pca = pca.fit_transform(day_means)# Plotfig, axes = plt.subplots(1, 2, figsize=(14, 7))# PC1 vs PC2ax = axes[0]ax.scatter(day_pca[:, 0], day_pca[:, 1], s=300, c=range(7), cmap="hsv")for i, day in enumerate(DAYS):    ax.annotate(day, (day_pca[i, 0], day_pca[i, 1]),                fontsize=12, xytext=(10, 10), textcoords="offset points")# Connect in calendar order, close the looploop = list(range(7)) + [0]ax.plot(day_pca[loop, 0], day_pca[loop, 1], "k--", alpha=0.3)ax.set_xlabel(f"PC1 ({pca.explained_variance_ratio_[0]:.1%} var)")ax.set_ylabel(f"PC2 ({pca.explained_variance_ratio_[1]:.1%} var)")ax.set_title(f"Days of week, layer {LAYER} residual (PC1/PC2)")ax.set_aspect("equal")ax.grid(alpha=0.3)# PC3 vs PC4 — should look like noise if days are truly 2Dax = axes[1]ax.scatter(day_pca[:, 2], day_pca[:, 3], s=300, c=range(7), cmap="hsv")for i, day in enumerate(DAYS):    ax.annotate(day, (day_pca[i, 2], day_pca[i, 3]),                fontsize=12, xytext=(10, 10), textcoords="offset points")ax.set_xlabel(f"PC3 ({pca.explained_variance_ratio_[2]:.1%} var)")ax.set_ylabel(f"PC4 ({pca.explained_variance_ratio_[3]:.1%} var)")ax.set_title("PC3/PC4 — should be noise if structure is truly 2D")ax.set_aspect("equal")ax.grid(alpha=0.3)plt.tight_layout()plt.show()print(f"Variance explained: {pca.explained_variance_ratio_}")print(f"Cumulative: {np.cumsum(pca.explained_variance_ratio_)}")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="">
@@ -427,20 +428,20 @@ SAE d_sae: 16384, d_in: 2304
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Variance explained: [0.3746124  0.2531936  0.13253301 0.12052244]
-Cumulative: [0.3746124  0.62780595 0.76033896 0.8808614 ]</code></pre>
+<pre><code>Variance explained: [0.37461206 0.25319353 0.132533   0.12052249]
+Cumulative: [0.37461206 0.6278056  0.7603386  0.8808611 ]</code></pre>
 </div>
 </div></div>
 <div id="cell-9" class="cell markdown">
 <p>Encoding residuals -&gt;feature activations</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [28]:</pre></div><div id="cell-10" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T17:18:01.692303Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T17:18:01.692805Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T17:18:01.700670Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T17:18:01.692762Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T17:18:01.699709Z&quot;}}" data-execution_count="28">
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="cell-10" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:43.552806Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:43.553565Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:43.558842Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:43.553531Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:43.557949Z&quot;}}" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_feature_acts(prompt: <span class="bu">str</span>, layer: <span class="bu">int</span> <span class="op">=</span> <span class="dv">20</span>):      tokens <span class="op">=</span> model.to_tokens(prompt)      _, cache <span class="op">=</span> model.run_with_cache(          tokens,          names_filter<span class="op">=</span><span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>,          return_type<span class="op">=</span><span class="va">None</span>,      )      resid <span class="op">=</span> cache[<span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>].squeeze(  <span class="dv">0</span>).to(device).<span class="bu">float</span>()      feature_acts <span class="op">=</span> sae.encode(resid)          <span class="co"># fp32 in → fp32 out      print("max act:", feature_acts.max().item(), "| nonzero:",  (feature_acts &gt; 0).sum().item())      return feature_acts, model.to_str_tokens(prompt)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div id="cell-11" class="cell markdown">
 <p>Days-of-wwek SAE decoder PCA</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [29]:</pre></div><div id="cell-12" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T17:18:04.718504Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T17:18:04.719737Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T17:18:08.875595Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T17:18:04.719687Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T17:18:08.874665Z&quot;}}" data-execution_count="29">
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-12" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:48.053049Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:48.053873Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:52.394874Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:48.053839Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:52.394104Z&quot;}}" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find SAE features that activate on day promptsdef features_active_on(prompt: str, threshold: float = 1.0):    acts, _ = get_feature_acts(prompt, layer=LAYER)    active = (acts[-1] &gt; threshold).nonzero().squeeze(-1)    return active.cpu().numpy()# Union of features active on any day promptday_feature_set = set()for d in DAYS:    for t in TEMPLATES:        day_feature_set.update(features_active_on(t.format(d)).tolist())day_features = sorted(day_feature_set)print(f"Found {len(day_features)} candidate features active on day prompts")# Get their decoder vectors → (n_features, d_model)W_dec = sae.W_dec.float().cpu().numpy()  # (d_sae, d_model)day_decoders = W_dec[day_features]# PCA the decoder vectorspca_dec = PCA(n_components=4)dec_pca = pca_dec.fit_transform(day_decoders)# This plot won't directly show a 7-day circle — it shows clustering # structure across ALL features active on day prompts. The circle # emerges when you find the subcluster of ~7-14 features that # specifically co-activate by day.plt.figure(figsize=(8, 8))plt.scatter(dec_pca[:, 0], dec_pca[:, 1], alpha=0.6)plt.title("SAE decoder vectors for day-active features (PC1/PC2)")plt.xlabel("PC1"); plt.ylabel("PC2")plt.show()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>max act: 2040.0 | nonzero: 7208
@@ -501,18 +502,11 @@ max act: 2040.0 | nonzero: 7280
 max act: 2040.0 | nonzero: 7281
 Found 429 candidate features active on day prompts</code></pre>
 </div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">OutOfMemoryError</span>                          Traceback (most recent call last)
-<span class="ansi-green-fg">/tmp/ipykernel_142/1980316275.py</span> in <span class="ansi-cyan-fg">&lt;cell line: 0&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg ansi-bold">     15</span> 
-<span class="ansi-green-fg ansi-bold">     16</span> <span class="ansi-red-fg"># Get their decoder vectors → (n_features, d_model)</span>
-<span class="ansi-green-fg">---&gt; 17</span><span class="ansi-red-fg"> </span>W_dec <span class="ansi-blue-fg">=</span> sae<span class="ansi-blue-fg">.</span>W_dec<span class="ansi-blue-fg">.</span>float<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>cpu<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>numpy<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>  <span class="ansi-red-fg"># (d_sae, d_model)</span>
-<span class="ansi-green-fg ansi-bold">     18</span> day_decoders <span class="ansi-blue-fg">=</span> W_dec<span class="ansi-blue-fg">[</span>day_features<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-fg ansi-bold">     19</span> 
-
-<span class="ansi-red-fg">OutOfMemoryError</span>: CUDA out of memory. Tried to allocate 144.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 103.81 MiB is free. Including non-PyTorch memory, this process has 14.46 GiB memory in use. Of the allocated memory 14.27 GiB is allocated by PyTorch, and 64.77 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)</pre>
+<div class="cell-output cell-output-display">
+<div class="">
+<figure class="figure">
+<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
 </div></div>
@@ -521,7 +515,7 @@ Found 429 candidate features active on day prompts</code></pre>
 <h2 class="anchored" data-anchor-id="load-temporal-prompts-past-present-future-counterfactual-and-hypotheticalfrom-kaggles-imported-dataset">Load temporal prompts: past, present, future, counterfactual and hypotheticalFrom Kaggle’s imported dataset</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [25]:</pre></div><div id="cell-14" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:58:44.638698Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:58:44.639529Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:58:44.760735Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:58:44.639498Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:58:44.760183Z&quot;}}" data-execution_count="25">
+<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="cell-14" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:30:04.739140Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:30:04.740119Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:30:04.757724Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:30:04.740084Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:30:04.756793Z&quot;}}" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, os, globhits <span class="op">=</span> glob.glob(<span class="st">"/kaggle/input/**/temporal.py"</span>, recursive<span class="op">=</span><span class="va">True</span>)<span class="cf">assert</span> hits, <span class="st">"temporal.py not found under /kaggle/input — is the dataset attached?"</span>sys.path.insert(<span class="dv">0</span>, os.path.dirname(hits[<span class="dv">0</span>]))<span class="im">from</span> temporal <span class="im">import</span> ALL_TEMPORAL_CATEGORIES</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div id="cell-15" class="cell markdown">
@@ -529,7 +523,7 @@ Found 429 candidate features active on day prompts</code></pre>
 <h2 class="anchored" data-anchor-id="geometry-at-8-14-20-25-layers">Geometry at 8, 14, 20, 25 layers</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div id="cell-16" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:27:34.816304Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:27:34.817034Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:28:09.384574Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:27:34.817001Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:28:09.383917Z&quot;}}" data-execution_count="14">
+<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="cell-16" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:30:07.143448Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:30:07.144284Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:30:33.037349Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:30:07.144250Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:30:33.036638Z&quot;}}" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>LAYERS <span class="op">=</span> [<span class="dv">8</span>, <span class="dv">14</span>, <span class="dv">20</span>, <span class="dv">25</span>]<span class="kw">def</span> last_token_resid(prompt: <span class="bu">str</span>, layer: <span class="bu">int</span>):    tokens <span class="op">=</span> model.to_tokens(prompt)    _, cache <span class="op">=</span> model.run_with_cache(        tokens,        names_filter<span class="op">=</span><span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>,        return_type<span class="op">=</span><span class="va">None</span>,    )    <span class="cf">return</span> cache[<span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>][<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>].<span class="bu">float</span>()<span class="co"># Compute category means at every layerORDERED_CATS = ["past", "present", "future", "counterfactual", "hypothetical"]resid_means_by_layer = {}  # layer -&gt; {cat: tensor(d_model,)}for L in LAYERS:    resid_means_by_layer[L] = {}    for cat in ORDERED_CATS:        vecs = [last_token_resid(p, L) for p in ALL_TEMPORAL_CATEGORIES[cat]]        resid_means_by_layer[L][cat] = torch.stack(vecs).mean(0)    print(f"Layer {L} done")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Layer 8 done
@@ -538,7 +532,7 @@ Layer 20 done
 Layer 25 done</code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div id="cell-17" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:28:18.802943Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:28:18.803648Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:28:19.721432Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:28:18.803612Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:28:19.720668Z&quot;}}" data-execution_count="15">
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-17" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:31:49.518327Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:31:49.519158Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:31:50.288769Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:31:49.519123Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:31:50.288102Z&quot;}}" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot PCA grid: 2x2 layers, PC1/PC2 eachimport numpy as npfrom sklearn.decomposition import PCAimport matplotlib.pyplot as pltcolors = ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728", "#9467bd"]fig, axes = plt.subplots(2, 2, figsize=(14, 14))for ax, L in zip(axes.flat, LAYERS):    M = torch.stack([resid_means_by_layer[L][c] for c in ORDERED_CATS]).cpu().numpy()    M = M - M.mean(0, keepdims=True)    pca = PCA(n_components=2)    P = pca.fit_transform(M)    for i, cat in enumerate(ORDERED_CATS):        ax.scatter(P[i, 0], P[i, 1], s=400, c=colors[i])        ax.annotate(cat, (P[i, 0], P[i, 1]),                    fontsize=11, xytext=(10, 10), textcoords="offset points")    ax.set_title(f"Layer {L} — PC1 {pca.explained_variance_ratio_[0]:.0%}, "                 f"PC2 {pca.explained_variance_ratio_[1]:.0%}")    ax.axhline(0, color="k", lw=0.4); ax.axvline(0, color="k", lw=0.4)    ax.grid(alpha=0.3); ax.set_aspect("equal")plt.tight_layout()plt.show()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="">
@@ -553,7 +547,7 @@ Layer 25 done</code></pre>
 <h2 class="anchored" data-anchor-id="temporal-category-means-at-layer-20">Temporal category means at layer 20</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [19]:</pre></div><div id="cell-19" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:35:34.355368Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:35:34.356066Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:35:55.060850Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:35:34.356034Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:35:55.060013Z&quot;}}" data-execution_count="19">
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-19" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:02.520185Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:02.520519Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:18.757960Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:02.520491Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:18.756956Z&quot;}}" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === STEP 1: Compute category means (last-token aggregation) ===from temporal import ALL_TEMPORAL_CATEGORIEScategory_means_sae = {}  # category -&gt; mean SAE activation vector (d_sae,)category_means_resid = {}  # category -&gt; mean residual stream vector (d_model,)for cat_name, prompts in ALL_TEMPORAL_CATEGORIES.items():    sae_vecs = []    resid_vecs = []    for p in prompts:        # SAE features (uses your existing get_feature_acts)        acts, _ = get_feature_acts(p, layer=20)        sae_vecs.append(acts[-1])        # Raw residual (for the Engels-style PCA)        tokens = model.to_tokens(p)        _, cache = model.run_with_cache(            tokens, names_filter="blocks.20.hook_resid_post", return_type=None,        )        resid_vecs.append(cache["blocks.20.hook_resid_post"][0, -1].float())    category_means_sae[cat_name]   = torch.stack(sae_vecs).mean(0)    category_means_resid[cat_name] = torch.stack(resid_vecs).mean(0)    print(f"{cat_name:&gt;15}: {len(prompts)} prompts processed")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>max act: 2040.0 | nonzero: 7539
@@ -689,7 +683,7 @@ max act: 2040.0 | nonzero: 7594
 <h2 class="anchored" data-anchor-id="top-differential-features-per-category">top differential features per category</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [20]:</pre></div><div id="cell-21" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:36:21.015634Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:36:21.016441Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:36:21.131613Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:36:21.016409Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:36:21.130915Z&quot;}}" data-execution_count="20">
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-21" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:27.158065Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:27.158881Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:27.263793Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:27.158848Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:27.263061Z&quot;}}" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === STEP 2: Find candidate features per category (vs neutral timeless) ===NP_URL = "https://neuronpedia.org/gemma-2-2b/20-gemmascope-res-16k/"def top_features_vs_neutral(category_name, k=15):    diff = category_means_sae[category_name] - category_means_sae["neutral"]    top = torch.topk(diff, k)    return pd.DataFrame({        "feature_id":      top.indices.tolist(),        "diff_score":      top.values.tolist(),        f"{category_name}_mean": [category_means_sae[category_name][i].item() for i in top.indices],        "neutral_mean":    [category_means_sae["neutral"][i].item()         for i in top.indices],        "neuronpedia":     [NP_URL + str(i.item()) for i in top.indices],    })# For each temporal category, what are the top candidate features?for cat in ["past", "present", "future", "counterfactual", "hypothetical"]:    print(f"\n=== {cat.upper()} ===")    print(top_features_vs_neutral(cat).to_string(index=False))    </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -789,7 +783,7 @@ max act: 2040.0 | nonzero: 7594
 <h2 class="anchored" data-anchor-id="temporal-geometry-pca">temporal geometry PCA</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [21]:</pre></div><div id="cell-23" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:36:53.812216Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:36:53.812886Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:36:54.296408Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:36:53.812853Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:36:54.295642Z&quot;}}" data-execution_count="21">
+<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-23" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:48.240229Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:48.241055Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:48.693917Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:48.241020Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:48.693210Z&quot;}}" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === STEP 3: Geometry — PCA on category means ===import numpy as npfrom sklearn.decomposition import PCAimport matplotlib.pyplot as pltORDERED_CATS = ["past", "present", "future", "counterfactual", "hypothetical"]# Stack residual stream means → (5, d_model)M = torch.stack([category_means_resid[c] for c in ORDERED_CATS]).cpu().numpy()# Center (recommended for PCA)M_centered = M - M.mean(0, keepdims=True)pca = PCA(n_components=4)M_pca = pca.fit_transform(M_centered)# Plot PC1/PC2fig, axes = plt.subplots(1, 2, figsize=(14, 7))colors = ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728", "#9467bd"]for ax_idx, (px, py) in enumerate([(0, 1), (2, 3)]):    ax = axes[ax_idx]    for i, cat in enumerate(ORDERED_CATS):        ax.scatter(M_pca[i, px], M_pca[i, py], s=400, c=colors[i], label=cat)        ax.annotate(cat, (M_pca[i, px], M_pca[i, py]),                    fontsize=13, xytext=(12, 12), textcoords="offset points")    ax.set_xlabel(f"PC{px+1} ({pca.explained_variance_ratio_[px]:.1%} var)")    ax.set_ylabel(f"PC{py+1} ({pca.explained_variance_ratio_[py]:.1%} var)")    ax.set_title(f"Temporal categories, layer 20 residual (PC{px+1}/PC{py+1})")    ax.set_aspect("equal")    ax.grid(alpha=0.3)    ax.axhline(0, color="k", lw=0.5)    ax.axvline(0, color="k", lw=0.5)plt.tight_layout()plt.show()print(f"Variance explained: {pca.explained_variance_ratio_}")print(f"Cumulative:         {np.cumsum(pca.explained_variance_ratio_)}")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="">
@@ -802,6 +796,51 @@ max act: 2040.0 | nonzero: 7594
 <pre><code>Variance explained: [0.4102727  0.33915818 0.13833533 0.11223382]
 Cumulative:         [0.4102727  0.7494309  0.88776624 1.        ]</code></pre>
 </div>
+</div></div>
+<div id="cell-24" class="cell markdown">
+<section id="pre-prompt-scatter" class="level2">
+<h2 class="anchored" data-anchor-id="pre-prompt-scatter">Pre-prompt scatter</h2>
+</section>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="cell-25" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:52.727429Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:52.727785Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:33:00.203572Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:52.727756Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:33:00.202737Z&quot;}}" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> npfrom sklearn.decomposition <span class="im">import</span> PCAfrom sklearn.metrics <span class="im">import</span> silhouette_scoreimport matplotlib.pyplot <span class="im">as</span> pltORDERED_CATS <span class="op">=</span> [<span class="st">"past"</span>, <span class="st">"present"</span>, <span class="st">"future"</span>, <span class="st">"counterfactual"</span>, <span class="st">"hypothetical"</span>]colors <span class="op">=</span> [<span class="st">"#1f77b4"</span>, <span class="st">"#2ca02c"</span>, <span class="st">"#ff7f0e"</span>, <span class="st">"#d62728"</span>, <span class="st">"#9467bd"</span>]<span class="co"># Collect all 100 prompts' last-token residuals at layer 20all_vecs, all_labels = [], []for cat in ORDERED_CATS:    for p in ALL_TEMPORAL_CATEGORIES[cat]:        tokens = model.to_tokens(p)        _, cache = model.run_with_cache(            tokens, names_filter="blocks.20.hook_resid_post", return_type=None,        )        all_vecs.append(cache["blocks.20.hook_resid_post"][0, -1].float())        all_labels.append(cat)    print(f"{cat}: done")X = torch.stack(all_vecs).cpu().numpy()X_centered = X - X.mean(0, keepdims=True)pca = PCA(n_components=4)P = pca.fit_transform(X_centered)# Plotfig, axes = plt.subplots(1, 2, figsize=(16, 8))for ax_idx, (px, py) in enumerate([(0, 1), (2, 3)]):    ax = axes[ax_idx]    for i, cat in enumerate(ORDERED_CATS):        mask = np.array([l == cat for l in all_labels])        # Individual points        ax.scatter(P[mask, px], P[mask, py], s=60, c=colors[i],                   alpha=0.5, label=cat, edgecolors="white", linewidth=0.5)        # Centroid as black-bordered X        cx, cy = P[mask, px].mean(), P[mask, py].mean()        ax.scatter(cx, cy, s=400, c=colors[i], edgecolors="black",                   linewidth=2, marker="X", zorder=5)    ax.set_xlabel(f"PC{px+1} ({pca.explained_variance_ratio_[px]:.1%} var)")    ax.set_ylabel(f"PC{py+1} ({pca.explained_variance_ratio_[py]:.1%} var)")    ax.set_title(f"All 100 prompts, layer 20 (PC{px+1}/PC{py+1})")    ax.legend(loc="best", framealpha=0.9)    ax.grid(alpha=0.3)    ax.axhline(0, color="k", lw=0.4); ax.axvline(0, color="k", lw=0.4)plt.tight_layout()plt.show()# Cluster separation metricslabel_ids = np.array([ORDERED_CATS.index(l) for l in all_labels])sil_2d = silhouette_score(P[:, :2], label_ids)sil_4d = silhouette_score(P[:, :4], label_ids)print(f"\nSilhouette score in PC1-2: {sil_2d:.3f}")print(f"Silhouette score in PC1-4: {sil_4d:.3f}")print("Interpretation: &gt; 0.25 = clear cluster structure, "      "0.1-0.25 = weak structure, &lt; 0.1 = mostly overlapping")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>past: done
+present: done
+future: done
+counterfactual: done
+hypothetical: done</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div class="">
+<figure class="figure">
+<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-14-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Silhouette score in PC1-2: -0.119
+Silhouette score in PC1-4: 0.010
+Interpretation: &gt; 0.25 = clear cluster structure, 0.1-0.25 = weak structure, &lt; 0.1 = mostly overlapping</code></pre>
+</div>
+</div></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div id="cell-26" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:33:04.979557Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:33:04.980542Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:33:05.730309Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:33:04.980505Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:33:05.729400Z&quot;}}" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA basis from category means; project individual prompts into itcat_means_raw = np.stack([    X[np.array(all_labels) == cat].mean(0)    for cat in ORDERED_CATS])# Center on grand mean of category meansgrand_mean = cat_means_raw.mean(0, keepdims=True)pca_means = PCA(n_components=4)pca_means.fit(cat_means_raw - grand_mean)# Project individual prompts into the same basisP_mb = pca_means.transform(X - grand_mean)# Plotfig, axes = plt.subplots(1, 2, figsize=(16, 8))for ax_idx, (px, py) in enumerate([(0, 1), (2, 3)]):    ax = axes[ax_idx]    for i, cat in enumerate(ORDERED_CATS):        mask = np.array([l == cat for l in all_labels])        ax.scatter(P_mb[mask, px], P_mb[mask, py], s=60, c=colors[i],                   alpha=0.5, label=cat, edgecolors="white", linewidth=0.5)        cx, cy = P_mb[mask, px].mean(), P_mb[mask, py].mean()        ax.scatter(cx, cy, s=400, c=colors[i], edgecolors="black",                   linewidth=2, marker="X", zorder=5)    ax.set_xlabel(f"PC{px+1} ({pca_means.explained_variance_ratio_[px]:.1%} of between-category var)")    ax.set_ylabel(f"PC{py+1} ({pca_means.explained_variance_ratio_[py]:.1%} of between-category var)")    ax.set_title(f"Prompts in category-means basis (PC{px+1}/PC{py+1})")    ax.legend(loc="best", framealpha=0.9)    ax.grid(alpha=0.3)    ax.axhline(0, color="k", lw=0.4); ax.axvline(0, color="k", lw=0.4)plt.tight_layout()plt.show()sil_mb = silhouette_score(P_mb[:, :2], label_ids)print(f"Silhouette in means-basis (PC1-2): {sil_mb:.3f}")print(f"Silhouette in means-basis (PC1-4): {silhouette_score(P_mb[:, :4], label_ids):.3f}")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="">
+<figure class="figure">
+<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Silhouette in means-basis (PC1-2): 0.196
+Silhouette in means-basis (PC1-4): 0.310</code></pre>
+</div>
+</div></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="cell-27" class="cell" data-trusted="true">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 
 

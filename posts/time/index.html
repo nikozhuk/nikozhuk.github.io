@@ -170,7 +170,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="kaggles-defaults" class="level2 quarto-embed-nb-cell">
 <h2 class="anchored" data-anchor-id="kaggles-defaults">Kaggle’s defaults</h2>
-<p>::: {#cell-1 .cell _uuid=‘8f2839f25d086af736a60e9eeb907d3b93b6e0e5’ _cell_guid=‘b1076dfc-b9ad-4769-8c92-a6c4dae69d19’ trusted=‘true’ quarto-private-1=‘{“key”:“execution”,“value”:{“iopub.status.busy”:“2026-06-05T16:26:06.469984Z”,“iopub.execute_input”:“2026-06-05T16:26:06.470766Z”,“iopub.status.idle”:“2026-06-05T16:26:06.533880Z”,“shell.execute_reply.started”:“2026-06-05T16:26:06.470733Z”,“shell.execute_reply”:“2026-06-05T16:26:06.533091Z”}}’ execution_count=11}</p>
+<p>::: {#cell-1 .cell _uuid=‘8f2839f25d086af736a60e9eeb907d3b93b6e0e5’ _cell_guid=‘b1076dfc-b9ad-4769-8c92-a6c4dae69d19’ trusted=‘true’ quarto-private-1=‘{“key”:“execution”,“value”:{“iopub.status.busy”:“2026-06-19T11:25:44.713263Z”,“iopub.execute_input”:“2026-06-19T11:25:44.714087Z”,“iopub.status.idle”:“2026-06-19T11:25:45.430611Z”,“shell.execute_reply.started”:“2026-06-19T11:25:44.714037Z”,“shell.execute_reply”:“2026-06-19T11:25:45.429740Z”}}’ execution_count=1}</p>
 <div class="cell-output cell-output-stdout">
 <pre><code>/kaggle/input/datasets/nikolazhuk/interp-emotions-prompts/prompts/joy.py
 /kaggle/input/datasets/nikolazhuk/interp-emotions-prompts/prompts/neutral.py
@@ -179,7 +179,7 @@ ul.task-list li input[type="checkbox"] {
 <a class="quarto-notebook-link" id="nblink-1" href="copy_temporal-interp-research-01_with_output_cells-preview.html#cell-0">Source: Kaggle's defaults</a></section>
 <section id="environment-setup" class="level2">
 <h2 class="anchored" data-anchor-id="environment-setup">Environment setup</h2>
-<div id="cell-3" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:26:12.136273Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:26:12.137225Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:26:12.235247Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:26:12.137185Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:26:12.234615Z&quot;}}" data-execution_count="12">
+<div id="cell-3" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:25:47.990957Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:25:47.991977Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:25:50.061991Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:25:47.991942Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:25:50.061132Z&quot;}}" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>torch 2.10.0+cu128 | cuda 12.8 | device cuda</code></pre>
 </div>
@@ -187,65 +187,65 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="load-model-and-sae" class="level2">
 <h2 class="anchored" data-anchor-id="load-model-and-sae">Load model and SAE</h2>
-<div id="cell-5" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:15:18.800876Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:15:18.801634Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:17:29.322256Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:15:18.801605Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:17:29.321427Z&quot;}}" data-execution_count="2">
+<div id="cell-5" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:25:51.980126Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:25:51.980821Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:27:52.461833Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:25:51.980792Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:27:52.461017Z&quot;}}" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"4decd9d8dfc64f0996d06d82166e94b2","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"e8025b947784448ca8caf24aa673b6aa","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"8a633ea1b6304f7f9da3f8d0fae2d6eb","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"841088950e7b421f9dc7a37dde08417b","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"6cce8c2ae9b64d48b934011498638671","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"117894c64f474fccad5e53858abd647b","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"e20dbd46e80042cea79461d017d03b24","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"704e71db870c4b7fad3470466658135a","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"83c1141171d14976915854d9852a0b0b","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"617af67e1b3b4c328a03604ee91ec9fe","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"6d43727671124575a9bd2a24c5181b0e","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"40070680bf4d463798221ee48dddfd51","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"700aa14a1b8e44b6bee8659e124fbc1a","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"eeca547e441b4833ae97282339fa40dd","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"4c99c108b5f84bc49f5debc14e5cbb42","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"d303273004404c21b9287ddbbad8d572","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"06c0f04a5bef4723adb209b0ec6ac66e","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"4d7d69db189342d6890a2aaea040f1da","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"39bfc2a9af254310925b6775b2b4ef9e","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"cc7a853dd503440d927873cd66edae5c","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"8bfec9dea52e4b81a55e134e6331a4e6","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"2edb9574383f453fabe6d707de7cc31f","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"4a1aee7212e54d979356562068f9f188","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"c7b7bf4c09c74c858ea2288356b397a5","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-stdout">
@@ -254,7 +254,7 @@ n_layers=26, d_model=2304</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major":2,"version_minor":0,"model_id":"20034a07f8af4a17a2130017d48ad7b4","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"version_major":2,"version_minor":0,"model_id":"c79623e998d5472dbd4ddc8b59d4daed","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-stdout">
@@ -266,7 +266,7 @@ SAE d_sae: 16384, d_in: 2304
 </section>
 <section id="reproduction-of-days-of-weeksfrom-papernot-all-language-model-features-areone-dimensionally-linear-httpsarxiv.orgpdf2405.14860residual-pca-at-layer-15" class="level2">
 <h2 class="anchored" data-anchor-id="reproduction-of-days-of-weeksfrom-papernot-all-language-model-features-areone-dimensionally-linear-httpsarxiv.orgpdf2405.14860residual-pca-at-layer-15">Reproduction of days-of-weeksFrom paper:NOT ALL LANGUAGE MODEL FEATURES AREONE-DIMENSIONALLY LINEAR: https://arxiv.org/pdf/2405.14860(residual PCA at layer 15)</h2>
-<div id="cell-7" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T17:17:53.043731Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T17:17:53.044264Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T17:17:57.640645Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T17:17:53.044214Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T17:17:57.639909Z&quot;}}" data-execution_count="27">
+<div id="cell-7" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:34.774557Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:34.775764Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:39.578657Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:34.775728Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:39.577756Z&quot;}}" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -275,13 +275,13 @@ SAE d_sae: 16384, d_in: 2304
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Variance explained: [0.3746124  0.2531936  0.13253301 0.12052244]
-Cumulative: [0.3746124  0.62780595 0.76033896 0.8808614 ]</code></pre>
+<pre><code>Variance explained: [0.37461206 0.25319353 0.132533   0.12052249]
+Cumulative: [0.37461206 0.6278056  0.7603386  0.8808611 ]</code></pre>
 </div>
 </div>
 <p>Encoding residuals -&gt;feature activations</p>
 <p>Days-of-wwek SAE decoder PCA</p>
-<div id="cell-11" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T17:18:04.718504Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T17:18:04.719737Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T17:18:08.875595Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T17:18:04.719687Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T17:18:08.874665Z&quot;}}" data-execution_count="29">
+<div id="cell-11" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:48.053049Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:48.053873Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:52.394874Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:48.053839Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:52.394104Z&quot;}}" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>max act: 2040.0 | nonzero: 7208
 max act: 2040.0 | nonzero: 7313
@@ -341,18 +341,11 @@ max act: 2040.0 | nonzero: 7280
 max act: 2040.0 | nonzero: 7281
 Found 429 candidate features active on day prompts</code></pre>
 </div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">OutOfMemoryError</span>                          Traceback (most recent call last)
-<span class="ansi-green-fg">/tmp/ipykernel_142/1980316275.py</span> in <span class="ansi-cyan-fg">&lt;cell line: 0&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg ansi-bold">     15</span> 
-<span class="ansi-green-fg ansi-bold">     16</span> <span class="ansi-red-fg"># Get their decoder vectors → (n_features, d_model)</span>
-<span class="ansi-green-fg">---&gt; 17</span><span class="ansi-red-fg"> </span>W_dec <span class="ansi-blue-fg">=</span> sae<span class="ansi-blue-fg">.</span>W_dec<span class="ansi-blue-fg">.</span>float<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>cpu<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>numpy<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>  <span class="ansi-red-fg"># (d_sae, d_model)</span>
-<span class="ansi-green-fg ansi-bold">     18</span> day_decoders <span class="ansi-blue-fg">=</span> W_dec<span class="ansi-blue-fg">[</span>day_features<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-fg ansi-bold">     19</span> 
-
-<span class="ansi-red-fg">OutOfMemoryError</span>: CUDA out of memory. Tried to allocate 144.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 103.81 MiB is free. Including non-PyTorch memory, this process has 14.46 GiB memory in use. Of the allocated memory 14.27 GiB is allocated by PyTorch, and 64.77 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)</pre>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/copy_temporal-interp-research-01_with_output_cells-cell-7-output-2.png" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
 </div>
@@ -362,7 +355,7 @@ Found 429 candidate features active on day prompts</code></pre>
 </section>
 <section id="geometry-at-8-14-20-25-layers" class="level2">
 <h2 class="anchored" data-anchor-id="geometry-at-8-14-20-25-layers">Geometry at 8, 14, 20, 25 layers</h2>
-<div id="cell-15" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:27:34.816304Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:27:34.817034Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:28:09.384574Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:27:34.817001Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:28:09.383917Z&quot;}}" data-execution_count="14">
+<div id="cell-15" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:30:07.143448Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:30:07.144284Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:30:33.037349Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:30:07.144250Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:30:33.036638Z&quot;}}" data-execution_count="8">
 <div class="cell-output cell-output-stdout">
 <pre><code>Layer 8 done
 Layer 14 done
@@ -370,7 +363,7 @@ Layer 20 done
 Layer 25 done</code></pre>
 </div>
 </div>
-<div id="cell-16" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:28:18.802943Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:28:18.803648Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:28:19.721432Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:28:18.803612Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:28:19.720668Z&quot;}}" data-execution_count="15">
+<div id="cell-16" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:31:49.518327Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:31:49.519158Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:31:50.288769Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:31:49.519123Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:31:50.288102Z&quot;}}" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -382,7 +375,7 @@ Layer 25 done</code></pre>
 </section>
 <section id="temporal-category-means-at-layer-20" class="level2">
 <h2 class="anchored" data-anchor-id="temporal-category-means-at-layer-20">Temporal category means at layer 20</h2>
-<div id="cell-18" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:35:34.355368Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:35:34.356066Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:35:55.060850Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:35:34.356034Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:35:55.060013Z&quot;}}" data-execution_count="19">
+<div id="cell-18" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:02.520185Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:02.520519Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:18.757960Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:02.520491Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:18.756956Z&quot;}}" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>max act: 2040.0 | nonzero: 7539
 max act: 2040.0 | nonzero: 7409
@@ -515,7 +508,7 @@ max act: 2040.0 | nonzero: 7594
 </section>
 <section id="top-differential-features-per-category" class="level2">
 <h2 class="anchored" data-anchor-id="top-differential-features-per-category">top differential features per category</h2>
-<div id="cell-20" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:36:21.015634Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:36:21.016441Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:36:21.131613Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:36:21.016409Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:36:21.130915Z&quot;}}" data-execution_count="20">
+<div id="cell-20" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:27.158065Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:27.158881Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:27.263793Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:27.158848Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:27.263061Z&quot;}}" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 === PAST ===
@@ -612,7 +605,7 @@ max act: 2040.0 | nonzero: 7594
 </section>
 <section id="temporal-geometry-pca" class="level2">
 <h2 class="anchored" data-anchor-id="temporal-geometry-pca">temporal geometry PCA</h2>
-<div id="cell-22" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-05T16:36:53.812216Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-05T16:36:53.812886Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-05T16:36:54.296408Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-05T16:36:53.812853Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-05T16:36:54.295642Z&quot;}}" data-execution_count="21">
+<div id="cell-22" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:48.240229Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:48.241055Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:48.693917Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:48.241020Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:48.693210Z&quot;}}" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -623,6 +616,44 @@ max act: 2040.0 | nonzero: 7594
 <div class="cell-output cell-output-stdout">
 <pre><code>Variance explained: [0.4102727  0.33915818 0.13833533 0.11223382]
 Cumulative:         [0.4102727  0.7494309  0.88776624 1.        ]</code></pre>
+</div>
+</div>
+</section>
+<section id="pre-prompt-scatter" class="level2">
+<h2 class="anchored" data-anchor-id="pre-prompt-scatter">Pre-prompt scatter</h2>
+<div id="cell-24" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:52.727429Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:52.727785Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:33:00.203572Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:52.727756Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:33:00.202737Z&quot;}}" data-execution_count="13">
+<div class="cell-output cell-output-stdout">
+<pre><code>past: done
+present: done
+future: done
+counterfactual: done
+hypothetical: done</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/copy_temporal-interp-research-01_with_output_cells-cell-14-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Silhouette score in PC1-2: -0.119
+Silhouette score in PC1-4: 0.010
+Interpretation: &gt; 0.25 = clear cluster structure, 0.1-0.25 = weak structure, &lt; 0.1 = mostly overlapping</code></pre>
+</div>
+</div>
+<div id="cell-25" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:33:04.979557Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:33:04.980542Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:33:05.730309Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:33:04.980505Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:33:05.729400Z&quot;}}" data-execution_count="14">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/copy_temporal-interp-research-01_with_output_cells-cell-15-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Silhouette in means-basis (PC1-2): 0.196
+Silhouette in means-basis (PC1-4): 0.310</code></pre>
 </div>
 </div>
 <p>:::</p>
