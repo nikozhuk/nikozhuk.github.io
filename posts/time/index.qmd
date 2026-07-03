@@ -1,8 +1,9 @@
 ---
 title: "Towards Understanding Geometry of Time"
+description: "How Gemma 2 2B represents time: PCA finds a clean two-axis temporal structure at layer 20 that individual GemmaScope SAE features dilute across many latents."
 date: "2026-06-05"
 date-format: "MMMM YYYY"
-categories: [code,visualisation]
+categories: [interpretability,code,visualisation]
 image: weekdays_visialisation.png
 comments:                
     giscus:
@@ -18,7 +19,7 @@ comments:
 ---
 ## Geometric structure of temporal concepts and the limits of sparse autoencoders decompostion. 
 
-Shattering of "time" with SAE.
+Dilution of "time": PCA vs SAE features in Gemma 2 2B
 
 (details to be described).
 

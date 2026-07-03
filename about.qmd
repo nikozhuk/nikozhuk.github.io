@@ -19,7 +19,7 @@ about:
 
 I'm human,
 
-[💻 ml-engineer](), [researcher](), [🏓tt-trainer](), [🎨 artist](), father 
+[💻 ml-engineer](), [researcher](), [🏓tt-trainer](), [🎨 artist](), father, [and more](more_about.qmd) 
 
 who did these projects 
 

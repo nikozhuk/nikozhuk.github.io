@@ -2,7 +2,7 @@
 title: "Shapley Values Explaining Machine Learning Models"
 date: "2020-03-17"
 date-format: "MMMM YYYY"
-categories: [code]
+categories: [interpretability, code]
 ---
 
 Explaining black box machine learning models with Shapley Values, SHAP, ...

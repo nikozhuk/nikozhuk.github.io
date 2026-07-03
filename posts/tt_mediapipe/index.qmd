@@ -6,7 +6,7 @@ categories: [code,tt, video]
 image: nzhukov_tt.png
 ---
 
-Sceletal pose landmark detection with MediaPipe and OpenCV. 
+Skeletal pose landmark detection with MediaPipe and OpenCV. 
 
 Backhand topspin slow motion 🏓.
 

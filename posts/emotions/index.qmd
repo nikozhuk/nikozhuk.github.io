@@ -2,7 +2,7 @@
 title: "Finding Joy in Gemma2 2B"
 date: "2026-06-01"
 date-format: "MMMM YYYY"
-categories: [code,visualisation]
+categories: [interpretability,code,visualisation]
 image: emotions_vizualisation.png
 comments:                
     giscus:

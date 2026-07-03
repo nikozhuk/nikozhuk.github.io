@@ -5,11 +5,18 @@ project:
     - "*.qmd"
     - "posts/**/*.qmd"
     - "!posts/**/*.ipynb"
+  resources:
+    - llms.txt
 
 website:
-  title: ""
+  title: "Nikolai Zhukov"
+  description: "Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany."
+  site-url: https://nikozhuk.github.io
+  open-graph: true
+  twitter-card: true
   favicon: nzlogo.png
   navbar:
+    title: false
     logo: nzlogo.png
     right:
       - about.qmd
@@ -25,6 +32,7 @@ format:
   html:
     theme: cosmo
     css: styles.css
+    include-in-header: person-schema.html
 
 
 
