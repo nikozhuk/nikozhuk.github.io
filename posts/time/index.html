@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="How Gemma 2 2B represents time: PCA finds a clean two-axis temporal structure at layer 20 that individual GemmaScope SAE features dilute across many latents.">
 
-<title>Towards Understanding Geometry of Time</title>
+<title>Towards Understanding Geometry of Time – Nikolai Zhukov</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,6 +72,28 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Nikolai Zhukov",
+  "url": "https://nikozhuk.github.io",
+  "jobTitle": "ML Engineer / Researcher",
+  "address": { "@type": "PostalAddress", "addressLocality": "", "addressCountry": "DE" },
+  "alumniOf": "University of Saarland",
+  "knowsAbout": [
+    "mechanistic interpretability",
+    "sparse autoencoders",
+    "geometric deep learning",
+    "temporal representations in language models",
+    "Python", "pyTorch"
+  ],
+  "sameAs": [
+    "https://github.com/nikozhuk",
+    "https://www.linkedin.com/in/nikolai-zhukov"
+  ]
+}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
@@ -78,6 +101,18 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Towards Understanding Geometry of Time – Nikolai Zhukov">
+<meta property="og:description" content="How Gemma 2 2B represents time: PCA finds a clean two-axis temporal structure at layer 20 that individual GemmaScope SAE features dilute across many latents.">
+<meta property="og:image" content="https://nikozhuk.github.io/posts/time/weekdays_visialisation.png">
+<meta property="og:site_name" content="Nikolai Zhukov">
+<meta property="og:image:height" content="640">
+<meta property="og:image:width" content="780">
+<meta name="twitter:title" content="Towards Understanding Geometry of Time – Nikolai Zhukov">
+<meta name="twitter:description" content="How Gemma 2 2B represents time: PCA finds a clean two-axis temporal structure at layer 20 that individual GemmaScope SAE features dilute across many latents.">
+<meta name="twitter:image" content="https://nikozhuk.github.io/posts/time/weekdays_visialisation.png">
+<meta name="twitter:image-height" content="640">
+<meta name="twitter:image-width" content="780">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -128,7 +163,12 @@ ul.task-list li input[type="checkbox"] {
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Towards Understanding Geometry of Time</h1>
-                                <div class="quarto-categories">
+                  <div>
+        <div class="description">
+          How Gemma 2 2B represents time: PCA finds a clean two-axis temporal structure at layer 20 that individual GemmaScope SAE features dilute across many latents.
+        </div>
+      </div>
+                          <div class="quarto-categories">
                 <div class="quarto-category">interpretability</div>
                 <div class="quarto-category">code</div>
                 <div class="quarto-category">visualisation</div>
@@ -166,7 +206,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="geometric-structure-of-temporal-concepts-and-the-limits-of-sparse-autoencoders-decompostion." class="level2">
 <h2 class="anchored" data-anchor-id="geometric-structure-of-temporal-concepts-and-the-limits-of-sparse-autoencoders-decompostion.">Geometric structure of temporal concepts and the limits of sparse autoencoders decompostion.</h2>
-<p>Dilution of “time” with SAE.</p>
+<p>Dilution of “time”: PCA vs SAE features in Gemma 2 2B</p>
 <p>(details to be described).</p>
 </section>
 <section id="kaggles-defaults" class="level2 quarto-embed-nb-cell">
@@ -737,7 +777,7 @@ Silhouette in means-basis (PC1-4): 0.310</code></pre>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/nikozhuk\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/nikozhuk\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

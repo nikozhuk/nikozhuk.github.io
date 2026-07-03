@@ -1,0 +1,38 @@
+# Nikolai Zhukov
+
+> Mathematician and ML engineer (Diplom in Mathematics and Computer Science, with distinction).
+> Current Research focus: mechanistic interpretability of transformers — the geometric
+> structure of temporal representations and how it deforms under context,
+> studied in Gemma 2 2B with GemmaScope SAEs. Advanced through MATS
+> Autumn 2026 selection assessments. 8+ years production ML (Python, Rust).
+> Based in German since 2011. German citizen.
+
+## Key work
+
+- [Dilusion of time: how Gemma represents temporal concepts](https://nikozhuk.github.io/posts/time):
+  five temporal categories (past/present/future/counterfactual/hypothetical)
+  probed at layer 20; PCA geometry across layers 8 - 25 shows continuous
+  structure that discrete SAE latents do not cleanly separate — one latent
+  (1858) dominates all temporal categories. Also reproduces the circular
+  days-of-week geometry (Engels et al., arXiv:2405.14860).
+- [Finding joy in Gemma 2 2B](https://nikozhuk.github.io/posts/emotions):
+  reproduction of Anthropic's emotion-concept methodology on open weights;
+  SAE latent 1673 fires on 19/20 joy prompts vs 3/20 neutral
+  (mean activation 21.2 vs 1.97).
+- [About](https://nikozhuk.github.io/about.html): background - DFKI
+  Saarbruecken (MeshGraphNet/GAT surrogate models for laser-cutting thermal
+  simulation), plaicube.ai (LLM evaluation framework — cost/latency/quality
+  benchmarking - with Whisper STT/TTS on a Rust core), Pragmatic Minds
+  (CV + RL for industrial topology optimization), KPMG (production document
+  AI at scale), Google Gemma hackathon (Gemma 4 on Raspberry Pi for
+  ischemic stroke recovery).
+
+## Current
+
+- How temporal representation geometry deforms under context
+  (stress vs. calm, cultural framing); SAE analysis beyond layer 20.
+- Explaining transformer architecture as comics (in progress).
+
+## Contact
+
+- GitHub: https://github.com/nikozhuk

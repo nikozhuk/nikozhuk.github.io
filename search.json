@@ -95,7 +95,7 @@
     "href": "posts/nanoGPT/index.html",
     "title": "NanoGPT for Poetry",
     "section": "",
-    "text": "Nano Generative Pre-trained Transformer (GPT) on W.Shakespear and A. Pushkin datasets.\n\n\nTo be described.\nGitHub repository"
+    "text": "Nano Generative Pre-trained Transformer (GPT) on W.Shakespeare and A. Pushkin datasets.\n\n\nTo be described.\nGitHub repository"
   },
   {
     "objectID": "posts/hexapawn_rnf/index.html",
@@ -182,11 +182,25 @@
     "text": "4. Result\nThe result was understanding and reproducing the MeshGraphNet-style pipeline for mesh-based physical simulation:\nsimulation mesh-&gt;graph representation (node and edge features)-&gt;message passing GNN-&gt;next timestep physical update\nAnd clarified how similar approach could be applied to the original use case, where target physical quantity is temperature/thermal expansion instead of velocity/momentum and pressure in CylinderFlow dataset."
   },
   {
-    "objectID": "industry_projects.html",
-    "href": "industry_projects.html",
-    "title": "💻",
+    "objectID": "more_about.html",
+    "href": "more_about.html",
+    "title": "More about",
     "section": "",
-    "text": "Projekten im Unternehmenskontext.\n\n\n\n\n  \n    \n      \n    \n        \n        \n        \n        \n        \n        \n        \n        \n    \n    \n   \n    \n      \n  \n        \n    \n    \n  \n        \n    \n    \n  \n        \n    \n      \n  \n        \n            \n                \n                \n            \n\n            \n                \n                \n            \n\n            \n                \n                \n            \n\n            \n                \n                \n            \n\n            \n                \n                \n            \n        \n    \n\n\n        Loading ITables v2.7.3 from the internet...\n        (need help?)"
+    "text": "Nikolai Zhukov, a mathematician, computer scientist, ML Engineer based in Germany since 2011 (german citizen).\nHold diplom in Mathematics and Computer Science (with distinction).\nCurrent research interests - mechanistic interpretability - specifically how transformers represent temporal concepts. My recent work compares PCA-subspace and SAE-latent causal interventions on temporal representations in Gemma 2 2B (post).\nPreviously :\n\ndeployed Gemma4 locally on Raspberry Pi for ischemic stroke recovery support (Google Gemma 4 hackathon, 2026) post\nbuilt an LLM evaluation framework benchmarking providers across cost, latency, and output quality, integrated with Whisper STT/TTS for plaicube.ai\napplied reinforcement learning to industrial topology optimization at Pragmatic GmbH\nresearch on GNN-based physics simulation at DFKI Saarbrücken\ndata science (4+ years), AI-based document processing system for enterprise clients\nresearch at DFKI Saarbrücken (Medical AI, Cyber-Physical Systems)\n\nI work mainly on linux with python and pyTorch."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Nikolai Zhukov",
+    "section": "",
+    "text": "Towards Understanding Geometry of Time\n\n\n\ninterpretability\n\ncode\n\nvisualisation\n\n\n\nHow Gemma 2 2B represents time: PCA finds a clean two-axis temporal structure at layer 20 that individual GemmaScope SAE features dilute across many latents.\n\n\n\n\n\nJune 2026\n\n\n\n\n\n\n\n\n\n\n\n\nFinding Joy in Gemma2 2B\n\n\n\ninterpretability\n\ncode\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJune 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGemma Niti: Fully offline recovery assistant for patients after ischemic stroke\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMay 2026\n\n\n\n\n\n\n\n\n\n\n\n\nUnderstanding Per Layer Embeddings Method\n\n\n\ninterpretability\n\ntext\n\n\n\n\n\n\n\n\n\nApril 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNanoGPT for Poetry\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nPose Detection for Table Tennis\n\n\n\ncode\n\ntt\n\nvideo\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nElo Rating System for 1.Bundesliga\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nSeptember 2024\n\n\n\n\n\n\n\n\n\n\n\n\nPet’s Facial Expression Detection App\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nJuly 2024\n\n\n\n\n\n\n\n\n\n\n\n\nReinforcement Learning for Chess\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nUnderstanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes\n\n\n\ntext\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSeptember 2023\n\n\n\n\n\n\n\n\n\n\n\n\nPyTorch Metric Learning\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nAugust 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWords Representation in Vector Space\n\n\n\ncode\n\ntext\n\n\n\n\n\n\n\n\n\nNovember 2022\n\n\n\n\n\n\n\n\n\n\n\n\nSignature Detection in Documents: Heuristics -&gt; CNNs -&gt; YOLO\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2021\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJanuary 2021\n\n\n\n\n\n\n\n\n\n\n\n\nShapley Values Explaining Machine Learning Models\n\n\n\ninterpretability\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2020\n\n\n\n\n\n\n\n\n\n\n\n\nExplainable Machine Learning in Praxis\n\n\n\ninterpretability\n\nvisualisation\n\n\n\n\n\n\n\n\n\nFebruary 2020\n\n\n\n\n\n\n\n\n\n\n\n\nMirrorless Safety Windshield System\n\n\n\ntext\n\nvideo\n\n\n\n\n\n\n\n\n\nMay 2015\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Hi, there 🤲",
+    "section": "",
+    "text": "I’m human,\n💻 ml-engineer, researcher, 🏓tt-trainer, 🎨 artist, father, and more\nwho did these projects\nby dancing with curiosity.\nLet’s talk"
   },
   {
     "objectID": "books.html",
@@ -210,18 +224,11 @@
     "text": "ML/DL\n\nMachine Learning, Zhi-Hua Zhou (2021)\nA compact mathematical explanation of the ML basics.\nAI and Machine Learning for Coders, Laurence Moroney (2020)\nA great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.\nDesigning Machine Learning Systems, Chip Huyen (2022)\nJust a very useful for ML- practitioners in industry.\nDeep Learning with Python, François Chollet (2nd edition 2021)\nThe most understandable explanation of concepts in textual format, which is interesting to read. By the way, I’ll give the second copy to someone who’ll take good care of it.\nDeep Learning, Jan Goodfellow (2016)\nComprehensive mathematical and conceptual explanation, insights for the open research fields.\nDeep Learning for Vision Systems, Mohamed Elgendy (2020)\nDetailed explanation for baseline’s Computer Vision backbones/architectures.\nDeep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)\nA view on Deep Learning from practitioners. Practical Data Ethics!\nDeep Learning: A Visual Approach, Andrew-Glassner (2021)\nAdditional dimension for concept’s understanding.\nComputer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)\nConstantly updated meta-survey.\nInterpretable Machine Learning, Christoph Molnar (2019)\nSurvey, good starting point on the topic. Shapley Values."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "Hi, there 🤲",
+    "objectID": "industry_projects.html",
+    "href": "industry_projects.html",
+    "title": "💻",
     "section": "",
-    "text": "I’m human,\n💻 ml-engineer, researcher, 🏓tt-trainer, 🎨 artist, father\nwho did these projects\nby dancing with curiosity.\nLet’s talk"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Nikolai Zhukov",
-    "section": "",
-    "text": "Towards Understanding Geometry of Time\n\n\n\ninterpretability\n\ncode\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJune 2026\n\n\n\n\n\n\n\n\n\n\n\n\nFinding Joy in Gemma2 2B\n\n\n\ninterpretability\n\ncode\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJune 2026\n\n\n\n\n\n\n\n\n\n\n\n\nGemma Niti: Fully offline recovery assistant for patients after ischemic stroke\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMay 2026\n\n\n\n\n\n\n\n\n\n\n\n\nUnderstanding Per Layer Embeddings Method\n\n\n\ninterpretability\n\ntext\n\n\n\n\n\n\n\n\n\nApril 2026\n\n\n\n\n\n\n\n\n\n\n\n\nNanoGPT for Poetry\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nPose Detection for Table Tennis\n\n\n\ncode\n\ntt\n\nvideo\n\n\n\n\n\n\n\n\n\nFebruary 2025\n\n\n\n\n\n\n\n\n\n\n\n\nElo Rating System for 1.Bundesliga\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nSeptember 2024\n\n\n\n\n\n\n\n\n\n\n\n\nPet’s Facial Expression Detection App\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nJuly 2024\n\n\n\n\n\n\n\n\n\n\n\n\nReinforcement Learning for Chess\n\n\n\nvisualisation\n\ncode\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nUnderstanding MeshGraphNet: Spatio-Temporal Graph Node Prediction on Simulation Meshes\n\n\n\ntext\n\n\n\n\n\n\n\n\n\nJanuary 2024\n\n\n\n\n\n\n\n\n\n\n\n\nHello World 👀!\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSeptember 2023\n\n\n\n\n\n\n\n\n\n\n\n\nPyTorch Metric Learning\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nAugust 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWords Representation in Vector Space\n\n\n\ncode\n\ntext\n\n\n\n\n\n\n\n\n\nNovember 2022\n\n\n\n\n\n\n\n\n\n\n\n\nSignature Detection in Documents: Heuristics -&gt; CNNs -&gt; YOLO\n\n\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2021\n\n\n\n\n\n\n\n\n\n\n\n\nTranscendental learning\n\n\n\nvisualisation\n\n\n\n\n\n\n\n\n\nJanuary 2021\n\n\n\n\n\n\n\n\n\n\n\n\nShapley Values Explaining Machine Learning Models\n\n\n\ninterpretability\n\ncode\n\n\n\n\n\n\n\n\n\nMarch 2020\n\n\n\n\n\n\n\n\n\n\n\n\nExplainable Machine Learning in Praxis\n\n\n\ninterpretability\n\nvisualisation\n\n\n\n\n\n\n\n\n\nFebruary 2020\n\n\n\n\n\n\n\n\n\n\n\n\nMirrorless Safety Windshield System\n\n\n\ntext\n\nvideo\n\n\n\n\n\n\n\n\n\nMay 2015\n\n\n\n\n\nNo matching items"
+    "text": "Projekten im Unternehmenskontext.\n\n\n\n\n  \n    \n      \n    \n        \n        \n        \n        \n        \n        \n        \n        \n    \n    \n   \n    \n      \n  \n        \n    \n    \n  \n        \n    \n    \n  \n        \n    \n      \n  \n        \n            \n                \n                \n            \n\n            \n                \n                \n            \n\n            \n                \n                \n            \n\n            \n                \n                \n            \n\n            \n                \n                \n            \n        \n    \n\n\n        Loading ITables v2.7.3 from the internet...\n        (need help?)"
   },
   {
     "objectID": "pics.html",
@@ -284,14 +291,14 @@
     "href": "posts/time/index.html",
     "title": "Towards Understanding Geometry of Time",
     "section": "",
-    "text": "Dilution of “time” with SAE.\n(details to be described)."
+    "text": "Dilution of “time”: PCA vs SAE features in Gemma 2 2B\n(details to be described)."
   },
   {
     "objectID": "posts/time/index.html#geometric-structure-of-temporal-concepts-and-the-limits-of-sparse-autoencoders-decompostion.",
     "href": "posts/time/index.html#geometric-structure-of-temporal-concepts-and-the-limits-of-sparse-autoencoders-decompostion.",
     "title": "Towards Understanding Geometry of Time",
     "section": "",
-    "text": "Dilution of “time” with SAE.\n(details to be described)."
+    "text": "Dilution of “time”: PCA vs SAE features in Gemma 2 2B\n(details to be described)."
   },
   {
     "objectID": "posts/time/index.html#kaggles-defaults",
@@ -368,7 +375,7 @@
     "href": "posts/tt_mediapipe/index.html",
     "title": "Pose Detection for Table Tennis",
     "section": "",
-    "text": "Sceletal pose landmark detection with MediaPipe and OpenCV.\nBackhand topspin slow motion 🏓.\n\nTo be published.\nJupyter Notebook"
+    "text": "Skeletal pose landmark detection with MediaPipe and OpenCV.\nBackhand topspin slow motion 🏓.\n\nTo be published.\nJupyter Notebook"
   },
   {
     "objectID": "posts/welcome/index.html",

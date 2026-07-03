@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Pose Detection for Table Tennis</title>
+<title>Pose Detection for Table Tennis – Nikolai Zhukov</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,9 +71,43 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Nikolai Zhukov",
+  "url": "https://nikozhuk.github.io",
+  "jobTitle": "ML Engineer / Researcher",
+  "address": { "@type": "PostalAddress", "addressLocality": "", "addressCountry": "DE" },
+  "alumniOf": "University of Saarland",
+  "knowsAbout": [
+    "mechanistic interpretability",
+    "sparse autoencoders",
+    "geometric deep learning",
+    "temporal representations in language models",
+    "Python", "pyTorch"
+  ],
+  "sameAs": [
+    "https://github.com/nikozhuk",
+    "https://www.linkedin.com/in/nikolai-zhukov"
+  ]
+}
+</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Pose Detection for Table Tennis – Nikolai Zhukov">
+<meta property="og:description" content="Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany.">
+<meta property="og:image" content="https://nikozhuk.github.io/posts/tt_mediapipe/nzhukov_tt.png">
+<meta property="og:site_name" content="Nikolai Zhukov">
+<meta property="og:image:height" content="437">
+<meta property="og:image:width" content="426">
+<meta name="twitter:title" content="Pose Detection for Table Tennis – Nikolai Zhukov">
+<meta name="twitter:description" content="Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany.">
+<meta name="twitter:image" content="https://nikozhuk.github.io/posts/tt_mediapipe/nzhukov_tt.png">
+<meta name="twitter:image-height" content="437">
+<meta name="twitter:image-width" content="426">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -158,7 +192,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Sceletal pose landmark detection with MediaPipe and OpenCV.</p>
+<p>Skeletal pose landmark detection with MediaPipe and OpenCV.</p>
 <p>Backhand topspin slow motion 🏓.</p>
 <div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/SAA0AaqcKzw" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 <p>To be published.</p>
@@ -240,7 +274,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/nikozhuk\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/nikozhuk\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

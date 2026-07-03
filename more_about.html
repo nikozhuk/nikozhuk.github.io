@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Signature Detection in Documents: Heuristics -&gt; CNNs -&gt; YOLO – Nikolai Zhukov</title>
+<title>More about – Nikolai Zhukov</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,24 +26,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<link href="../../nzlogo.png" rel="icon" type="image/png">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-0c5b8d9bab999a3ff132141154df1dbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./nzlogo.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-0c5b8d9bab999a3ff132141154df1dbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -95,31 +95,25 @@ ul.task-list li input[type="checkbox"] {
 </script>
 
 
-<link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Signature Detection in Documents: Heuristics -> CNNs -> YOLO – Nikolai Zhukov">
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="More about – Nikolai Zhukov">
 <meta property="og:description" content="Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany.">
-<meta property="og:image" content="https://nikozhuk.github.io/posts/signature_detection/signature_detection.png">
 <meta property="og:site_name" content="Nikolai Zhukov">
-<meta property="og:image:height" content="523">
-<meta property="og:image:width" content="1587">
-<meta name="twitter:title" content="Signature Detection in Documents: Heuristics -> CNNs -> YOLO – Nikolai Zhukov">
+<meta name="twitter:title" content="More about – Nikolai Zhukov">
 <meta name="twitter:description" content="Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany.">
-<meta name="twitter:image" content="https://nikozhuk.github.io/posts/signature_detection/signature_detection.png">
-<meta name="twitter:image-height" content="523">
-<meta name="twitter:image-width" content="1587">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../nzlogo.png" alt="" class="navbar-logo light-content">
-    <img src="../../nzlogo.png" alt="" class="navbar-logo dark-content">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./nzlogo.png" alt="" class="navbar-logo light-content">
+    <img src="./nzlogo.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -129,11 +123,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> 
+    <a class="nav-link" href="./about.html"> 
 <span class="menu-text">Hi, there 🤲</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../books.html"> 
+    <a class="nav-link" href="./books.html"> 
 <span class="menu-text">ML,GNN 📚</span></a>
   </li>  
   <li class="nav-item compact">
@@ -154,91 +148,47 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Signature Detection in Documents: Heuristics -&gt; CNNs -&gt; YOLO</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">code</div>
-              </div>
-                  </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">March 2021</p>
-      </div>
-    </div>
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
-
-
-
-
-<p>With YOLOv3 - “You Only Look Once” model.</p>
-<section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section"></h2>
-<p>The goal was to automatically detect customer signatures in document images (within a pipeline of AI-based document processing system).</p>
-<p>Input - scanned or digital document page, output - decision document signed or not.</p>
-<p>Signature in document workflow is important signal that the document confirmed, approved.</p>
-</section>
-<section id="baseline-model-connected-components" class="level2">
-<h2 class="anchored" data-anchor-id="baseline-model-connected-components">1. Baseline model: “connected components”</h2>
-<p>First idea - the signature often forms one of the largest pixel groups on a document, excluding tables and straight lines.</p>
-<p>Thus, fast, simple, explainable baseline model was used - <a href="https://homepages.inf.ed.ac.uk/rbf/HIPR2/label.htm">“Connected Components Labeling”</a> and it’s <a href="https://homepages.inf.ed.ac.uk/rbf/HIPR2/label.htm">implementation for signatures</a>. I found the “right” threshold parameter for the given subset of documents.</p>
-<p>However the method is fragile for a very “large” signatures, neither for the other types of documents (with tables, stamps, handwritten notes, scan artifacts).</p>
-<p>The baseline method also helped to understand the visual structure of the problem before training models.</p>
-</section>
-<section id="custom-cnn" class="level2">
-<h2 class="anchored" data-anchor-id="custom-cnn">2. Custom CNN</h2>
-<p>As next, the custom simple classification Inception V3 CNN model was trained.</p>
-<p>On the candidate-regions extraction.</p>
-<p>But signatures need also localize, since they appear in different positions and sizes in the documents. Moreover multiple signatures in documents are possible.</p>
-<section id="dataset" class="level3">
-<h3 class="anchored" data-anchor-id="dataset">Dataset</h3>
-<p>At the beginning, there were also no labeled dataset. Therefore the first challenge was to find public available dataset.</p>
-<p>Therefore I used <a href="https://tc11.cvc.uab.es/datasets/Tobacco800_1">Tobacco800</a> document dataset which contains 1290 .TIFF images of scanned real documents with groundtruth annotations for signatures and logos.</p>
-<p>Annotations were reviewed with <a href="https://github.com/HumanSignal/labelImg">LabelImg</a> and <a href="https://github.com/nikozhuk/signature_detection_YOLOv3/blob/main/1_PASCAL_VOC_to_Yolo_format.ipynb">converted from PASCAL VOC XML annotations format into YOLO .txt format</a>. At the end were around ~ 400 labeled images (275/60/58 -train/val/test) available for training.</p>
-</section>
-</section>
-<section id="yolo-object-detection-and-transfer-learning" class="level2">
-<h2 class="anchored" data-anchor-id="yolo-object-detection-and-transfer-learning">3. YOLO object detection and transfer learning</h2>
-<p>The final approach used <a href="https://arxiv.org/pdf/1506.02640">YOLO - “You Only Look Once”</a> model. Which predicts bounding boxes and confidence scores in one pass.</p>
-<p>And was simpler and faster in production.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="signature_detection.png" class="img-fluid figure-img"></p>
-<figcaption>image</figcaption>
-</figure>
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">More about</h1>
 </div>
-<p>The choice was also inspirated by <a href="https://www.youtube.com/watch?v=ygIDEaPlAJ8">Jordan Bramble’s work</a>.</p>
-<p>The <a href="https://github.com/pythonlessons/TensorFlow-2.x-YOLOv3">YOLOv3</a> detector was trained using transfer learning from pretrained <a href="https://pjreddie.com/darknet/yolo/">Darknet backbone weights</a> from Joseph Redmon.</p>
-<p>Adam optimization, Tiny model, combined localization/objectness(confidence)/classification loss, mAP evaluation with configurable confidence and IoU thresholds.</p>
-<p><a href="https://github.com/nikozhuk/signature_detection_YOLOv3">Here is full code</a>.</p>
-</section>
-<section id="training-and-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="training-and-evaluation">Training and evaluation</h2>
-<p>Training took several hours on laptop’s GPU.</p>
-<p>The model achieved <strong>90.07% mAP at IoU 0.5</strong> which were reliably for the task trained on only relatively small public proxy dataset.</p>
-<p>However, the result dropped to <strong>37.94% mAP at IoU 0.75</strong> for more precisely match predicted bounding box with ground-truth annotation. The drop suggests that the model usually found the correct signature area, but the bounding boxes were not always tight enough.</p>
 
 
-</section>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Nikolai Zhukov, a mathematician, computer scientist, ML Engineer based in Germany since 2011 (german citizen).</p>
+<p>Hold diplom in Mathematics and Computer Science (with distinction).</p>
+<p>Current research interests - mechanistic interpretability - specifically how transformers represent temporal concepts. My recent work compares PCA-subspace and SAE-latent causal interventions on temporal representations in Gemma 2 2B (<a href="https://nikozhuk.github.io/posts/time">post</a>).</p>
+<p>Previously :</p>
+<ul>
+<li><p>deployed Gemma4 locally on Raspberry Pi for ischemic stroke recovery support (Google Gemma 4 hackathon, 2026) <a href="https://nikozhuk.github.io/posts/gemma_niti">post</a></p></li>
+<li><p>built an LLM evaluation framework benchmarking providers across cost, latency, and output quality, integrated with Whisper STT/TTS for <a href="https://plaicube.ai/">plaicube.ai</a></p></li>
+<li><p>applied reinforcement learning to industrial topology optimization at Pragmatic GmbH</p></li>
+<li><p>research on GNN-based physics simulation at DFKI Saarbrücken</p></li>
+<li><p>data science (4+ years), AI-based document processing system for enterprise clients</p></li>
+<li><p>research at DFKI Saarbrücken (Medical AI, Cyber-Physical Systems)</p></li>
+</ul>
+<p>I work mainly on linux with python and pyTorch.</p>
+
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
