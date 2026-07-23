@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="An question of what to teach kids when tools change faster than education runs.">
 
-<title>💻 – Nikolai Zhukov</title>
+<title>Delegation Boundary – Nikolai Zhukov</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,24 +27,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./nzlogo.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0c5b8d9bab999a3ff132141154df1dbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../nzlogo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-0c5b8d9bab999a3ff132141154df1dbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -93,30 +94,27 @@ ul.task-list li input[type="checkbox"] {
   ]
 }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
-<link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="💻 – Nikolai Zhukov">
-<meta property="og:description" content="Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany.">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Delegation Boundary – Nikolai Zhukov">
+<meta property="og:description" content="An question of what to teach kids when tools change faster than education runs.">
 <meta property="og:site_name" content="Nikolai Zhukov">
-<meta name="twitter:title" content="💻 – Nikolai Zhukov">
-<meta name="twitter:description" content="Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany.">
+<meta name="twitter:title" content="Delegation Boundary – Nikolai Zhukov">
+<meta name="twitter:description" content="An question of what to teach kids when tools change faster than education runs.">
 <meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./nzlogo.png" alt="" class="navbar-logo light-content">
-    <img src="./nzlogo.png" alt="" class="navbar-logo dark-content">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../nzlogo.png" alt="" class="navbar-logo light-content">
+    <img src="../../nzlogo.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -126,11 +124,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">Hi, there 🤲</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./books.html"> 
+    <a class="nav-link" href="../../books.html"> 
 <span class="menu-text">ML,GNN 📚</span></a>
   </li>  
   <li class="nav-item compact">
@@ -151,139 +149,49 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Delegation Boundary</h1>
+                  <div>
+        <div class="description">
+          An question of what to teach kids when tools change faster than education runs.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">visualisation</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">💻</h1>
-</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
 
 
-</header>
-
-
-<style>
-.quarto-title h1.title {
-  display: none;
-}
-</style>
-<p>Projekten im Unternehmenskontext.</p>
-<div id="d1d3f7ea" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<!--| quarto-html-table-processing: none -->
-<table id="itables_969fe0a6_7194_4222_b09c_50c33530ea7e">
-  <tbody>
-    <tr>
-      <td style="vertical-align:middle; text-align:left"><a href="https://mwouts.github.io/itables/"><svg class="main-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="64" viewbox="0 0 500 400" style="font-family: 'Droid Sans', sans-serif;">
-    <g style="fill:#d9d7fc">
-        <path d="M100,400H500V357H100Z"></path>
-        <path d="M100,300H400V257H100Z"></path>
-        <path d="M0,200H400V157H0Z"></path>
-        <path d="M100,100H500V57H100Z"></path>
-        <path d="M100,350H500V307H100Z"></path>
-        <path d="M100,250H400V207H100Z"></path>
-        <path d="M0,150H400V107H0Z"></path>
-        <path d="M100,50H500V7H100Z"></path>
-    </g>
-    <g style="fill:#1a1366;stroke:#1a1366;">
-   <rect x="100" y="7" width="400" height="43">
-    <animate attributename="width" values="0;400;0" dur="5s" repeatcount="indefinite"></animate>
-      <animate attributename="x" values="100;100;500" dur="5s" repeatcount="indefinite"></animate>
-  </rect>
-        <rect x="0" y="107" width="400" height="43">
-    <animate attributename="width" values="0;400;0" dur="3.5s" repeatcount="indefinite"></animate>
-    <animate attributename="x" values="0;0;400" dur="3.5s" repeatcount="indefinite"></animate>
-  </rect>
-        <rect x="100" y="207" width="300" height="43">
-    <animate attributename="width" values="0;300;0" dur="3s" repeatcount="indefinite"></animate>
-    <animate attributename="x" values="100;100;400" dur="3s" repeatcount="indefinite"></animate>
-  </rect>
-        <rect x="100" y="307" width="400" height="43">
-    <animate attributename="width" values="0;400;0" dur="4s" repeatcount="indefinite"></animate>
-      <animate attributename="x" values="100;100;500" dur="4s" repeatcount="indefinite"></animate>
-  </rect>
-        <g style="fill:transparent;stroke-width:8; stroke-linejoin:round" rx="5">
-            <g transform="translate(45 50) rotate(-45)">
-                <circle r="33" cx="0" cy="0"></circle>
-                <rect x="-8" y="32" width="16" height="30"></rect>
-            </g>
-
-            <g transform="translate(450 152)">
-                <polyline points="-15,-20 -35,-20 -35,40 25,40 25,20"></polyline>
-                <rect x="-15" y="-40" width="60" height="60"></rect>
-            </g>
-
-            <g transform="translate(50 352)">
-                <polygon points="-35,-5 0,-40 35,-5"></polygon>
-                <polygon points="-35,10 0,45 35,10"></polygon>
-            </g>
-
-            <g transform="translate(75 250)">
-                <polyline points="-30,30 -60,0 -30,-30"></polyline>
-                <polyline points="0,30 -30,0 0,-30"></polyline>
-            </g>
-
-            <g transform="translate(425 250) rotate(180)">
-                <polyline points="-30,30 -60,0 -30,-30"></polyline>
-                <polyline points="0,30 -30,0 0,-30"></polyline>
-            </g>
-        </g>
-    </g>
-</svg>
-</a>
-        Loading ITables v2.7.3 from the internet...
-        (need <a href="https://mwouts.github.io/itables/troubleshooting.html">help</a>?)
-      </td>
-    </tr>
-  </tbody>
-</table>
-<link href="https://www.unpkg.com/dt_for_itables@2.5.1/dt_bundle.css" rel="stylesheet">
-<script type="module">
-    import { ITable, jQuery as $ } from 'https://www.unpkg.com/dt_for_itables@2.5.1/dt_bundle.js';
-
-    document.querySelectorAll("#itables_969fe0a6_7194_4222_b09c_50c33530ea7e:not(.dataTable)").forEach(table => {
-        if (!(table instanceof HTMLTableElement))
-            return;
-
-        let dt_args = {
-          "classes": ["display", "compact", "stripe", "hover"],
-          "columnDefs": [{"className": "dt-left", "targets": "_all"}, {"targets": "_all", "width": "30%"}],
-          "data_json": "[[1, \"Juni 2024 - April 2025\", \"\\u201euKonn-X Optimizer\\u201c - Software zur Ermittlung der kosteneffizientesten Konfiguration industrieller Netzwerkger\\u00e4te. Verbesserter Topologie-Optimierungsalgorithmus, der die Nutzungszeit von Stunden auf Sekunden verk\\u00fcrzte und so eine Echtzeit-Benutzererfahrung erm\\u00f6glichte. Entwicklung eines Reinforcement-Learning-Ansatzes.\", \"Python, TensorFlow, PyTorch, OpenCV, ONNX, Django, FastApi, Docker, DVC\", \"Deutsches Unternehmen, das innovative elektrische und elektronische Automatisierungsl\\u00f6sungen f\\u00fcr Maschinen- und Anlageninstallationen entwickelt und liefert, mit Schwerpunkt auf effizienter Energieverteilung, I/O-Systemen und Konnektivit\\u00e4t.\", \"Softwareentwickler im Bereich Scientific Computing\", \"Pragmatic Minds GmbH (35 Mitarbeiter)\"], [2, \"Juni 2024 - April 2025\", \"\\u201euKonn-X Document Processing System\\u201c - System, das automatisch Ger\\u00e4te und deren Verbindungen aus E-Plan-PDF-Dokumenten von Industrieanlagen erkennt. Entwicklung von Datenpipelines, Training kundenspezifischer Computer-Vision-Modelle und deren Einsatz in Produktionsumgebungen. Durchf\\u00fchrung von Retraining, Fine-Tuning, Evaluierung und Optimierung bestehender Machine-Learning-Modelle.\", \"Python, TensorFlow, PyTorch, OpenCV, ONNX, Django, FastApi, Docker, DVC\", \"Deutsches Unternehmen, das innovative elektrische und elektronische Automatisierungsl\\u00f6sungen f\\u00fcr Maschinen- und Anlageninstallationen entwickelt und liefert, mit Schwerpunkt auf effizienter Energieverteilung, I/O-Systemen und Konnektivit\\u00e4t.\", \"Softwareentwickler im Bereich Scientific Computing\", \"Pragmatic Minds GmbH (35 Mitarbeiter)\"], [3, \"M\\u00e4rz 2023 - Juni 2024\", \"\\u201eQUASIM\\u201c - Service-\\u00d6kosystem f\\u00fcr Simulation in der Fertigung. Konzeption und Entwicklung eines Prototyps zur Simulation thermodynamischer Effekte (zeitlich-r\\u00e4umliche Temperaturvorhersage) auf Metallplatten w\\u00e4hrend des industriellen Laserschneidprozesses. Entwicklung eines Deep-Learning-Ansatzes, der im Vergleich zu klassischen numerischen Simulationsverfahren eine hohe Generalisierungsf\\u00e4higkeit und damit eine Reduzierung der Produktionskosten erm\\u00f6glichte. Mitarbeit am Whitepaper. Leitung eines kleinen Forschungsteams.\", \"Python, PyTorch Geometric (Graph Neural Networks), MATLAB\", \"Deutsches Hightech-Unternehmen, das Werkzeugmaschinen und Industrielaser entwickelt und herstellt und L\\u00f6sungen f\\u00fcr Blechbearbeitung, Laserschneiden, Schwei\\u00dfen, Markieren, Additive Fertigung sowie Smart-Factory-Technologien anbietet.\", \"Machine Learning Wissentschaftler\", \"Deutsches Zentrum f\\u00fcr K\\u00fcnstliche Intelligenz (1650 Mitarbeiter)\"], [4, \"September 2000 - Dezember 2022\", \"\\u201eKI-basiertes Dokumentenverarbeitungssystem\\u201c - System, das Gesch\\u00e4ftsdokumente automatisch liest, klassifiziert und verarbeitet, um unstrukturierte Dateien (PDF-Scans, Rechnungen, Vertr\\u00e4ge, Formulare usw.) in strukturierte, weiter nutzbare Daten zu \\u00fcberf\\u00fchren. Durchf\\u00fchrung des gesamten Lifecycles von Data-Science- und Digitalisierungsprojekten f\\u00fcr mehrere Kunden. Entwicklung der Architektur sowie einzelner Systemkomponenten \\u2013 Textklassifikation, Text Mining, Topic Modeling und Objekterkennungs-Module.\", \"Python, TensorFlow, PyTorch, OpenCV, NER Tools, Docker, Kubernetes, Rabbit\\\\r\\\\nMQ, GCP, AWS\", \"Mehrere gro\\u00dfe deutsche und internationale Unternehmen aus den Bereichen Pharma, Medizintechnik, Automobilproduktion, \\u00f6ffentliche Dienstleistungen, Versorgungsunternehmen und Transportwesen.\", \"Senior Data Scientist\", \"Advanced Data Analytics Group of KPMG AG (14000 employees)\"]]",
-          "layout": {"bottomEnd": "paging", "bottomStart": "info", "topEnd": null, "topStart": null},
-          "order": [],
-          "paging": true,
-          "style": {"font-size": "14px", "table-layout": "auto", "width": "100%"},
-          "table_html": "<table><thead>\n    <tr style=\"text-align: right;\">\n      \n      <th>Nr.</th>\n      <th>Zeitrahmen</th>\n      <th>Projektbeschreibung</th>\n      <th>Tech stack</th>\n      <th>Kunde</th>\n      <th>Position</th>\n      <th>Unternehmn</th>\n    </tr>\n  </thead></table>",
-          "text_in_header_can_be_selected": true
-        };
-        new ITable(table, dt_args);
-    });
-</script>
-</div>
-</div>
-<style>
-table.dataTable td {
-  white-space: normal !important;
-  word-wrap: break-word;
-  vertical-align: top;
-  line-height: 1.4;
-}
-</style>
+<meta http-equiv="refresh" content="0; url=delegation_boundary.html">
+<p><a href="delegation_boundary.html">delegation_boundary.html</a></p>
 
 
 
@@ -688,6 +596,35 @@ table.dataTable td {
     }
   });
   </script>
+<input type="hidden" id="giscus-base-theme" value="preferred_color_scheme">
+<input type="hidden" id="giscus-alt-theme" value="preferred_color_scheme">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "nikozhuk/nikozhuk.github.io";
+    script.dataset.repoId = "R_kgDOKT9Kww";
+    script.dataset.category = "General";
+    script.dataset.categoryId = "DIC_kwDOKT9Kw84C8GWG";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
 </div> <!-- /content -->
 
 

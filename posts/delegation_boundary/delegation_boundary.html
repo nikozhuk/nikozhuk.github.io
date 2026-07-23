@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The delegation boundary — S = Φ(E)</title>
+<meta name="description" content="The shape of a skill does not belong to the skill — the tool environment draws it. An interactive model of what to teach kids when tools change faster than education runs.">
+<meta property="og:title" content="The delegation boundary — S = Φ(E)">
+<meta property="og:description" content="An interactive model of what to teach kids when tools change faster than education runs. With a kids mode, in four languages.">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF9F3; --ink:#23303E; --ink-soft:#5A6675;
+    --pencil:#B5352C; --wash:#D9E6F0; --wash-line:#9FBED4;
+    --amber:#E0A106; --grid:rgba(112,160,150,.28); --grid-strong:rgba(112,160,150,.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.65;padding:0 20px 80px}
+  .sheet{max-width:920px;margin:0 auto}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding-top:22px;gap:12px;flex-wrap:wrap}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--pencil)}
+  .switches{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .langs{display:flex;gap:6px}
+  .langs button,.kids-toggle{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:5px 10px;border:1.5px solid var(--ink);border-radius:5px;background:#fff;color:var(--ink);cursor:pointer;letter-spacing:.06em}
+  .langs button{text-transform:uppercase}
+  .langs button:hover,.kids-toggle:hover{background:var(--ink);color:var(--paper)}
+  .langs button.active{background:var(--pencil);border-color:var(--pencil);color:#fff}
+  .kids-toggle.active{background:var(--amber);border-color:var(--amber);color:#fff}
+  .langs button:focus-visible,.kids-toggle:focus-visible{outline:2px solid var(--pencil);outline-offset:2px}
+  header{padding:34px 0 36px;border-bottom:2px solid var(--ink)}
+  h1{font-family:'Spectral',serif;font-weight:500;font-size:clamp(30px,5vw,46px);line-height:1.15;letter-spacing:-.01em}
+  .subtitle{margin-top:14px;font-size:17px;color:var(--ink-soft);max-width:680px}
+  section{margin-top:56px}
+  h2{font-family:'Spectral',serif;font-weight:500;font-size:24px;margin-bottom:4px}
+  .badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px;margin-bottom:12px}
+  .badge-math{background:rgba(159,190,212,.3);color:#2F5D7C;border:1px solid var(--wash-line)}
+  .badge-ml{background:rgba(224,161,6,.12);color:#8A6404;border:1px solid var(--amber)}
+  .badge-viz{background:rgba(181,53,44,.08);color:var(--pencil);border:1px solid var(--pencil)}
+  .h2-note{font-size:14.5px;color:var(--ink-soft);margin-bottom:20px;max-width:680px}
+  p{max-width:680px}
+  .muted{color:var(--ink-soft)}
+  .formula-block{margin:18px 0;padding:20px 24px;border-left:3px solid var(--wash-line);background:rgba(217,230,240,.25);overflow-x:auto}
+  .formula-block .katex{font-size:1.12em}
+  .formula-boxed{border-left-color:var(--pencil);background:rgba(181,53,44,.06)}
+  .main-caption{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--pencil);margin:26px 0 6px}
+  .kid-rule{margin:22px 0;padding:20px 24px;border:2px dashed var(--pencil);border-radius:10px;background:rgba(181,53,44,.05);font-family:'Spectral',serif;font-size:19px;line-height:1.5;max-width:680px}
+  .math-note{font-size:13.5px;color:var(--ink-soft);max-width:680px;margin-top:20px;padding-top:14px;border-top:1px dashed var(--grid-strong)}
+  .comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px;max-width:820px}
+  .comp{border:1px solid var(--grid-strong);border-radius:6px;padding:12px 14px;background:#fff9}
+  .comp b{font-family:'Spectral',serif;font-weight:600;font-size:19px;display:block;margin-bottom:2px}
+  .comp span{font-size:13.5px;color:var(--ink-soft);display:block;line-height:1.45}
+  .plot-wrap{margin-top:22px;border:1.5px solid var(--ink);border-radius:8px;background:#fff;box-shadow:4px 4px 0 rgba(35,48,62,.12);overflow:hidden}
+  .plot-wrap svg{display:block;width:100%;height:auto}
+  .controls{display:flex;flex-wrap:wrap;gap:18px 28px;align-items:center;padding:16px 20px;border-top:1px dashed var(--grid-strong);background:var(--paper);font-size:14px}
+  .controls label{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-soft);display:block;margin-bottom:4px}
+  .ctrl{min-width:200px;flex:1}
+  input[type=range]{width:100%;accent-color:var(--pencil);cursor:pointer}
+  .presets{display:flex;gap:8px;flex-wrap:wrap}
+  .presets button{font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:6px 12px;border:1.5px solid var(--ink);border-radius:5px;background:#fff;color:var(--ink);cursor:pointer}
+  .presets button:hover{background:var(--ink);color:var(--paper)}
+  .presets button.active{background:var(--pencil);border-color:var(--pencil);color:#fff}
+  .presets button:focus-visible{outline:2px solid var(--pencil);outline-offset:2px}
+  .verdict{margin-top:18px;padding:18px 22px;border-radius:8px;border:1.5px solid;display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+  .verdict .vt{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:500;white-space:nowrap}
+  .verdict .vd{font-size:15px;flex:1;min-width:240px}
+  .v-ok{border-color:var(--wash-line);background:rgba(217,230,240,.35)} .v-ok .vt{color:#2F5D7C}
+  .v-edge{border-color:var(--amber);background:rgba(224,161,6,.09)} .v-edge .vt{color:#8A6404}
+  .v-crit{border-color:var(--pencil);background:rgba(181,53,44,.07)} .v-crit .vt{color:var(--pencil)}
+  .legend{margin-top:22px;border:1px dashed var(--grid-strong);border-radius:8px;padding:18px 22px;background:#fff8;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 26px;font-size:13.5px}
+  .lg{display:flex;gap:11px;align-items:center}
+  .lg svg{flex:none}
+  .lg .k{font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+  .lg span span:last-child{color:var(--ink-soft)}
+  .gen-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:20px}
+  .gen{border:1.5px solid var(--ink);border-radius:8px;padding:18px 20px;background:#fff;box-shadow:3px 3px 0 rgba(35,48,62,.1)}
+  .gen .who{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--pencil);margin-bottom:8px}
+  .gen .what{font-family:'Spectral',serif;font-size:19px;font-weight:600;line-height:1.3;margin-bottom:8px}
+  .gen p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+  footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--grid-strong);font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  body.kids .std-only{display:none}
+  body:not(.kids) .kid-only{display:none}
+  body.kids{font-size:17px}
+  body.kids .comp b{font-size:17px;font-family:'IBM Plex Sans',sans-serif;font-weight:500}
+  body.kids .comp span{font-size:14px;color:var(--ink)}
+  @media (max-width:600px){.formula-block{padding:14px 16px}.formula-block .katex{font-size:.98em}}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<div class="topbar">
+  <div class="eyebrow" data-i="eyebrow"></div>
+  <div class="switches">
+    <button class="kids-toggle" id="kidsBtn" data-i="kidsBtn"></button>
+    <nav class="langs" id="langs" aria-label="Language"></nav>
+  </div>
+</div>
+
+<header>
+  <h1 data-i="title"></h1>
+  <p class="subtitle" data-i="subtitle"></p>
+</header>
+
+<section>
+  <span class="badge badge-math" data-i="badgeMath"></span>
+  <h2 data-i="modelH"></h2>
+  <div class="h2-note" data-i="modelNote"></div>
+
+  <p data-i="p1"></p>
+  <div class="formula-block std-only"><span class="kx-d" data-tk="texS"></span></div>
+
+  <p style="margin-top:14px" data-i="p2"></p>
+  <div class="formula-block std-only"><span class="kx-d" data-tex="S=\Phi(E),\qquad \Phi:\mathcal{E}\to\mathcal{S}"></span></div>
+
+  <p style="margin-top:14px" data-i="p3"></p>
+  <div class="comp-grid">
+    <div class="comp"><b>δ</b><span data-i="cD"></span></div>
+    <div class="comp"><b>σ</b><span data-i="cS"></span></div>
+    <div class="comp"><b>α</b><span data-i="cA"></span></div>
+    <div class="comp"><b>ρ</b><span data-i="cR"></span></div>
+    <div class="comp"><b>γ</b><span data-i="cG"></span></div>
+  </div>
+
+  <div class="std-only">
+    <p style="margin-top:22px" data-i="pG"></p>
+    <div class="formula-block"><span class="kx-d" data-tex="\Gamma=\{\,(a,t)\;:\;a\in\partial D(t)\,\}\;\subset\;\mathcal{A}\times\mathbb{R}"></span></div>
+  </div>
+
+  <p style="margin-top:14px" data-i="p4"></p>
+  <div class="main-caption std-only" data-i="mainCap"></div>
+  <div class="formula-block formula-boxed std-only"><span class="kx-d" data-tk="texThr"></span></div>
+  <div class="kid-rule kid-only" data-i="kidRule"></div>
+
+  <p class="math-note std-only" data-i="mathNote"></p>
+</section>
+
+<section>
+  <span class="badge badge-viz" data-i="badgeViz"></span>
+  <h2 data-i="wlH"></h2>
+  <div class="h2-note" data-i="wlNote"></div>
+  <p data-i="wlP"></p>
+
+  <div class="plot-wrap">
+    <svg id="plot" viewBox="0 0 940 500" role="img" aria-label="Spacetime diagram of the delegation boundary">
+      <title>Γ</title>
+      <g id="layers"></g>
+    </svg>
+    <div class="controls">
+      <div class="ctrl">
+        <label for="birth"><span data-i="birthL"></span> <span id="birthVal">1989</span> · <span data-i="windowL"></span></label>
+        <input type="range" id="birth" min="1950" max="2022" step="1" value="1989">
+      </div>
+      <div class="ctrl" style="max-width:260px">
+        <label for="nu"><span data-i="nuL"></span> <span id="nuVal">1.5</span> <span data-i="nuU"></span></label>
+        <input type="range" id="nu" min="0.5" max="4" step="0.25" value="1.5">
+      </div>
+      <div class="presets" role="group">
+        <button data-year="1957"><span data-i="gDad"></span> · 1957</button>
+        <button data-year="1989" class="active"><span data-i="gMe"></span> · 1989</button>
+        <button data-year="2019"><span data-i="gSon"></span> · 2019</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="verdict" class="verdict v-edge" aria-live="polite">
+    <span class="vt" id="verdictNum"></span>
+    <span class="vd" id="verdictText"></span>
+  </div>
+
+  <div class="legend">
+    <div class="lg"><svg width="26" height="16"><rect x="1" y="1" width="24" height="14" rx="2" fill="#D9E6F0" stroke="#9FBED4"/></svg><span><span class="k">D(t)</span> <span data-i="lg1"></span></span></div>
+    <div class="lg"><svg width="26" height="16"><line x1="1" y1="8" x2="25" y2="8" stroke="#E0A106" stroke-width="7"/><line x1="1" y1="8" x2="25" y2="8" stroke="#B5352C" stroke-width="2"/></svg><span><span class="k">∂D, Γ</span> <span data-i="lg2"></span></span></div>
+    <div class="lg"><svg width="26" height="16"><line x1="1" y1="8" x2="25" y2="8" stroke="#B5352C" stroke-width="2" stroke-dasharray="5 4"/></svg><span><span class="k">Γ (ν)</span> <span data-i="lg3"></span></span></div>
+    <div class="lg"><svg width="26" height="16"><defs><pattern id="lgh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#5A6675" stroke-width="1.2"/></pattern></defs><rect x="1" y="1" width="24" height="14" rx="2" fill="url(#lgh)" stroke="#5A6675"/></svg><span><span class="k">G(t)</span> <span data-i="lg4"></span></span></div>
+    <div class="lg"><svg width="26" height="16"><rect x="1" y="1" width="24" height="14" rx="2" fill="none" stroke="#B5352C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="13" y="12" text-anchor="middle" font-size="10" fill="#B5352C" font-family="serif">?</text></svg><span><span class="k">α ∈ D?</span> <span data-i="lg5"></span></span></div>
+    <div class="lg"><svg width="26" height="16"><rect x="8" y="1" width="10" height="14" fill="rgba(181,53,44,.12)" stroke="#B5352C" stroke-width="1"/></svg><span><span class="k">T</span> <span data-i="lg6"></span></span></div>
+  </div>
+</section>
+
+<section>
+  <span class="badge badge-ml" data-i="badgeMl"></span>
+  <h2 data-i="inhH"></h2>
+  <div class="h2-note" data-i="inhNote"></div>
+  <div class="gen-cards">
+    <div class="gen">
+      <div class="who">νT ≪ 1 · <span data-i="gDad"></span></div>
+      <div class="what" data-i="w1"></div>
+      <p data-i="t1"></p>
+    </div>
+    <div class="gen">
+      <div class="who">νT ≈ 1 · <span data-i="gMe"></span></div>
+      <div class="what" data-i="w2"></div>
+      <p data-i="t2"></p>
+    </div>
+    <div class="gen">
+      <div class="who">νT &gt; 1 · <span data-i="gSon"></span></div>
+      <div class="what" data-i="w3"></div>
+      <p data-i="t3"></p>
+      <div class="std-only" style="margin-top:8px"><span class="kx" data-tex="w_{\text{child}}=\mathrm{train}\big(E(t),\mathcal{D}(t)\big)"></span></div>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:18px;font-size:14.5px" data-i="inhFoot"></p>
+</section>
+
+<footer>
+  <span>S = Φ(E) · 2026</span>
+  <span data-i="footShare"></span>
+</footer>
+
+</div>
+
+<script>
+/* i18n: adding a language = adding one object to I18N with the same keys in both std and kid.
+   The language switcher builds itself from Object.keys(I18N). */
+var I18N={
+en:{_name:'EN',
+std:{
+  eyebrow:'a model · 2026', kidsBtn:'Kids 8–12',
+  title:'The delegation boundary',
+  subtitle:'The shape of a skill does not belong to the skill — the tool environment does the drawing. When tools change faster than education runs, handing over a finished shape is too late: only the way of building shapes remains transmissible. This page is a model of what to teach kids.',
+  badgeMath:'mathematical formula', badgeViz:'interactive visualization', badgeMl:'machine-learning analogy',
+  modelH:'The model',
+  modelNote:'Three equations and one threshold. The main idea — what to teach kids: not a snapshot of a skill, but the operator that builds the skill for any environment.',
+  p1:'The task space 𝒜 is stratified by levels of abstraction; D(t) is the region delegated to machines under environment E(t). What a person internalizes is not the task but the complement of the delegated part — plus a layer at the boundary, plus the gym:',
+  p2:'“The shape does not belong to the skill” is the claim that S is a function of the environment — an operator from environments to shapes:',
+  p3:'The operator is realized by five capabilities:',
+  cD:'dispatch — what to hand to the tool', cS:'framing — translating intent for the tool', cA:'acceptance — verifying without redoing', cR:'remapping — what in the shape went stale', cG:'diet — which gym apparatus to keep',
+  pG:'The trajectory of the boundary — the “shape of the shape” — is a static object in spacetime that encodes the whole dynamic:',
+  p4:'And the threshold. Let ν be the frequency of boundary crossings across abstraction levels, and T the education cycle. Classical pedagogy transmits a snapshot S₀ = Φ(E(t₀)) and is valid only while νT ≪ 1. The phase transition:',
+  mainCap:'← the main formula: what to teach kids when the environment changes faster than education',
+  texS:'S(t)\\;=\\;\\underbrace{\\mathcal{A}\\setminus D(t)}_{\\text{complement}}\\;\\cup\\;\\underbrace{\\partial D(t)}_{\\text{interface}}\\;\\cup\\;\\underbrace{G(t)}_{\\text{the gym}},\\qquad G(t)\\subset D(t)',
+  texThr:'\\nu\\,T>1\\;\\Longrightarrow\\;S_0=\\Phi(E(t_0))\\ \\text{is stale before }t_0{+}T\\;\\Longrightarrow\\;\\text{only }\\Phi\\text{ is transmissible}',
+  kidRule:'',
+  mathNote:'Notation notes. ∂D(t) inside S is an abuse of notation: the interface capabilities are anchored at the boundary rather than being a region of 𝒜. Φ is a map, and (δ, σ, α, ρ, γ) are the capabilities that realize it — not a Cartesian decomposition. νT reads as the expected number of crossings per education cycle, so the threshold is a heuristic, not a theorem; the historical steps are a stylization, and the steps after 2026 are a parameter, not a forecast.',
+  wlH:'The worldline Γ',
+  wlNote:'A dynamic shape = a static shape one dimension up: add a time axis, and the moving boundary becomes a fixed curve.',
+  wlP:'Pick a birth year — the graph paper shows the education window (ages 7–22) and counts boundary crossings inside it. Future steps are dashed; their frequency is set by the ν slider.',
+  birthL:'birth year:', windowL:'education window T = 15 yrs',
+  nuL:'ν after 2026:', nuU:'crossings / decade',
+  gDad:'dad', gMe:'me', gSon:'son',
+  v0:'the boundary holds still inside the window: νT ≪ 1 — the snapshot S₀ survives transmission; teaching the shape works honestly.',
+  v1:'one crossing per cycle: νT ≈ 1 — the shape transfers with patches, recalibration on the fly.',
+  v2:'νT > 1: any snapshot S₀ is stale before graduation. Only Φ = (δ, σ, α, ρ, γ) — and the loss L — remain transmissible.',
+  lg1:'— delegated to machines', lg2:'— interface layer at the boundary', lg3:'— projection: steps driven by ν', lg4:'— gym apparatus: kept alive only for training', lg5:'— contested zone: does acceptance get delegated', lg6:'— education window where crossings are counted',
+  strata:['Execution','Procedures','Acceptance','Specification','Goals'],
+  tags:['calculator','PC, CAS','internet, IDE','LLM'],
+  gym1:'long multiplication', gym2:'code by hand', qLabel:'α ∈ D ?',
+  inhH:'Three regimes of inheritance',
+  inhNote:'This is an analogy in machine-learning terms: child ↔ model being trained, parent ↔ what passes between generations. A metaphor, not a claim about the brain.',
+  w1:'Weights', t1:'The boundary barely moves within a lifetime. The shape S₀ can be handed over whole — it survives the transfer. Master → apprentice works honestly.',
+  w2:'Weights + fine-tuning', t2:'One or two crossings per career. The inherited shape is partly valid; the rest is recalibration on the fly. “Real programmers write C” is the ritual of this regime.',
+  w3:'Optimizer and loss', t3:'Any snapshot goes stale between first grade and graduation. What transmits is (Φ, L): the navigation operator and the top stratum — goals, preferences, taste. The weights the child will take from the environment:',
+  inhFoot:'The parent’s window of control is the data distribution 𝒟(t): while it is partly yours, you are the curriculum designer. Your share falls monotonically; the strategy is not to hold the boundary but to train, in time, what filters the environment on its own: acceptance α and the loss L.',
+  footShare:'this file is self-contained — share freely'
+},
+kid:{
+  eyebrow:'for kids 8–12', kidsBtn:'Grown-ups',
+  title:'The robots keep learning your tricks',
+  subtitle:'Calculators learned counting. Computers learned recipes. AI helpers are learning even more. So what should YOU learn? This page is a little machine that shows the answer.',
+  badgeMath:'the big idea', badgeViz:'a machine to play with', badgeMl:'three ways to grow up',
+  modelH:'The big idea',
+  modelNote:'Skills are like a tower of floors. Robots climb it floor by floor. Your job is not to guard one floor — it is to be the captain of the whole tower.',
+  p1:'Imagine everything you can do as a tower. At the bottom: doing sums by hand. Above it: following recipes step by step. Then: checking answers. Then: saying clearly what you want. At the very top: choosing what matters to you.',
+  p2:'Machines keep climbing this tower. The calculator took the bottom floor in grandpa’s time. Computers took the next one in dad’s time. AI helpers are climbing right now — and nobody knows exactly where they will stop.',
+  p3:'So the trick is not to memorize one floor. The trick is to learn five captain skills:',
+  cD:'choosing — what to hand to the robot', cS:'asking — explaining exactly what you want', cA:'checking — spotting when the robot is wrong', cR:'updating — noticing what got old', cG:'practicing — keeping fun exercises alive',
+  pG:'', p4:'And here is the secret rule:',
+  mainCap:'', texS:'', texThr:'',
+  kidRule:'If robots learn a new trick faster than you finish school → learning tricks is not enough. Learn to be the captain.',
+  mathNote:'',
+  wlH:'The time machine',
+  wlNote:'One picture instead of a movie: time runs to the right, the blue water is what robots already do, the red line is where people stand.',
+  wlP:'Pick a birth year — the red stripe shows the school years. Count how many times the robot-water jumps while someone is at school!',
+  birthL:'born in:', windowL:'school years 7–22',
+  nuL:'robot speed after 2026:', nuU:'jumps / 10 years',
+  gDad:'grandpa', gMe:'dad', gSon:'you',
+  v0:'the water stands still: whatever you learn at school will still work later. Lucky!',
+  v1:'one jump during school: you have to adjust a little afterwards. Doable.',
+  v2:'the water jumps a lot! Tricks go old before school ends. Captain skills are the only thing that keeps working.',
+  lg1:'— robots already do this', lg2:'— the line where people stand', lg3:'— guesses about the future (you control them!)', lg4:'— practice games we keep on purpose', lg5:'— the big question: will robots check answers too?', lg6:'— school years, where we count jumps',
+  strata:['Doing by hand','Step-by-step recipes','Checking answers','Saying what you want','Choosing what matters'],
+  tags:['calculator','computers','internet','AI helpers'],
+  gym1:'sums by hand', gym2:'code by hand', qLabel:'who will check?',
+  inhH:'Three ways to grow up',
+  inhNote:'Grandpa, dad and you got different worlds — so you need different superpowers.',
+  w1:'Copy the master', t1:'In grandpa’s time the world moved slowly. You could copy exactly what the master did, and it worked your whole life.',
+  w2:'Copy, then adjust', t2:'In dad’s time the world jumped once or twice. You copied — and then had to relearn some parts yourself.',
+  w3:'Be the captain', t3:'In your time the world jumps all the time. So you get the best inheritance: the five captain skills — and a compass. The compass is knowing what YOU care about. Everything else you will pick up from the world around you.',
+  inhFoot:'A note for grown-ups reading along: the compass is the loss function, the captain skills are the operator Φ. The weights the kid takes from the environment.',
+  footShare:'this file is self-contained — share freely'
+}},
+ru:{_name:'RU',
+std:{
+  eyebrow:'модель · 2026', kidsBtn:'Детям',
+  title:'Граница делегирования',
+  subtitle:'Форма навыка не принадлежит навыку — её задаёт среда инструментов. Когда инструменты меняются быстрее, чем идёт учёба, передавать готовую форму поздно: передавать можно только способ строить формы. Эта страница — модель того, чему учить детей.',
+  badgeMath:'математическая формула', badgeViz:'интерактивная визуализация', badgeMl:'аналогия из машинного обучения',
+  modelH:'Модель',
+  modelNote:'Три уравнения и один порог. Главная идея — чему учить детей: не снапшот навыка, а оператор, который строит навык под любую среду.',
+  p1:'Пространство задачи 𝒜 разложено по уровням абстракции; D(t) — область, делегированная машине при среде E(t). Человек интернализирует не задачу, а дополнение к делегированному — плюс слой на границе, плюс снаряды:',
+  p2:'«Форма не принадлежит навыку» — это утверждение, что S есть функция от среды: оператор из сред в формы:',
+  p3:'Оператор реализуется пятью способностями:',
+  cD:'диспетчеризация — что отдать инструменту', cS:'постановка — как перевести намерение', cA:'приёмка — проверить, не переделывая', cR:'переразметка — что в форме устарело', cG:'диета — какие снаряды держать в спортзале',
+  pG:'Траектория границы — «форма формы» — статический объект в пространстве-времени, кодирующий всю динамику:',
+  p4:'И порог. Пусть ν — частота пересечений границей уровней абстракции, T — цикл обучения. Классическая педагогика передаёт снапшот S₀ = Φ(E(t₀)) и корректна лишь пока νT ≪ 1. Фазовый переход:',
+  mainCap:'← главная формула: чему учить детей, когда среда меняется быстрее учёбы',
+  texS:'S(t)\\;=\\;\\underbrace{\\mathcal{A}\\setminus D(t)}_{\\text{дополнение}}\\;\\cup\\;\\underbrace{\\partial D(t)}_{\\text{интерфейс}}\\;\\cup\\;\\underbrace{G(t)}_{\\text{снаряды}},\\qquad G(t)\\subset D(t)',
+  texThr:'\\nu\\,T>1\\;\\Longrightarrow\\;S_0=\\Phi(E(t_0))\\ \\text{устаревает до }t_0{+}T\\;\\Longrightarrow\\;\\text{передаваемо только }\\Phi',
+  kidRule:'',
+  mathNote:'Замечания о нотации. ∂D(t) внутри S — злоупотребление обозначением: интерфейсные способности привязаны к границе, а не являются областью 𝒜. Φ — отображение, а (δ, σ, α, ρ, γ) — способности, которые его реализуют, не декартово разложение. νT читается как ожидаемое число пересечений за цикл, поэтому порог — эвристика, не теорема; исторические ступени — стилизация, ступени после 2026 — параметр, не прогноз.',
+  wlH:'Мировая линия Γ',
+  wlNote:'Динамическая форма = статическая форма в пространстве на одно измерение выше: добавь ось времени — и движущаяся граница становится неподвижной кривой.',
+  wlP:'Выберите год рождения — миллиметровка покажет окно обучения (7–22 года) и посчитает пересечения границы внутри него. Будущие ступени — пунктирные, их частота управляется ползунком ν.',
+  birthL:'год рождения:', windowL:'окно обучения T = 15 лет',
+  nuL:'ν после 2026:', nuU:'пересечений / декаду',
+  gDad:'папа', gMe:'я', gSon:'сын',
+  v0:'граница неподвижна внутри окна: νT ≪ 1 — снапшот S₀ переживёт передачу; можно честно учить форму.',
+  v1:'одно пересечение за цикл: νT ≈ 1 — форма передаётся с поправками, перекалибровка на ходу.',
+  v2:'νT > 1: любой снапшот S₀ устаревает до выпуска. Передаваемо только Φ = (δ, σ, α, ρ, γ) — и лосс L.',
+  lg1:'— делегировано машине', lg2:'— интерфейсный слой на границе', lg3:'— проекция: ступени, управляемые ν', lg4:'— снаряд: жив только для тренировки', lg5:'— оспариваемая зона: делегируется ли приёмка', lg6:'— окно обучения, где считаются пересечения',
+  strata:['Исполнение','Процедуры','Приёмка','Спецификация','Цели'],
+  tags:['калькулятор','ПК, CAS','интернет, IDE','LLM'],
+  gym1:'столбик', gym2:'код руками', qLabel:'α ∈ D ?',
+  inhH:'Три режима наследования',
+  inhNote:'Это аналогия в терминах машинного обучения: ребёнок ↔ обучаемая модель, родитель ↔ передаваемое между поколениями. Метафора, а не утверждение о мозге.',
+  w1:'Веса', t1:'Граница почти неподвижна внутри жизни. Форму S₀ можно передать целиком — она переживёт передачу. Мастер → подмастерье работает честно.',
+  w2:'Веса + дообучение', t2:'Одно-два пересечения за карьеру. Переданная форма частично валидна, остальное — перекалибровка на ходу. «Настоящие программисты пишут на C» — ритуал этого режима.',
+  w3:'Оптимизатор и лосс', t3:'Любой снапшот протухает между первым классом и дипломом. Передаваемо (Φ, L): оператор навигации и верхняя страта — цели, предпочтения, вкус. Веса ребёнок возьмёт из среды:',
+  inhFoot:'Окно контроля родителя — распределение данных 𝒟(t): пока оно частично твоё, ты — curriculum designer. Доля падает монотонно; стратегия — не удержать границу, а успеть натренировать то, что фильтрует среду само: приёмку α и лосс L.',
+  footShare:'файл самодостаточен — делитесь свободно'
+},
+kid:{
+  eyebrow:'детям 8–12', kidsBtn:'Взрослым',
+  title:'Роботы учат твои трюки',
+  subtitle:'Калькулятор выучил счёт. Компьютеры выучили рецепты. ИИ-помощники учатся дальше. А что тогда учить ТЕБЕ? Эта страница — маленькая машина, которая показывает ответ.',
+  badgeMath:'главная идея', badgeViz:'машина, с которой можно играть', badgeMl:'три способа вырасти',
+  modelH:'Главная идея',
+  modelNote:'Навыки — как башня из этажей. Роботы поднимаются по ней этаж за этажом. Твоя задача — не сторожить один этаж, а быть капитаном всей башни.',
+  p1:'Представь всё, что ты умеешь, как башню. Внизу — считать руками. Выше — выполнять рецепты по шагам. Потом — проверять ответы. Потом — ясно говорить, чего хочешь. На самом верху — выбирать, что для тебя важно.',
+  p2:'Машины поднимаются по этой башне. Калькулятор занял нижний этаж во времена дедушки. Компьютеры — следующий, во времена папы. ИИ-помощники поднимаются прямо сейчас — и никто точно не знает, где они остановятся.',
+  p3:'Значит, фокус не в том, чтобы вызубрить один этаж. Фокус — выучить пять капитанских умений:',
+  cD:'выбирать — что поручить роботу', cS:'просить — объяснять точно, чего хочешь', cA:'проверять — замечать, когда робот ошибся', cR:'обновлять — замечать, что устарело', cG:'тренироваться — беречь любимые упражнения',
+  pG:'', p4:'А вот секретное правило:',
+  mainCap:'', texS:'', texThr:'',
+  kidRule:'Если роботы учат новый трюк быстрее, чем ты заканчиваешь школу → учить трюки мало. Учись быть капитаном.',
+  mathNote:'',
+  wlH:'Машина времени',
+  wlNote:'Одна картинка вместо кино: время идёт вправо, синяя вода — то, что роботы уже умеют, красная линия — где стоят люди.',
+  wlP:'Выбери год рождения — красная полоса покажет школьные годы. Посчитай, сколько раз роботья вода прыгает, пока кто-то учится!',
+  birthL:'родился в:', windowL:'школьные годы 7–22',
+  nuL:'скорость роботов после 2026:', nuU:'прыжков / 10 лет',
+  gDad:'дедушка', gMe:'папа', gSon:'ты',
+  v0:'вода стоит на месте: всё, что выучишь в школе, будет работать и потом. Повезло!',
+  v1:'один прыжок за школу: после придётся немного подстроиться. Справишься.',
+  v2:'вода прыгает и прыгает! Трюки стареют раньше, чем кончится школа. Работают только капитанские умения.',
+  lg1:'— роботы это уже умеют', lg2:'— линия, где стоят люди', lg3:'— догадки о будущем (ими управляешь ты!)', lg4:'— упражнения, которые мы бережём нарочно', lg5:'— большой вопрос: будут ли роботы и проверять?', lg6:'— школьные годы, где считаем прыжки',
+  strata:['Делать руками','Рецепты по шагам','Проверять ответы','Говорить, чего хочешь','Выбирать важное'],
+  tags:['калькулятор','компьютеры','интернет','ИИ-помощники'],
+  gym1:'счёт руками', gym2:'код руками', qLabel:'кто проверит?',
+  inhH:'Три способа вырасти',
+  inhNote:'Дедушке, папе и тебе достались разные миры — поэтому нужны разные суперсилы.',
+  w1:'Копируй мастера', t1:'Во времена дедушки мир двигался медленно. Можно было скопировать мастера в точности — и это работало всю жизнь.',
+  w2:'Копируй и подстраивайся', t2:'Во времена папы мир прыгнул раз или два. Скопировал — а потом часть пришлось переучивать самому.',
+  w3:'Будь капитаном', t3:'В твоё время мир прыгает всё время. Поэтому тебе достаётся лучшее наследство: пять капитанских умений — и компас. Компас — это знать, что важно именно ТЕБЕ. Остальное ты возьмёшь из мира вокруг.',
+  inhFoot:'Заметка для взрослых, читающих рядом: компас — это функция потерь, капитанские умения — оператор Φ. Веса ребёнок берёт из среды.',
+  footShare:'файл самодостаточен — делитесь свободно'
+}},
+de:{_name:'DE',
+std:{
+  eyebrow:'ein Modell · 2026', kidsBtn:'Für Kinder',
+  title:'Die Delegationsgrenze',
+  subtitle:'Die Form einer Fähigkeit gehört nicht der Fähigkeit — die Werkzeugumgebung zeichnet sie. Wenn Werkzeuge sich schneller ändern, als Bildung dauert, kommt die Weitergabe einer fertigen Form zu spät: Übertragbar bleibt nur die Art, Formen zu bauen. Diese Seite ist ein Modell dafür, was Kindern beizubringen ist.',
+  badgeMath:'mathematische Formel', badgeViz:'interaktive Visualisierung', badgeMl:'Analogie aus dem maschinellen Lernen',
+  modelH:'Das Modell',
+  modelNote:'Drei Gleichungen und eine Schwelle. Die Hauptidee — was Kindern beizubringen ist: kein Schnappschuss einer Fähigkeit, sondern der Operator, der die Fähigkeit für jede Umgebung baut.',
+  p1:'Der Aufgabenraum 𝒜 ist nach Abstraktionsebenen geschichtet; D(t) ist der an Maschinen delegierte Bereich unter der Umgebung E(t). Internalisiert wird nicht die Aufgabe, sondern das Komplement des Delegierten — plus eine Schicht an der Grenze, plus die Übungsgeräte:',
+  p2:'„Die Form gehört nicht der Fähigkeit“ heißt: S ist eine Funktion der Umgebung — ein Operator von Umgebungen zu Formen:',
+  p3:'Der Operator wird durch fünf Fähigkeiten realisiert:',
+  cD:'Verteilung — was ans Werkzeug geht', cS:'Formulierung — Absicht übersetzen', cA:'Abnahme — prüfen, ohne neu zu machen', cR:'Neubewertung — was in der Form veraltet ist', cG:'Diät — welche Übungsgeräte bleiben',
+  pG:'Die Trajektorie der Grenze — die „Form der Form“ — ist ein statisches Objekt in der Raumzeit, das die gesamte Dynamik kodiert:',
+  p4:'Und die Schwelle. Sei ν die Frequenz der Grenzübertritte über Abstraktionsebenen, T der Bildungszyklus. Klassische Pädagogik übergibt einen Schnappschuss S₀ = Φ(E(t₀)) und ist nur gültig, solange νT ≪ 1. Der Phasenübergang:',
+  mainCap:'← die Hauptformel: was Kindern beizubringen ist, wenn die Umgebung sich schneller ändert als die Bildung',
+  texS:'S(t)\\;=\\;\\underbrace{\\mathcal{A}\\setminus D(t)}_{\\text{Komplement}}\\;\\cup\\;\\underbrace{\\partial D(t)}_{\\text{Schnittstelle}}\\;\\cup\\;\\underbrace{G(t)}_{\\text{Übungsgeräte}},\\qquad G(t)\\subset D(t)',
+  texThr:'\\nu\\,T>1\\;\\Longrightarrow\\;S_0=\\Phi(E(t_0))\\ \\text{veraltet vor }t_0{+}T\\;\\Longrightarrow\\;\\text{übertragbar ist nur }\\Phi',
+  kidRule:'',
+  mathNote:'Notationshinweise. ∂D(t) innerhalb von S ist ein Missbrauch der Notation: die Schnittstellenfähigkeiten sind an der Grenze verankert, kein Bereich von 𝒜. Φ ist eine Abbildung, und (δ, σ, α, ρ, γ) sind die Fähigkeiten, die sie realisieren — keine kartesische Zerlegung. νT liest sich als erwartete Zahl der Übertritte pro Zyklus; die Schwelle ist eine Heuristik, kein Theorem. Die historischen Stufen sind stilisiert, die Stufen nach 2026 ein Parameter, keine Prognose.',
+  wlH:'Die Weltlinie Γ',
+  wlNote:'Eine dynamische Form = eine statische Form eine Dimension höher: füge eine Zeitachse hinzu, und die bewegte Grenze wird zur festen Kurve.',
+  wlP:'Wählen Sie ein Geburtsjahr — das Millimeterpapier zeigt das Bildungsfenster (7–22 Jahre) und zählt die Grenzübertritte darin. Zukünftige Stufen sind gestrichelt; ihre Frequenz steuert der ν-Regler.',
+  birthL:'Geburtsjahr:', windowL:'Bildungsfenster T = 15 Jahre',
+  nuL:'ν nach 2026:', nuU:'Übertritte / Dekade',
+  gDad:'Papa', gMe:'ich', gSon:'Sohn',
+  v0:'die Grenze steht still im Fenster: νT ≪ 1 — der Schnappschuss S₀ überlebt die Übergabe; die Form ehrlich zu lehren funktioniert.',
+  v1:'ein Übertritt pro Zyklus: νT ≈ 1 — die Form wird mit Korrekturen übergeben, Rekalibrierung unterwegs.',
+  v2:'νT > 1: jeder Schnappschuss S₀ veraltet vor dem Abschluss. Übertragbar bleibt nur Φ = (δ, σ, α, ρ, γ) — und der Loss L.',
+  lg1:'— an Maschinen delegiert', lg2:'— Schnittstellenschicht an der Grenze', lg3:'— Projektion: Stufen, gesteuert durch ν', lg4:'— Übungsgerät: lebt nur fürs Training weiter', lg5:'— umkämpfte Zone: wird die Abnahme delegiert', lg6:'— Bildungsfenster, in dem Übertritte gezählt werden',
+  strata:['Ausführung','Verfahren','Abnahme','Spezifikation','Ziele'],
+  tags:['Taschenrechner','PC, CAS','Internet, IDE','LLM'],
+  gym1:'schriftlich rechnen', gym2:'Code von Hand', qLabel:'α ∈ D ?',
+  inhH:'Drei Regime der Vererbung',
+  inhNote:'Dies ist eine Analogie in Begriffen des maschinellen Lernens: Kind ↔ trainiertes Modell, Eltern ↔ das, was zwischen Generationen übergeben wird. Eine Metapher, keine Aussage übers Gehirn.',
+  w1:'Gewichte', t1:'Die Grenze bewegt sich innerhalb eines Lebens kaum. Die Form S₀ kann ganz übergeben werden — sie überlebt die Übergabe. Meister → Lehrling funktioniert ehrlich.',
+  w2:'Gewichte + Feintuning', t2:'Ein bis zwei Übertritte pro Karriere. Die geerbte Form ist teilweise gültig; der Rest ist Rekalibrierung unterwegs. „Echte Programmierer schreiben C“ ist das Ritual dieses Regimes.',
+  w3:'Optimierer und Loss', t3:'Jeder Schnappschuss veraltet zwischen erster Klasse und Abschluss. Übertragen wird (Φ, L): der Navigationsoperator und die oberste Schicht — Ziele, Vorlieben, Geschmack. Die Gewichte nimmt das Kind aus der Umgebung:',
+  inhFoot:'Das Kontrollfenster der Eltern ist die Datenverteilung 𝒟(t): solange sie teilweise deine ist, bist du Curriculum-Designer. Der Anteil fällt monoton; die Strategie ist nicht, die Grenze zu halten, sondern rechtzeitig das zu trainieren, was die Umgebung selbst filtert: die Abnahme α und den Loss L.',
+  footShare:'diese Datei ist eigenständig — frei teilen'
+},
+kid:{
+  eyebrow:'für Kinder', kidsBtn:'Für Erwachsene',
+  title:'Die Roboter lernen deine Tricks',
+  subtitle:'Der Taschenrechner hat das Rechnen gelernt. Computer haben Rezepte gelernt. KI-Helfer lernen noch mehr. Was sollst also DU lernen? Diese Seite ist eine kleine Maschine, die die Antwort zeigt.',
+  badgeMath:'die große Idee', badgeViz:'eine Maschine zum Spielen', badgeMl:'drei Arten, groß zu werden',
+  modelH:'Die große Idee',
+  modelNote:'Fähigkeiten sind wie ein Turm aus Etagen. Roboter klettern ihn Etage für Etage hinauf. Deine Aufgabe ist nicht, eine Etage zu bewachen — sondern Kapitän des ganzen Turms zu sein.',
+  p1:'Stell dir alles, was du kannst, als Turm vor. Ganz unten: mit der Hand rechnen. Darüber: Rezepte Schritt für Schritt befolgen. Dann: Antworten prüfen. Dann: klar sagen, was du willst. Ganz oben: wählen, was dir wichtig ist.',
+  p2:'Maschinen klettern diesen Turm hinauf. Der Taschenrechner nahm die unterste Etage zu Opas Zeiten. Computer die nächste zu Papas Zeiten. KI-Helfer klettern gerade jetzt — und niemand weiß genau, wo sie anhalten.',
+  p3:'Der Trick ist also nicht, eine Etage auswendig zu lernen. Der Trick sind fünf Kapitänsfähigkeiten:',
+  cD:'wählen — was der Roboter übernehmen darf', cS:'fragen — genau erklären, was du willst', cA:'prüfen — merken, wenn der Roboter sich irrt', cR:'erneuern — merken, was alt geworden ist', cG:'üben — Lieblingsübungen am Leben halten',
+  pG:'', p4:'Und hier ist die geheime Regel:',
+  mainCap:'', texS:'', texThr:'',
+  kidRule:'Wenn Roboter einen neuen Trick schneller lernen, als du die Schule beendest → Tricks lernen reicht nicht. Lerne, Kapitän zu sein.',
+  mathNote:'',
+  wlH:'Die Zeitmaschine',
+  wlNote:'Ein Bild statt eines Films: die Zeit läuft nach rechts, das blaue Wasser ist, was Roboter schon können, die rote Linie ist, wo die Menschen stehen.',
+  wlP:'Wähle ein Geburtsjahr — der rote Streifen zeigt die Schuljahre. Zähle, wie oft das Roboterwasser springt, während jemand in der Schule ist!',
+  birthL:'geboren:', windowL:'Schuljahre 7–22',
+  nuL:'Robotertempo nach 2026:', nuU:'Sprünge / 10 Jahre',
+  gDad:'Opa', gMe:'Papa', gSon:'du',
+  v0:'das Wasser steht still: was du in der Schule lernst, funktioniert auch später. Glück gehabt!',
+  v1:'ein Sprung während der Schule: danach musst du dich ein bisschen anpassen. Machbar.',
+  v2:'das Wasser springt und springt! Tricks veralten, bevor die Schule endet. Nur die Kapitänsfähigkeiten funktionieren weiter.',
+  lg1:'— das können Roboter schon', lg2:'— die Linie, wo die Menschen stehen', lg3:'— Vermutungen über die Zukunft (du steuerst sie!)', lg4:'— Übungen, die wir absichtlich behalten', lg5:'— die große Frage: prüfen Roboter bald auch?', lg6:'— Schuljahre, in denen wir Sprünge zählen',
+  strata:['Mit der Hand','Rezepte Schritt für Schritt','Antworten prüfen','Sagen, was du willst','Wählen, was wichtig ist'],
+  tags:['Taschenrechner','Computer','Internet','KI-Helfer'],
+  gym1:'Rechnen von Hand', gym2:'Code von Hand', qLabel:'wer prüft?',
+  inhH:'Drei Arten, groß zu werden',
+  inhNote:'Opa, Papa und du habt verschiedene Welten bekommen — darum braucht ihr verschiedene Superkräfte.',
+  w1:'Den Meister kopieren', t1:'Zu Opas Zeiten bewegte sich die Welt langsam. Man konnte den Meister genau kopieren — und es funktionierte ein Leben lang.',
+  w2:'Kopieren und anpassen', t2:'Zu Papas Zeiten sprang die Welt ein- oder zweimal. Man kopierte — und musste danach einiges selbst neu lernen.',
+  w3:'Kapitän sein', t3:'In deiner Zeit springt die Welt ständig. Darum bekommst du das beste Erbe: die fünf Kapitänsfähigkeiten — und einen Kompass. Der Kompass ist zu wissen, was DIR wichtig ist. Alles andere nimmst du aus der Welt um dich herum.',
+  inhFoot:'Notiz für mitlesende Erwachsene: der Kompass ist die Loss-Funktion, die Kapitänsfähigkeiten sind der Operator Φ. Die Gewichte nimmt das Kind aus der Umgebung.',
+  footShare:'diese Datei ist eigenständig — frei teilen'
+}},
+cs:{_name:'CS',
+std:{
+  eyebrow:'model · 2026', kidsBtn:'Pro děti',
+  title:'Hranice delegování',
+  subtitle:'Tvar dovednosti nepatří dovednosti — kreslí ho prostředí nástrojů. Když se nástroje mění rychleji, než trvá vzdělávání, je pozdě předávat hotový tvar: předat lze jen způsob, jak tvary stavět. Tato stránka je model toho, co učit děti.',
+  badgeMath:'matematický vzorec', badgeViz:'interaktivní vizualizace', badgeMl:'analogie ze strojového učení',
+  modelH:'Model',
+  modelNote:'Tři rovnice a jeden práh. Hlavní myšlenka — co učit děti: ne snímek dovednosti, ale operátor, který dovednost staví pro jakékoli prostředí.',
+  p1:'Prostor úlohy 𝒜 je rozvrstven podle úrovní abstrakce; D(t) je oblast delegovaná strojům při prostředí E(t). Člověk internalizuje ne úlohu, ale doplněk delegovaného — plus vrstvu na hranici, plus trenažéry:',
+  p2:'„Tvar nepatří dovednosti“ znamená: S je funkcí prostředí — operátor z prostředí do tvarů:',
+  p3:'Operátor realizuje pět schopností:',
+  cD:'rozdělení — co svěřit nástroji', cS:'zadání — přeložit záměr', cA:'přejímka — ověřit bez předělávání', cR:'přeznačení — co ve tvaru zastaralo', cG:'dieta — které trenažéry si nechat',
+  pG:'Trajektorie hranice — „tvar tvaru“ — je statický objekt v časoprostoru, který kóduje celou dynamiku:',
+  p4:'A práh. Nechť ν je frekvence přechodů hranice přes úrovně abstrakce a T cyklus vzdělávání. Klasická pedagogika předává snímek S₀ = Φ(E(t₀)) a platí jen dokud νT ≪ 1. Fázový přechod:',
+  mainCap:'← hlavní vzorec: co učit děti, když se prostředí mění rychleji než vzdělávání',
+  texS:'S(t)\\;=\\;\\underbrace{\\mathcal{A}\\setminus D(t)}_{\\text{doplněk}}\\;\\cup\\;\\underbrace{\\partial D(t)}_{\\text{rozhraní}}\\;\\cup\\;\\underbrace{G(t)}_{\\text{trenažéry}},\\qquad G(t)\\subset D(t)',
+  texThr:'\\nu\\,T>1\\;\\Longrightarrow\\;S_0=\\Phi(E(t_0))\\ \\text{zastará před }t_0{+}T\\;\\Longrightarrow\\;\\text{předat lze jen }\\Phi',
+  kidRule:'',
+  mathNote:'Poznámky k notaci. ∂D(t) uvnitř S je zneužití zápisu: schopnosti rozhraní jsou ukotveny na hranici, nejsou oblastí 𝒜. Φ je zobrazení a (δ, σ, α, ρ, γ) jsou schopnosti, které ho realizují — ne kartézský rozklad. νT se čte jako očekávaný počet přechodů za cyklus; práh je heuristika, ne věta. Historické stupně jsou stylizace, stupně po 2026 parametr, ne předpověď.',
+  wlH:'Světočára Γ',
+  wlNote:'Dynamický tvar = statický tvar o dimenzi výš: přidej časovou osu a pohybující se hranice se stane pevnou křivkou.',
+  wlP:'Zvolte rok narození — milimetrový papír ukáže okno vzdělávání (7–22 let) a spočítá přechody hranice uvnitř něj. Budoucí stupně jsou čárkované; jejich frekvenci řídí posuvník ν.',
+  birthL:'rok narození:', windowL:'okno vzdělávání T = 15 let',
+  nuL:'ν po 2026:', nuU:'přechodů / dekádu',
+  gDad:'táta', gMe:'já', gSon:'syn',
+  v0:'hranice v okně stojí: νT ≪ 1 — snímek S₀ přežije předání; poctivě učit tvar funguje.',
+  v1:'jeden přechod za cyklus: νT ≈ 1 — tvar se předává s opravami, rekalibrace za pochodu.',
+  v2:'νT > 1: jakýkoli snímek S₀ zastará před absolutoriem. Předat lze jen Φ = (δ, σ, α, ρ, γ) — a loss L.',
+  lg1:'— delegováno strojům', lg2:'— vrstva rozhraní na hranici', lg3:'— projekce: stupně řízené ν', lg4:'— trenažér: žije jen pro trénink', lg5:'— sporná zóna: deleguje se přejímka', lg6:'— okno vzdělávání, kde se počítají přechody',
+  strata:['Provedení','Postupy','Přejímka','Specifikace','Cíle'],
+  tags:['kalkulačka','PC, CAS','internet, IDE','LLM'],
+  gym1:'písemné násobení', gym2:'kód ručně', qLabel:'α ∈ D ?',
+  inhH:'Tři režimy dědění',
+  inhNote:'Toto je analogie v pojmech strojového učení: dítě ↔ trénovaný model, rodič ↔ to, co se předává mezi generacemi. Metafora, ne tvrzení o mozku.',
+  w1:'Váhy', t1:'Hranice se během života téměř nehýbe. Tvar S₀ lze předat celý — předání přežije. Mistr → učeň funguje poctivě.',
+  w2:'Váhy + doladění', t2:'Jeden až dva přechody za kariéru. Zděděný tvar je zčásti platný; zbytek je rekalibrace za pochodu. „Skuteční programátoři píší v C“ je rituál tohoto režimu.',
+  w3:'Optimalizátor a loss', t3:'Každý snímek zastará mezi první třídou a absolutoriem. Předává se (Φ, L): navigační operátor a horní vrstva — cíle, preference, vkus. Váhy si dítě vezme z prostředí:',
+  inhFoot:'Okno kontroly rodiče je rozdělení dat 𝒟(t): dokud je zčásti tvoje, jsi curriculum designer. Podíl monotónně klesá; strategie není udržet hranici, ale včas natrénovat to, co prostředí filtruje samo: přejímku α a loss L.',
+  footShare:'soubor je soběstačný — sdílejte volně'
+},
+kid:{
+  eyebrow:'pro děti', kidsBtn:'Pro dospělé',
+  title:'Roboti se učí tvoje triky',
+  subtitle:'Kalkulačka se naučila počítat. Počítače se naučily recepty. AI pomocníci se učí dál. Co se tedy máš učit TY? Tato stránka je malý stroj, který ukazuje odpověď.',
+  badgeMath:'velká myšlenka', badgeViz:'stroj na hraní', badgeMl:'tři způsoby, jak vyrůst',
+  modelH:'Velká myšlenka',
+  modelNote:'Dovednosti jsou jako věž z pater. Roboti po ní šplhají patro za patrem. Tvým úkolem není hlídat jedno patro — ale být kapitánem celé věže.',
+  p1:'Představ si všechno, co umíš, jako věž. Dole: počítat rukou. Nad tím: postupovat podle receptu krok za krokem. Pak: kontrolovat odpovědi. Pak: jasně říct, co chceš. Úplně nahoře: vybírat, co je pro tebe důležité.',
+  p2:'Stroje po té věži šplhají. Kalkulačka zabrala spodní patro za dědových časů. Počítače další za tátových časů. AI pomocníci šplhají právě teď — a nikdo přesně neví, kde se zastaví.',
+  p3:'Trik tedy není naučit se nazpaměť jedno patro. Trik je pět kapitánských dovedností:',
+  cD:'vybírat — co svěřit robotovi', cS:'ptát se — přesně vysvětlit, co chceš', cA:'kontrolovat — všimnout si, když se robot mýlí', cR:'obnovovat — všimnout si, co zestárlo', cG:'cvičit — udržovat oblíbená cvičení naživu',
+  pG:'', p4:'A tady je tajné pravidlo:',
+  mainCap:'', texS:'', texThr:'',
+  kidRule:'Když se roboti učí nový trik rychleji, než ty dokončíš školu → učit se triky nestačí. Nauč se být kapitánem.',
+  mathNote:'',
+  wlH:'Stroj času',
+  wlNote:'Jeden obrázek místo filmu: čas běží doprava, modrá voda je to, co roboti už umí, červená čára je, kde stojí lidé.',
+  wlP:'Zvol rok narození — červený pruh ukáže školní léta. Spočítej, kolikrát robotí voda skočí, zatímco je někdo ve škole!',
+  birthL:'narozen:', windowL:'školní léta 7–22',
+  nuL:'rychlost robotů po 2026:', nuU:'skoků / 10 let',
+  gDad:'děda', gMe:'táta', gSon:'ty',
+  v0:'voda stojí: co se naučíš ve škole, bude fungovat i potom. Klika!',
+  v1:'jeden skok během školy: potom se musíš trochu přizpůsobit. Zvládneš to.',
+  v2:'voda skáče a skáče! Triky zestárnou dřív, než skončí škola. Fungují jen kapitánské dovednosti.',
+  lg1:'— tohle roboti už umí', lg2:'— čára, kde stojí lidé', lg3:'— odhady budoucnosti (řídíš je ty!)', lg4:'— cvičení, která si schválně necháváme', lg5:'— velká otázka: budou roboti i kontrolovat?', lg6:'— školní léta, kde počítáme skoky',
+  strata:['Rukou','Recepty krok za krokem','Kontrola odpovědí','Říct, co chceš','Vybrat, co je důležité'],
+  tags:['kalkulačka','počítače','internet','AI pomocníci'],
+  gym1:'počítání rukou', gym2:'kód ručně', qLabel:'kdo zkontroluje?',
+  inhH:'Tři způsoby, jak vyrůst',
+  inhNote:'Děda, táta a ty jste dostali různé světy — proto potřebujete různé superschopnosti.',
+  w1:'Kopíruj mistra', t1:'Za dědových časů se svět hýbal pomalu. Šlo mistra přesně okopírovat — a fungovalo to celý život.',
+  w2:'Kopíruj a přizpůsob se', t2:'Za tátových časů svět skočil jednou nebo dvakrát. Okopíroval — a část se pak musel přeučit sám.',
+  w3:'Buď kapitánem', t3:'Ve tvé době svět skáče pořád. Proto dostáváš nejlepší dědictví: pět kapitánských dovedností — a kompas. Kompas znamená vědět, co je důležité právě TOBĚ. Zbytek si vezmeš ze světa kolem.',
+  inhFoot:'Poznámka pro dospělé, kteří čtou spolu: kompas je loss funkce, kapitánské dovednosti jsou operátor Φ. Váhy si dítě bere z prostředí.',
+  footShare:'soubor je soběstačný — sdílejte volně'
+}}
+};
+
+var LANG='en', KIDS=false;
+(function(){
+  var q=new URLSearchParams(location.search);
+  if(q.get('lang')&&I18N[q.get('lang')])LANG=q.get('lang');
+  if(q.get('kids')==='1')KIDS=true;
+})();
+function L(){return I18N[LANG][KIDS?'kid':'std'];}
+function syncUrl(){
+  try{
+    if(location.protocol!=='http:'&&location.protocol!=='https:')return;
+    var q=new URLSearchParams();
+    if(LANG!=='en')q.set('lang',LANG);
+    if(KIDS)q.set('kids','1');
+    var s=q.toString();
+    history.replaceState(null,'',location.pathname+(s?'?'+s:''));
+  }catch(e){/* sandboxed iframe or file:// — deep links just stay off */}
+}
+
+function applyI18n(){
+  document.documentElement.lang=LANG;
+  document.body.classList.toggle('kids',KIDS);
+  document.querySelectorAll('[data-i]').forEach(function(e){
+    var v=L()[e.dataset.i]; if(v!==undefined)e.textContent=v;
+  });
+  document.querySelectorAll('[data-tk]').forEach(function(e){
+    var tex=L()[e.dataset.tk]||I18N[LANG].std[e.dataset.tk];
+    try{katex.render(tex, e, {throwOnError:false, displayMode:true});}catch(err){e.textContent=tex;}
+  });
+  document.querySelectorAll('#langs button').forEach(function(b){b.classList.toggle('active',b.dataset.lang===LANG);});
+  document.getElementById('kidsBtn').classList.toggle('active',KIDS);
+  syncUrl();
+  try{draw();}catch(e){console.error('draw failed:',e);}
+}
+
+var langsNav=document.getElementById('langs');
+Object.keys(I18N).forEach(function(code){
+  var b=document.createElement('button');
+  b.dataset.lang=code;b.textContent=I18N[code]._name||code;
+  b.addEventListener('click',function(){LANG=code;applyI18n();});
+  langsNav.appendChild(b);
+});
+document.getElementById('kidsBtn').addEventListener('click',function(){KIDS=!KIDS;applyI18n();});
+
+document.querySelectorAll('.kx').forEach(function(el){
+  try{katex.render(el.dataset.tex, el, {throwOnError:false});}catch(e){el.textContent=el.dataset.tex;}
+});
+document.querySelectorAll('.kx-d[data-tex]').forEach(function(el){
+  try{katex.render(el.dataset.tex, el, {throwOnError:false, displayMode:true});}catch(e){el.textContent=el.dataset.tex;}
+});
+
+var SVGNS='http://www.w3.org/2000/svg';
+var layers=document.getElementById('layers');
+var W=940,H=500, mL=140,mR=26,mT=26,mB=56;
+var pw=W-mL-mR, ph=H-mT-mB;
+var Y0=1950, Y1=2045, NS=5;
+function xOf(year){return mL+(year-Y0)/(Y1-Y0)*pw;}
+function yOf(level){return mT+ph-(level/NS)*ph;}
+
+var HIST=[
+  {year:1972,level:1.0},
+  {year:1994,level:1.5},
+  {year:2009,level:2.0},
+  {year:2023,level:2.5}
+];
+var BASE_LEVEL=0.4;
+
+function el(name,attrs,parent){
+  var e=document.createElementNS(SVGNS,name);
+  for(var k in attrs)e.setAttribute(k,attrs[k]);
+  (parent||layers).appendChild(e);return e;
+}
+function txt(x,y,s,attrs,parent){
+  var a=attrs||{};a.x=x;a.y=y;
+  var e=el('text',a,parent);e.textContent=s;return e;
+}
+function projectedSteps(nu){
+  var steps=[],spacing=10/nu,lvl=2.5,y=2026;
+  while(y<Y1&&lvl<4.0){
+    y+=spacing;lvl+=0.5;
+    if(y<Y1)steps.push({year:y,level:Math.min(lvl,4.0)});
+  }
+  return steps;
+}
+function frontierPoints(nu){
+  var pts=[{year:Y0,level:BASE_LEVEL}];
+  var all=HIST.concat(projectedSteps(nu)), cur=BASE_LEVEL;
+  all.forEach(function(s){pts.push({year:s.year,level:cur});pts.push({year:s.year,level:s.level});cur=s.level;});
+  pts.push({year:Y1,level:cur});
+  return pts;
+}
+function pathFrom(pts,fromYear,toYear){
+  var d='';
+  pts.forEach(function(p){
+    if(p.year<fromYear||p.year>toYear)return;
+    d+=(d===''?'M':'L')+xOf(p.year).toFixed(1)+' '+yOf(p.level).toFixed(1);
+  });
+  return d;
+}
+
+function draw(){
+  var birth=+document.getElementById('birth').value;
+  var nu=+document.getElementById('nu').value;
+  document.getElementById('birthVal').textContent=birth;
+  document.getElementById('nuVal').textContent=nu;
+  var w0=birth+7,w1=birth+22;
+
+  while(layers.firstChild)layers.removeChild(layers.firstChild);
+
+  var defs=el('defs',{});
+  var pat=el('pattern',{id:'hatch',width:'6',height:'6',patternUnits:'userSpaceOnUse',patternTransform:'rotate(45)'},defs);
+  el('line',{x1:0,y1:0,x2:0,y2:6,stroke:'#5A6675','stroke-width':1.1},pat);
+
+  el('rect',{x:mL,y:mT,width:pw,height:ph,fill:'#FDFDFB'});
+  for(var yr=Y0;yr<=Y1;yr+=5){
+    var maj=(yr%10===0);
+    el('line',{x1:xOf(yr),y1:mT,x2:xOf(yr),y2:mT+ph,stroke:maj?'var(--grid-strong)':'var(--grid)','stroke-width':maj?0.8:0.5});
+    if(maj&&yr>Y0&&yr<Y1)txt(xOf(yr),mT+ph+20,yr,{'text-anchor':'middle','font-size':11,fill:'#5A6675','font-family':"'IBM Plex Mono',monospace"});
+  }
+  for(var i=0;i<=NS*2;i++){
+    var lv=i/2,maj2=(i%2===0);
+    el('line',{x1:mL,y1:yOf(lv),x2:mL+pw,y2:yOf(lv),stroke:maj2?'var(--grid-strong)':'var(--grid)','stroke-width':maj2?0.8:0.5});
+  }
+  L().strata.forEach(function(s,i){
+    txt(mL-10,yOf(i+0.5)+4,s,{'text-anchor':'end','font-size':12.5,fill:'#23303E','font-family':"'IBM Plex Sans',sans-serif"});
+  });
+
+  var pts=frontierPoints(nu);
+  var dRegion='M'+mL+' '+(mT+ph);
+  pts.forEach(function(p){dRegion+='L'+xOf(p.year).toFixed(1)+' '+yOf(p.level).toFixed(1);});
+  dRegion+='L'+(mL+pw)+' '+(mT+ph)+'Z';
+  el('path',{d:dRegion,fill:'#D9E6F0','fill-opacity':0.75});
+
+  el('rect',{x:xOf(w0),y:mT,width:Math.max(0,xOf(Math.min(w1,Y1))-xOf(w0)),height:ph,fill:'rgba(181,53,44,.08)',stroke:'#B5352C','stroke-width':1,'stroke-dasharray':'2 3'});
+
+  el('rect',{x:xOf(1978),y:yOf(0.9),width:xOf(1998)-xOf(1978),height:yOf(0.25)-yOf(0.9),fill:'url(#hatch)',stroke:'#5A6675','stroke-width':0.7,rx:3});
+  txt(xOf(1988),yOf(0.55)+4,L().gym1,{'text-anchor':'middle','font-size':10.5,fill:'#3C4653','font-family':"'IBM Plex Mono',monospace"});
+  el('rect',{x:xOf(2025),y:yOf(2.35),width:xOf(2040)-xOf(2025),height:yOf(1.7)-yOf(2.35),fill:'url(#hatch)',stroke:'#5A6675','stroke-width':0.7,rx:3});
+  txt(xOf(2032.5),yOf(2.0)+4,L().gym2,{'text-anchor':'middle','font-size':10.5,fill:'#3C4653','font-family':"'IBM Plex Mono',monospace"});
+
+  el('rect',{x:xOf(2023),y:yOf(3),width:xOf(Y1-1)-xOf(2023),height:yOf(2)-yOf(3),fill:'none',stroke:'#B5352C','stroke-width':1.2,'stroke-dasharray':'5 4',rx:4});
+  txt(xOf(2034),yOf(2.5)+6,L().qLabel,{'text-anchor':'middle','font-size':14,fill:'#B5352C','font-family':"'Spectral',serif",'font-style':'italic'});
+
+  el('path',{d:pathFrom(pts,Y0,2026),fill:'none',stroke:'#E0A106','stroke-width':8,'stroke-opacity':0.85,'stroke-linejoin':'round'});
+  el('path',{d:pathFrom(pts,Y0,2026),fill:'none',stroke:'#B5352C','stroke-width':2.4,'stroke-linejoin':'round'});
+  el('path',{d:pathFrom(pts,2026,Y1),fill:'none',stroke:'#E0A106','stroke-width':8,'stroke-opacity':0.4,'stroke-linejoin':'round'});
+  el('path',{d:pathFrom(pts,2026,Y1),fill:'none',stroke:'#B5352C','stroke-width':2.2,'stroke-dasharray':'7 5','stroke-linejoin':'round'});
+
+  HIST.forEach(function(s,i){
+    txt(xOf(s.year)+4,yOf(s.level)-8,L().tags[i],{'font-size':10.5,fill:'#8A2620','font-family':"'IBM Plex Mono',monospace"});
+  });
+
+  [[1957,L().gDad],[1989,L().gMe],[2019,L().gSon]].forEach(function(g){
+    el('path',{d:'M'+xOf(g[0])+' '+(mT+ph)+' l-5 9 l10 0 Z',fill:'#23303E'});
+    txt(xOf(g[0]),mT+ph+34,g[1],{'text-anchor':'middle','font-size':11.5,fill:'#23303E','font-family':"'IBM Plex Sans',sans-serif",'font-weight':500});
+  });
+
+  txt(mL+pw-4,mT+16,'Γ',{'text-anchor':'end','font-size':17,fill:'#B5352C','font-family':"'Spectral',serif",'font-style':'italic'});
+
+  var all=HIST.concat(projectedSteps(nu));
+  var C=all.filter(function(s){return s.year>=w0&&s.year<=w1;}).length;
+  var v=document.getElementById('verdict');
+  document.getElementById('verdictNum').textContent='C = '+C;
+  v.className='verdict '+(C===0?'v-ok':(C===1?'v-edge':'v-crit'));
+  document.getElementById('verdictText').textContent=(C===0?L().v0:(C===1?L().v1:L().v2));
+}
+
+document.getElementById('birth').addEventListener('input',function(){
+  document.querySelectorAll('.presets button').forEach(function(b){b.classList.toggle('active',+b.dataset.year===+document.getElementById('birth').value);});
+  draw();
+});
+document.getElementById('nu').addEventListener('input',draw);
+document.querySelectorAll('.presets button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.getElementById('birth').value=b.dataset.year;
+    document.querySelectorAll('.presets button').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    draw();
+  });
+});
+
+applyI18n();
+</script>
+</body>
+</html>
