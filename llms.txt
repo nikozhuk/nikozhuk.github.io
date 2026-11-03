@@ -1,0 +1,42 @@
+# Nikolai Zhukov
+
+Senior machine learning practioner with 8+ years of building and shipping production ML models - from document processing pipelines for enterprise clients, to computer vision models in production and reinforcement learning solution for industrial process's optimisation. Research background in graph ML at the German Research Center for Artificial Intelligence (DFKI). Fine-tuning, evaluation of neural networks in production systems. Strong mathematical educational background (Diplom in Mathematics and Computer Science and Master's degree in Business Informatics). Fluent in English, German and Python. Based in Germany since 2011. German citizen.
+
+## Selected projects:
+
+- software that finds the most cost-effective industrial network device setup. Improved topology optimisation method (classical and RL approaches).
+
+- system which automatically recognise devices, their connections from e-plan pdf documents of industrial plants. Trained custom neural networks, deployed them into production, created evaluation pipeline.
+
+- for simulation in manufacturing ecosystem, developed a prediction method for simulation of thermodynamic effects within a metal plate during the laser cutting process (to reduce the computational costs of classical FEMs)
+
+- AI-based document processing system (extraction, classification textual entities). Owned a whole lifecycle of data science projects for several clients. Co-developed modules of data processing pipeline.
+
+##
+
+- within a mechanistic interpretabilty research performed extraction of geometric structure of temporal representations for open-weighted models (advanced through MATS Autumn 2026 selection assessments)
+
+- system for coaches. Created an in-video action classification method  (transformer-based model ensembles)
+
+- fully offline recovery assistant for patients after ischemic stroke (local open-weight model deployment and fine-tuning)
+
+- safe hardware educational toy. Created evaluation framework to benchmark the output quality, cost, latency of 20+ LLM providers/model configurations.
+
+##
+
+- organized team and won in Valeo Innovation Challenge 2015 with computer vision project
+
+##
+
+In other time I love to train kids play better table tennis (as B-licenced coach). 
+
+##
+According to Gallup's strengths, my top talents are intellection, learner, input, deliberative, developer, ideation, relator, individualization, achiever and activator.
+
+## Contacts
+
+- Website: https://nikozhuk.github.io
+- GitHub: https://github.com/nikozhuk
+- LinkedIn: https://www.linkedin.com/in/nikolai-zhukov
+- Bluesky: https://bsky.app/profile/nikozhuk.bsky.social
+- X: https://x.com/Zhukovi
