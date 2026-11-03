@@ -1,38 +1,42 @@
 # Nikolai Zhukov
 
-> Mathematician and ML engineer (Diplom in Mathematics and Computer Science, with distinction).
-> Current Research focus: mechanistic interpretability of transformers — the geometric
-> structure of temporal representations and how it deforms under context,
-> studied in Gemma 2 2B with GemmaScope SAEs. Advanced through MATS
-> Autumn 2026 selection assessments. 8+ years production ML (Python, Rust).
-> Based in German since 2011. German citizen.
+Senior machine learning practioner with 8+ years of building and shipping production ML models - from document processing pipelines for enterprise clients, to computer vision models in production and reinforcement learning solution for industrial process's optimisation. Research background in graph ML at the German Research Center for Artificial Intelligence (DFKI). Fine-tuning, evaluation of neural networks in production systems. Strong mathematical educational background (Diplom in Mathematics and Computer Science and Master's degree in Business Informatics). Fluent in English, German and Python. Based in Germany since 2011. German citizen.
 
-## Key work
+## Selected projects:
 
-- [Dilusion of time: how Gemma represents temporal concepts](https://nikozhuk.github.io/posts/time):
-  five temporal categories (past/present/future/counterfactual/hypothetical)
-  probed at layer 20; PCA geometry across layers 8 - 25 shows continuous
-  structure that discrete SAE latents do not cleanly separate — one latent
-  (1858) dominates all temporal categories. Also reproduces the circular
-  days-of-week geometry (Engels et al., arXiv:2405.14860).
-- [Finding joy in Gemma 2 2B](https://nikozhuk.github.io/posts/emotions):
-  reproduction of Anthropic's emotion-concept methodology on open weights;
-  SAE latent 1673 fires on 19/20 joy prompts vs 3/20 neutral
-  (mean activation 21.2 vs 1.97).
-- [About](https://nikozhuk.github.io/about.html): background - DFKI
-  Saarbruecken (MeshGraphNet/GAT surrogate models for laser-cutting thermal
-  simulation), plaicube.ai (LLM evaluation framework — cost/latency/quality
-  benchmarking - with Whisper STT/TTS on a Rust core), Pragmatic Minds
-  (CV + RL for industrial topology optimization), KPMG (production document
-  AI at scale), Google Gemma hackathon (Gemma 4 on Raspberry Pi for
-  ischemic stroke recovery).
+- software that finds the most cost-effective industrial network device setup. Improved topology optimisation method (classical and RL approaches).
 
-## Current
+- system which automatically recognise devices, their connections from e-plan pdf documents of industrial plants. Trained custom neural networks, deployed them into production, created evaluation pipeline.
 
-- How temporal representation geometry deforms under context
-  (stress vs. calm, cultural framing); SAE analysis beyond layer 20.
-- Explaining transformer architecture as comics (in progress).
+- for simulation in manufacturing ecosystem, developed a prediction method for simulation of thermodynamic effects within a metal plate during the laser cutting process (to reduce the computational costs of classical FEMs)
 
-## Contact
+- AI-based document processing system (extraction, classification textual entities). Owned a whole lifecycle of data science projects for several clients. Co-developed modules of data processing pipeline.
 
+##
+
+- within a mechanistic interpretabilty research performed extraction of geometric structure of temporal representations for open-weighted models (advanced through MATS Autumn 2026 selection assessments)
+
+- system for coaches. Created an in-video action classification method  (transformer-based model ensembles)
+
+- fully offline recovery assistant for patients after ischemic stroke (local open-weight model deployment and fine-tuning)
+
+- safe hardware educational toy. Created evaluation framework to benchmark the output quality, cost, latency of 20+ LLM providers/model configurations.
+
+##
+
+- organized team and won in Valeo Innovation Challenge 2015 with computer vision project
+
+##
+
+In other time I love to train kids play better table tennis (as B-licenced coach). 
+
+##
+According to Gallup's strengths, my top talents are intellection, learner, input, deliberative, developer, ideation, relator, individualization, achiever and activator.
+
+## Contacts
+
+- Website: https://nikozhuk.github.io
 - GitHub: https://github.com/nikozhuk
+- LinkedIn: https://www.linkedin.com/in/nikolai-zhukov
+- Bluesky: https://bsky.app/profile/nikozhuk.bsky.social
+- X: https://x.com/Zhukovi
