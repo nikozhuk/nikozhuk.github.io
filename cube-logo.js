@@ -177,6 +177,11 @@
     return { moves: moves, nodes: nodes, n: n };
   }
 
+  // Face colour for thin lines / text on the white panel.
+  function ink(hex) {
+    return hex === FACES.B.color ? "#8f96a0" : hex === FACES.F.color ? "#d1a800" : hex;
+  }
+
   function rgba(hex, a) {
     var v = parseInt(hex.slice(1), 16);
     return "rgba(" + (v >> 16) + "," + ((v >> 8) & 255) + "," + (v & 255) + "," + a + ")";
@@ -202,11 +207,11 @@
       for (var sl = 0; sl < 18; sl++) {
         if (sl === skipA || sl === skipB) continue;
         var ang = N[i].base + sl * Math.PI / 9, len = 12 * k;
-        var col = FACES[FACE_ORDER[Math.floor(sl / 3)]].color;
+        var col = ink(FACES[FACE_ORDER[Math.floor(sl / 3)]].color);
         var x1 = ox + N[i].x + Math.cos(ang) * len, y1 = oy + N[i].y + Math.sin(ang) * len;
-        ctx.strokeStyle = rgba(col, 0.38); ctx.lineWidth = 1;
+        ctx.strokeStyle = rgba(col, 0.5); ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(ox + N[i].x, oy + N[i].y); ctx.lineTo(x1, y1); ctx.stroke();
-        ctx.fillStyle = rgba(col, 0.6);
+        ctx.fillStyle = rgba(col, 0.8);
         ctx.beginPath(); ctx.arc(x1, y1, 1.3, 0, 6.3); ctx.fill();
       }
     }
@@ -218,33 +223,41 @@
       a = N[i]; b = N[i + 1];
       var col2 = FACES[g.moves[i].f].color;
       var lit = solving ? Math.max(0, Math.min(1, i + 1 - pos)) : 1;  // lit from far end
-      ctx.lineWidth = 2.6;
-      ctx.strokeStyle = rgba(col2, solving ? 0.3 : 1);
-      ctx.beginPath(); ctx.moveTo(ox + a.x, oy + a.y);
-      ctx.lineTo(ox + a.x + (b.x - a.x) * f, oy + a.y + (b.y - a.y) * f); ctx.stroke();
-      if (solving && lit > 0) {
-        ctx.strokeStyle = col2; ctx.lineWidth = 3.2;
-        ctx.beginPath(); ctx.moveTo(ox + b.x, oy + b.y);
-        ctx.lineTo(ox + b.x + (a.x - b.x) * lit, oy + b.y + (a.y - b.y) * lit); ctx.stroke();
+      var ex = ox + a.x + (b.x - a.x) * f, ey = oy + a.y + (b.y - a.y) * f;
+      if (!solving) {                                    // dark outline, then colour
+        ctx.strokeStyle = BODY; ctx.lineWidth = 4.2;
+        ctx.beginPath(); ctx.moveTo(ox + a.x, oy + a.y); ctx.lineTo(ex, ey); ctx.stroke();
+        ctx.strokeStyle = col2; ctx.lineWidth = 2.8;
+        ctx.beginPath(); ctx.moveTo(ox + a.x, oy + a.y); ctx.lineTo(ex, ey); ctx.stroke();
+      } else {
+        ctx.strokeStyle = rgba(ink(col2), 0.4); ctx.lineWidth = 2.6;
+        ctx.beginPath(); ctx.moveTo(ox + a.x, oy + a.y); ctx.lineTo(ex, ey); ctx.stroke();
+        if (lit > 0) {
+          var lx = ox + b.x + (a.x - b.x) * lit, ly = oy + b.y + (a.y - b.y) * lit;
+          ctx.strokeStyle = BODY; ctx.lineWidth = 4.6;
+          ctx.beginPath(); ctx.moveTo(ox + b.x, oy + b.y); ctx.lineTo(lx, ly); ctx.stroke();
+          ctx.strokeStyle = col2; ctx.lineWidth = 3.2;
+          ctx.beginPath(); ctx.moveTo(ox + b.x, oy + b.y); ctx.lineTo(lx, ly); ctx.stroke();
+        }
       }
     }
 
     // path nodes
     for (i = 0; i <= g.n; i++) {
       if (reveal(i) <= 0) continue;
-      ctx.fillStyle = i === 0 ? "#ffffff" : "#c9ced6";
+      ctx.fillStyle = i === 0 ? BODY : "#4a505a";
       ctx.beginPath(); ctx.arc(ox + N[i].x, oy + N[i].y, i === 0 ? 5 : 3, 0, 6.3); ctx.fill();
     }
-    ctx.fillStyle = "#0d0d0f"; ctx.font = "italic 700 8px Georgia, serif";
+    ctx.fillStyle = "#ffffff"; ctx.font = "italic 700 8px Georgia, serif";
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.fillText("e", ox + N[0].x, oy + N[0].y + 0.5);
 
     // walker (current cube state)
     var i0 = Math.max(0, Math.min(g.n, Math.floor(pos))), i1 = Math.min(g.n, i0 + 1), t = pos - i0;
     var wx = ox + N[i0].x + (N[i1].x - N[i0].x) * t, wy = oy + N[i0].y + (N[i1].y - N[i0].y) * t;
-    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 2;
+    ctx.strokeStyle = BODY; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(wx, wy, 7.5, 0, 6.3); ctx.stroke();
-    ctx.strokeStyle = "rgba(255,255,255,0.25)"; ctx.lineWidth = 5;
+    ctx.strokeStyle = "rgba(0,0,0,0.14)"; ctx.lineWidth = 5;
     ctx.beginPath(); ctx.arc(wx, wy, 11, 0, 6.3); ctx.stroke();
   }
 
@@ -281,15 +294,14 @@
     return [C[0] + r * Math.cos(a), C[1] + r * Math.sin(a)];
   }
 
-  var RING_FIT = (function () {                          // fit all 54 points in the panel
-    var lo = [1e9, 1e9], hi = [-1e9, -1e9];
-    solvedCube().forEach(function (cb) {
-      cb.st.forEach(function (st) {
-        var P = ringPoint(cb.p, st.n);
-        for (var i = 0; i < 2; i++) { lo[i] = Math.min(lo[i], P[i]); hi[i] = Math.max(hi[i], P[i]); }
-      });
+  var RING_FIT = (function () {                          // fit all 9 circles in the panel
+    var lo = [1e9, 1e9], hi = [-1e9, -1e9], pad = 8;
+    RING_C.forEach(function (c) {
+      for (var i = 0; i < 2; i++) {
+        lo[i] = Math.min(lo[i], c[i] - RING_R["-1"]); hi[i] = Math.max(hi[i], c[i] + RING_R["-1"]);
+      }
     });
-    var k = Math.min((CARD_W - 24) / (hi[0] - lo[0]), (CARD_H - 24) / (hi[1] - lo[1]));
+    var k = Math.min((CARD_W - 2 * pad) / (hi[0] - lo[0]), (CARD_H - 2 * pad) / (hi[1] - lo[1]));
     return { k: k, ox: CARD_W / 2 - k * (lo[0] + hi[0]) / 2, oy: CARD_H / 2 - k * (lo[1] + hi[1]) / 2 };
   })();
 
@@ -301,7 +313,7 @@
     for (a = 0; a < 3; a++)
       for (key in RING_R) {
         var hot = F && F.axis === a && String(F.sign) === key;
-        ctx.strokeStyle = hot ? F.color : "rgba(255,255,255,.2)";
+        ctx.strokeStyle = hot ? ink(F.color) : "rgba(0,0,0,.2)";
         ctx.lineWidth = hot ? 2 : 1;
         ctx.beginPath();
         ctx.arc(ox + k * RING_C[a][0], oy + k * RING_C[a][1], k * RING_R[key], 0, 6.3);
@@ -327,7 +339,7 @@
     });
     still.concat(moving).forEach(function (d) {
       ctx.fillStyle = d[1]; ctx.strokeStyle = BODY; ctx.lineWidth = 0.9;
-      ctx.beginPath(); ctx.arc(ox + k * d[0][0], oy + k * d[0][1], 4.4, 0, 6.3);
+      ctx.beginPath(); ctx.arc(ox + k * d[0][0], oy + k * d[0][1], 3.9, 0, 6.3);
       ctx.fill(); ctx.stroke();
     });
   }
@@ -364,8 +376,8 @@
     card.setAttribute("aria-hidden", "true");
     card.style.cssText =
       "position:fixed;z-index:2000;width:" + CARD_W + "px;box-sizing:border-box;padding:8px 0 8px;" +
-      "background:rgba(16,18,23,.97);border:1px solid rgba(255,255,255,.12);border-radius:12px;" +
-      "box-shadow:0 10px 30px rgba(0,0,0,.35);color:#c9ced6;pointer-events:none;opacity:0;" +
+      "background:#ffffff;border:1px solid rgba(0,0,0,.14);border-radius:12px;" +
+      "box-shadow:0 10px 30px rgba(0,0,0,.25);color:#3a3f47;pointer-events:none;opacity:0;" +
       "transform:translateY(-6px);transition:opacity .3s, transform .3s;" +
       "font:11px/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;";
     var mode = "graph";
@@ -376,8 +388,8 @@
     [["graph", "Cayley graph"], ["circles", "sticker circles"]].forEach(function (d, i) {
       var b = document.createElement("button");
       b.type = "button"; b.textContent = d[1];
-      b.style.cssText = "font:inherit;font-size:10px;padding:2px 8px;cursor:pointer;color:#c9ced6;" +
-        "border:1px solid rgba(255,255,255,.2);background:transparent;" +
+      b.style.cssText = "font:inherit;font-size:10px;padding:2px 8px;cursor:pointer;color:#3a3f47;" +
+        "border:1px solid rgba(0,0,0,.22);background:transparent;" +
         (i ? "border-left:0;border-radius:0 6px 6px 0;" : "border-radius:6px 0 0 6px;");
       b.addEventListener("click", function () { setMode(d[0]); });
       modeBtns[d[0]] = b; bar.appendChild(b);
@@ -390,7 +402,7 @@
     var graphCtx = graphCv.getContext("2d");
     graphCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
     var foot = document.createElement("div");
-    foot.style.cssText = "padding:0 12px;font-size:10px;color:#8a919c;";
+    foot.style.cssText = "padding:0 12px;font-size:10px;color:#6b7280;";
     card.appendChild(bar); card.appendChild(head); card.appendChild(graphCv); card.appendChild(foot);
     document.body.appendChild(card);
 
@@ -399,13 +411,13 @@
       mode = mo;
       try { localStorage.setItem("cubeLogoView", mo); } catch (e) {}
       for (var key in modeBtns) {
-        modeBtns[key].style.background = key === mo ? "rgba(255,255,255,.18)" : "transparent";
-        modeBtns[key].style.color = key === mo ? "#ffffff" : "#8a919c";
+        modeBtns[key].style.background = key === mo ? "rgba(0,0,0,.09)" : "transparent";
+        modeBtns[key].style.color = key === mo ? "#111111" : "#6b7280";
         modeBtns[key].setAttribute("aria-pressed", key === mo ? "true" : "false");
       }
       foot.textContent = mo === "graph"
-        ? "Cayley graph · 4.3×10¹⁹ states · 18 edges each"
-        : "54 stickers on 9 circles · a turn slides one circle";
+        ? "4.3×10¹⁹ states · 18 edges per state"
+        : "54 stickers · 9 circles · a turn slides one";
       if (!busy) { render(null, 0, 0); if (card.style.opacity === "1") hideCardLater(); }
     }
     card.addEventListener("mouseenter", function () { hovered = true; clearTimeout(hideTimer); });
@@ -432,12 +444,12 @@
       imgs.forEach(function (el) { el.style.opacity = on ? "0" : "1"; });
     }
     function setHead(label, list, done, current) {
-      head.innerHTML = '<span style="color:#8a919c">' + label + "</span> " +
+      head.innerHTML = '<span style="color:#6b7280">' + label + "</span> " +
         list.map(function (m, i) {
-          var col = FACES[m.f].color;
+          var col = ink(FACES[m.f].color);
           var style = i < done ? "color:" + col
             : i === current ? "color:" + col + ";border-bottom:2px solid " + col
-            : "color:#5b616b";
+            : "color:#b4b9c1";
           return '<span style="' + style + '">' + moveName(m) + "</span>";
         }).join(" ");
     }
