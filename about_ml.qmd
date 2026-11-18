@@ -1,0 +1,41 @@
+---
+title: "More about ML"
+---
+
+Machine learning practioner with 8+ years of building and shipping production ML models from document processing pipelines,
+computer vision models to reinforcement learning solutions for [enterprise clients](https://docs.google.com/spreadsheets/d/1biR3sfazyxyKhLVVBfVgY5fjFxSF-3PjhzyquO9HbpQ/edit?gid=0#gid=0).
+
+Research background in graph ML at the German Research Center for Artificial Intelligence ([DFKI](https://www.dfki.de/web)).
+
+I obtained Diploma in Mathematical Modeling and Information Systems (at faculty of mathematics) at Immanuel Kant Baltic Federal University and Master of Science in Business Informatics (machine learning and science specialisation) at University of Saarland.
+
+## Research projects:
+
+- **Graph ML for physical simulations**. Developed a GNN-based model for prediction the thermodynamic effects within a metal plate during the laser cutting process, to reduce the computational costs of classical FEMs.
+
+- **Mechanistic intepretability** (as independent researcher). SAEs dilution of **geometrical structure for temporal representations**. Comparison of PCA-subspace and SAE-latent causal interventions in Gemma 2 2B
+([post](https://nikozhuk.github.io/posts/time)).
+
+- model-based prediction (anomaly detection) for Smart Factories.
+- medical image analysis and semantic dialogue system
+
+## Other projects:
+- Voice-controlled **educational hardware toy** that  teaches children to interact with LLMs (STT/TTS). Created evaluation framework to benchmark and select the 20+ model providers and configurations on  output quality, cost and latency. [plaicube.ai](https://plaicube.ai/)
+
+- Fully **offline rehabilitation assistant for patients after ischemic stroke**. Local open-weight model deployment of Gemma 4 E2B on Raspberry Pi. 
+[post](https://nikozhuk.github.io/posts/gemma_niti)
+
+- Video-indexing **system for table tennis coaches**. Created an ML-pipeline for action classification in video (transformer-based model ensembles).
+  
+- **Computer vision system for vehicles**. Won second prize in Valeo Innovation Challenge 2015. [post](https://nikozhuk.github.io/posts/valeo/)
+
+
+## Industry projects:
+
+- Software that finds the most cost-effective industrial network device setup. Co-developed **topology optimisation** method (AlphaZero-style RL and classical DL). 
+  
+- **Document processing system**. Full deployment life cycle of the system across documents types and enterprise use cases. Developed and deployed modules of the system: **NLP (text extraction, text classification, topic modelling) and CV (custom CNNs, YOLO)**. Evaluated models.
+
+- Application of [Synthetic Control Method](https://en.wikipedia.org/wiki/Synthetic_control_method) fore retrospective validation of organic food-retailer's decisions in Germany, Austria and Switzerland.
+  
+I work mainly on linux with Python and pyTorch.

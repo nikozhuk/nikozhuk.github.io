@@ -1,5 +1,5 @@
 ---
-title: "Finding Joy in Gemma2 2B"
+title: "Finding Joy in Gemma2 2B (1)"
 date: "2026-06-01"
 date-format: "MMMM YYYY"
 categories: [interpretability,code,visualisation]

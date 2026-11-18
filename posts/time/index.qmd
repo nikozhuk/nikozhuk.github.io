@@ -1,5 +1,5 @@
 ---
-title: "Towards Understanding Geometry of Time"
+title: "Towards Understanding Geometry of Time (2)"
 description: "How Gemma 2 2B represents time: PCA finds a clean two-axis temporal structure at layer 20 that individual GemmaScope SAE features dilute across many latents."
 date: "2026-06-05"
 date-format: "MMMM YYYY"

@@ -7,8 +7,10 @@ project:
     - "!posts/**/*.ipynb"
   resources:
     - llms.txt
+    - assets/cube-logo.js
 
 website:
+  draft-mode: unlinked
   title: "Nikolai Zhukov"
   description: "Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany."
   site-url: https://nikozhuk.github.io
@@ -33,6 +35,9 @@ format:
     theme: cosmo
     css: styles.css
     include-in-header: person-schema.html
+    include-after-body:
+      text: |
+        <script src="/assets/cube-logo.js" defer></script>
 
 
 

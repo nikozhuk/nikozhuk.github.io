@@ -3,7 +3,7 @@ title: "Explainable Machine Learning in Praxis"
 date: "2020-02-23"
 date-format: "MMMM YYYY"
 categories: [interpretability,visualisation]
-image: explainable_ml.png
+image: explainable_ml.jpg
 ---
 Explainable Machine Learning in praxis.
 
