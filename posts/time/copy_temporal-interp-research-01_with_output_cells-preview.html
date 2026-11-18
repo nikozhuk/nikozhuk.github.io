@@ -221,13 +221,13 @@
         <link rel="stylesheet" href="../../styles.css">
       <meta property="og:title" content="Kaggle’s defaults – Nikolai Zhukov">
 <meta property="og:description" content="Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany.">
-<meta property="og:image" content="https://nikozhuk.github.io/posts/time/copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-5-output-1.png">
+<meta property="og:image" content="https://nikozhuk.github.io/posts/time/copy_temporal-interp-research-01_with_output_cells_files/figure-html/days-of-week-pca-output-1.png">
 <meta property="og:site_name" content="Nikolai Zhukov">
 <meta property="og:image:height" content="555">
 <meta property="og:image:width" content="1386">
 <meta name="twitter:title" content="Kaggle’s defaults – Nikolai Zhukov">
 <meta name="twitter:description" content="Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany.">
-<meta name="twitter:image" content="https://nikozhuk.github.io/posts/time/copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-5-output-1.png">
+<meta name="twitter:image" content="https://nikozhuk.github.io/posts/time/copy_temporal-interp-research-01_with_output_cells_files/figure-html/days-of-week-pca-output-1.png">
 <meta name="twitter:image-height" content="555">
 <meta name="twitter:image-width" content="1386">
 <meta name="twitter:card" content="summary_large_image">
@@ -451,94 +451,138 @@ SAE d_sae: 16384, d_in: 2304
 <h2 class="anchored" data-anchor-id="reproduction-of-days-of-weeksfrom-papernot-all-language-model-features-areone-dimensionally-linear-httpsarxiv.orgpdf2405.14860residual-pca-at-layer-15">Reproduction of days-of-weeksFrom paper:NOT ALL LANGUAGE MODEL FEATURES AREONE-DIMENSIONALLY LINEAR: https://arxiv.org/pdf/2405.14860(residual PCA at layer 15)</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-8" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:34.774557Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:34.775764Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:39.578657Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:34.775728Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:39.577756Z&quot;}}" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> npfrom sklearn.decomposition <span class="im">import</span> PCAimport matplotlib.pyplot <span class="im">as</span> pltDAYS <span class="op">=</span> [<span class="st">"Monday"</span>, <span class="st">"Tuesday"</span>, <span class="st">"Wednesday"</span>, <span class="st">"Thursday"</span>, <span class="st">"Friday"</span>, <span class="st">"Saturday"</span>, <span class="st">"Sunday"</span>]<span class="co"># Multiple templates per day to average out template-specific variationTEMPLATES = [    "Today is {}",    "She said it was {}",    "Yesterday was {}",    "I'll see you on {}",    "The meeting is on {}",    "He arrived on {}",    "The deadline was {}",    "School starts on {}",]LAYER = 20def last_token_resid(prompt: str, layer: int = LAYER) -&gt; np.ndarray:    tokens = model.to_tokens(prompt)    _, cache = model.run_with_cache(        tokens,        names_filter=f"blocks.{layer}.hook_resid_post",        return_type=None,    )    return cache[f"blocks.{layer}.hook_resid_post"][0, -1].float().cpu().numpy()# (7, n_templates, d_model)day_vecs = np.stack([    np.stack([last_token_resid(t.format(d)) for t in TEMPLATES])    for d in DAYS])# Mean across templates → (7, d_model)day_means = day_vecs.mean(axis=1)# PCA to 4 components (we'll plot 1-2, but 3-4 are diagnostic)pca = PCA(n_components=4)day_pca = pca.fit_transform(day_means)# Plotfig, axes = plt.subplots(1, 2, figsize=(14, 7))# PC1 vs PC2ax = axes[0]ax.scatter(day_pca[:, 0], day_pca[:, 1], s=300, c=range(7), cmap="hsv")for i, day in enumerate(DAYS):    ax.annotate(day, (day_pca[i, 0], day_pca[i, 1]),                fontsize=12, xytext=(10, 10), textcoords="offset points")# Connect in calendar order, close the looploop = list(range(7)) + [0]ax.plot(day_pca[loop, 0], day_pca[loop, 1], "k--", alpha=0.3)ax.set_xlabel(f"PC1 ({pca.explained_variance_ratio_[0]:.1%} var)")ax.set_ylabel(f"PC2 ({pca.explained_variance_ratio_[1]:.1%} var)")ax.set_title(f"Days of week, layer {LAYER} residual (PC1/PC2)")ax.set_aspect("equal")ax.grid(alpha=0.3)# PC3 vs PC4 — should look like noise if days are truly 2Dax = axes[1]ax.scatter(day_pca[:, 2], day_pca[:, 3], s=300, c=range(7), cmap="hsv")for i, day in enumerate(DAYS):    ax.annotate(day, (day_pca[i, 2], day_pca[i, 3]),                fontsize=12, xytext=(10, 10), textcoords="offset points")ax.set_xlabel(f"PC3 ({pca.explained_variance_ratio_[2]:.1%} var)")ax.set_ylabel(f"PC4 ({pca.explained_variance_ratio_[3]:.1%} var)")ax.set_title("PC3/PC4 — should be noise if structure is truly 2D")ax.set_aspect("equal")ax.grid(alpha=0.3)plt.tight_layout()plt.show()print(f"Variance explained: {pca.explained_variance_ratio_}")print(f"Cumulative: {np.cumsum(pca.explained_variance_ratio_)}")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-days-of-week-pca" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:34.774557Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:34.775764Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:39.578657Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:34.775728Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:39.577756Z&quot;}}" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>DAYS <span class="op">=</span> [<span class="st">"Monday"</span>, <span class="st">"Tuesday"</span>, <span class="st">"Wednesday"</span>, <span class="st">"Thursday"</span>, <span class="st">"Friday"</span>, <span class="st">"Saturday"</span>, <span class="st">"Sunday"</span>]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Multiple templates per day to average out template-specific variation</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>TEMPLATES <span class="op">=</span> [</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Today is </span><span class="sc">{}</span><span class="st">"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"She said it was </span><span class="sc">{}</span><span class="st">"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Yesterday was </span><span class="sc">{}</span><span class="st">"</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"I'll see you on </span><span class="sc">{}</span><span class="st">"</span>,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The meeting is on </span><span class="sc">{}</span><span class="st">"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"He arrived on </span><span class="sc">{}</span><span class="st">"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The deadline was </span><span class="sc">{}</span><span class="st">"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"School starts on </span><span class="sc">{}</span><span class="st">"</span>,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>LAYER <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> last_token_resid(prompt: <span class="bu">str</span>, layer: <span class="bu">int</span> <span class="op">=</span> LAYER) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    tokens <span class="op">=</span> model.to_tokens(prompt)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    _, cache <span class="op">=</span> model.run_with_cache(</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        tokens,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>        names_filter<span class="op">=</span><span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>,</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>        return_type<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cache[<span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>][<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>].<span class="bu">float</span>().cpu().numpy()</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (7, n_templates, d_model)</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>day_vecs <span class="op">=</span> np.stack([</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    np.stack([last_token_resid(t.<span class="bu">format</span>(d)) <span class="cf">for</span> t <span class="kw">in</span> TEMPLATES])</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> DAYS</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean across templates → (7, d_model)</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>day_means <span class="op">=</span> day_vecs.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA to 4 components (we'll plot 1-2, but 3-4 are diagnostic)</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>day_pca <span class="op">=</span> pca.fit_transform(day_means)</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co"># PC1 vs PC2</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>ax.scatter(day_pca[:, <span class="dv">0</span>], day_pca[:, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">300</span>, c<span class="op">=</span><span class="bu">range</span>(<span class="dv">7</span>), cmap<span class="op">=</span><span class="st">"hsv"</span>)</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, day <span class="kw">in</span> <span class="bu">enumerate</span>(DAYS):</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>    ax.annotate(day, (day_pca[i, <span class="dv">0</span>], day_pca[i, <span class="dv">1</span>]),</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>                fontsize<span class="op">=</span><span class="dv">12</span>, xytext<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>), textcoords<span class="op">=</span><span class="st">"offset points"</span>)</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect in calendar order, close the loop</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>loop <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">7</span>)) <span class="op">+</span> [<span class="dv">0</span>]</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>ax.plot(day_pca[loop, <span class="dv">0</span>], day_pca[loop, <span class="dv">1</span>], <span class="st">"k--"</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="ss">f"PC1 (</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[<span class="dv">0</span>]<span class="sc">:.1%}</span><span class="ss"> var)"</span>)</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="ss">f"PC2 (</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[<span class="dv">1</span>]<span class="sc">:.1%}</span><span class="ss"> var)"</span>)</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"Days of week, layer </span><span class="sc">{</span>LAYER<span class="sc">}</span><span class="ss"> residual (PC1/PC2)"</span>)</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="co"># PC3 vs PC4 — should look like noise if days are truly 2D</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">1</span>]</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>ax.scatter(day_pca[:, <span class="dv">2</span>], day_pca[:, <span class="dv">3</span>], s<span class="op">=</span><span class="dv">300</span>, c<span class="op">=</span><span class="bu">range</span>(<span class="dv">7</span>), cmap<span class="op">=</span><span class="st">"hsv"</span>)</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, day <span class="kw">in</span> <span class="bu">enumerate</span>(DAYS):</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>    ax.annotate(day, (day_pca[i, <span class="dv">2</span>], day_pca[i, <span class="dv">3</span>]),</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>                fontsize<span class="op">=</span><span class="dv">12</span>, xytext<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>), textcoords<span class="op">=</span><span class="st">"offset points"</span>)</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="ss">f"PC3 (</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[<span class="dv">2</span>]<span class="sc">:.1%}</span><span class="ss"> var)"</span>)</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="ss">f"PC4 (</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[<span class="dv">3</span>]<span class="sc">:.1%}</span><span class="ss"> var)"</span>)</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"PC3/PC4 — should be noise if structure is truly 2D"</span>)</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Variance explained: </span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cumulative: </span><span class="sc">{</span>np<span class="sc">.</span>cumsum(pca.explained_variance_ratio_)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="">
 <figure class="figure">
-<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/days-of-week-pca-output-1.png" id="days-of-week-pca" class="img-fluid figure-img"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Variance explained: [0.37461206 0.25319353 0.132533   0.12052249]
-Cumulative: [0.37461206 0.6278056  0.7603386  0.8808611 ]</code></pre>
 </div>
 </div></div>
 <div id="cell-9" class="cell markdown">
 <p>Encoding residuals -&gt;feature activations</p>
 </div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="cell-10" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:43.552806Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:43.553565Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:43.558842Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:43.553531Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:43.557949Z&quot;}}" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_feature_acts(prompt: <span class="bu">str</span>, layer: <span class="bu">int</span> <span class="op">=</span> <span class="dv">20</span>):      tokens <span class="op">=</span> model.to_tokens(prompt)      _, cache <span class="op">=</span> model.run_with_cache(          tokens,          names_filter<span class="op">=</span><span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>,          return_type<span class="op">=</span><span class="va">None</span>,      )      resid <span class="op">=</span> cache[<span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>].squeeze(  <span class="dv">0</span>).to(device).<span class="bu">float</span>()      feature_acts <span class="op">=</span> sae.encode(resid)          <span class="co"># fp32 in → fp32 out      print("max act:", feature_acts.max().item(), "| nonzero:",  (feature_acts &gt; 0).sum().item())      return feature_acts, model.to_str_tokens(prompt)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_feature_acts(prompt: <span class="bu">str</span>, layer: <span class="bu">int</span> <span class="op">=</span> <span class="dv">20</span>):      tokens <span class="op">=</span> model.to_tokens(prompt)      _, cache <span class="op">=</span> model.run_with_cache(          tokens,          names_filter<span class="op">=</span><span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>,          return_type<span class="op">=</span><span class="va">None</span>,      )      resid <span class="op">=</span> cache[<span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>].squeeze(  <span class="dv">0</span>).to(device).<span class="bu">float</span>()      feature_acts <span class="op">=</span> sae.encode(resid)          <span class="co"># fp32 in → fp32 out      print("max act:", feature_acts.max().item(), "| nonzero:",  (feature_acts &gt; 0).sum().item())      return feature_acts, model.to_str_tokens(prompt)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div id="cell-11" class="cell markdown">
 <p>Days-of-wwek SAE decoder PCA</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-12" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:48.053049Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:48.053873Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:52.394874Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:48.053839Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:52.394104Z&quot;}}" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find SAE features that activate on day promptsdef features_active_on(prompt: str, threshold: float = 1.0):    acts, _ = get_feature_acts(prompt, layer=LAYER)    active = (acts[-1] &gt; threshold).nonzero().squeeze(-1)    return active.cpu().numpy()# Union of features active on any day promptday_feature_set = set()for d in DAYS:    for t in TEMPLATES:        day_feature_set.update(features_active_on(t.format(d)).tolist())day_features = sorted(day_feature_set)print(f"Found {len(day_features)} candidate features active on day prompts")# Get their decoder vectors → (n_features, d_model)W_dec = sae.W_dec.float().cpu().numpy()  # (d_sae, d_model)day_decoders = W_dec[day_features]# PCA the decoder vectorspca_dec = PCA(n_components=4)dec_pca = pca_dec.fit_transform(day_decoders)# This plot won't directly show a 7-day circle — it shows clustering # structure across ALL features active on day prompts. The circle # emerges when you find the subcluster of ~7-14 features that # specifically co-activate by day.plt.figure(figsize=(8, 8))plt.scatter(dec_pca[:, 0], dec_pca[:, 1], alpha=0.6)plt.title("SAE decoder vectors for day-active features (PC1/PC2)")plt.xlabel("PC1"); plt.ylabel("PC2")plt.show()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 7208
-max act: 2040.0 | nonzero: 7313
-max act: 2040.0 | nonzero: 7231
-max act: 2040.0 | nonzero: 7475
-max act: 2040.0 | nonzero: 7314
-max act: 2040.0 | nonzero: 7234
-max act: 2040.0 | nonzero: 7276
-max act: 2040.0 | nonzero: 7285
-max act: 2040.0 | nonzero: 7203
-max act: 2040.0 | nonzero: 7308
-max act: 2040.0 | nonzero: 7222
-max act: 2040.0 | nonzero: 7475
-max act: 2040.0 | nonzero: 7310
-max act: 2040.0 | nonzero: 7239
-max act: 2040.0 | nonzero: 7274
-max act: 2040.0 | nonzero: 7282
-max act: 2040.0 | nonzero: 7210
-max act: 2040.0 | nonzero: 7308
-max act: 2040.0 | nonzero: 7225
-max act: 2040.0 | nonzero: 7475
-max act: 2040.0 | nonzero: 7310
-max act: 2040.0 | nonzero: 7238
-max act: 2040.0 | nonzero: 7271
-max act: 2040.0 | nonzero: 7280
-max act: 2040.0 | nonzero: 7202
-max act: 2040.0 | nonzero: 7314
-max act: 2040.0 | nonzero: 7229
-max act: 2040.0 | nonzero: 7475
-max act: 2040.0 | nonzero: 7313
-max act: 2040.0 | nonzero: 7238
-max act: 2040.0 | nonzero: 7268
-max act: 2040.0 | nonzero: 7283
-max act: 2040.0 | nonzero: 7218
-max act: 2040.0 | nonzero: 7316
-max act: 2040.0 | nonzero: 7234
-max act: 2040.0 | nonzero: 7468
-max act: 2040.0 | nonzero: 7309
-max act: 2040.0 | nonzero: 7233
-max act: 2040.0 | nonzero: 7274
-max act: 2040.0 | nonzero: 7284
-max act: 2040.0 | nonzero: 7193
-max act: 2040.0 | nonzero: 7307
-max act: 2040.0 | nonzero: 7219
-max act: 2040.0 | nonzero: 7470
-max act: 2040.0 | nonzero: 7310
-max act: 2040.0 | nonzero: 7233
-max act: 2040.0 | nonzero: 7268
-max act: 2040.0 | nonzero: 7276
-max act: 2040.0 | nonzero: 7211
-max act: 2040.0 | nonzero: 7312
-max act: 2040.0 | nonzero: 7232
-max act: 2040.0 | nonzero: 7470
-max act: 2040.0 | nonzero: 7311
-max act: 2040.0 | nonzero: 7235
-max act: 2040.0 | nonzero: 7280
-max act: 2040.0 | nonzero: 7281
-Found 429 candidate features active on day prompts</code></pre>
-</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-days-of-week-sae-decoder-pca" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:29:48.053049Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:29:48.053873Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:29:52.394874Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:29:48.053839Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:29:52.394104Z&quot;}}" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find SAE features that activate on day prompts</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> features_active_on(prompt: <span class="bu">str</span>, threshold: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1.0</span>):</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    acts, _ <span class="op">=</span> get_feature_acts(prompt, layer<span class="op">=</span>LAYER)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    active <span class="op">=</span> (acts[<span class="op">-</span><span class="dv">1</span>] <span class="op">&gt;</span> threshold).nonzero().squeeze(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> active.cpu().numpy()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Union of features active on any day prompt</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>day_feature_set <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> DAYS:</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> TEMPLATES:</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        day_feature_set.update(features_active_on(t.<span class="bu">format</span>(d)).tolist())</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>day_features <span class="op">=</span> <span class="bu">sorted</span>(day_feature_set)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(day_features)<span class="sc">}</span><span class="ss"> candidate features active on day prompts"</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Get their decoder vectors → (n_features, d_model)</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>W_dec <span class="op">=</span> sae.W_dec.<span class="bu">float</span>().cpu().numpy()  <span class="co"># (d_sae, d_model)</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>day_decoders <span class="op">=</span> W_dec[day_features]</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA the decoder vectors</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>pca_dec <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>dec_pca <span class="op">=</span> pca_dec.fit_transform(day_decoders)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="co"># This plot won't directly show a 7-day circle — it shows clustering </span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co"># structure across ALL features active on day prompts. The circle </span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co"># emerges when you find the subcluster of ~7-14 features that </span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co"># specifically co-activate by day.</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>plt.scatter(dec_pca[:, <span class="dv">0</span>], dec_pca[:, <span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"SAE decoder vectors for day-active features (PC1/PC2)"</span>)</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"PC1"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"PC2"</span>)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="">
 <figure class="figure">
-<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/days-of-week-sae-decoder-pca-output-1.png" id="days-of-week-sae-decoder-pca" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -549,7 +593,7 @@ Found 429 candidate features active on day prompts</code></pre>
 </section>
 </div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="cell-14" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:30:04.739140Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:30:04.740119Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:30:04.757724Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:30:04.740084Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:30:04.756793Z&quot;}}" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, os, globhits <span class="op">=</span> glob.glob(<span class="st">"/kaggle/input/**/temporal.py"</span>, recursive<span class="op">=</span><span class="va">True</span>)<span class="cf">assert</span> hits, <span class="st">"temporal.py not found under /kaggle/input — is the dataset attached?"</span>sys.path.insert(<span class="dv">0</span>, os.path.dirname(hits[<span class="dv">0</span>]))<span class="im">from</span> temporal <span class="im">import</span> ALL_TEMPORAL_CATEGORIES</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, os, globhits <span class="op">=</span> glob.glob(<span class="st">"/kaggle/input/**/temporal.py"</span>, recursive<span class="op">=</span><span class="va">True</span>)<span class="cf">assert</span> hits, <span class="st">"temporal.py not found under /kaggle/input — is the dataset attached?"</span>sys.path.insert(<span class="dv">0</span>, os.path.dirname(hits[<span class="dv">0</span>]))<span class="im">from</span> temporal <span class="im">import</span> ALL_TEMPORAL_CATEGORIES</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div id="cell-15" class="cell markdown">
 <section id="geometry-at-8-14-20-25-layers" class="level2">
@@ -557,7 +601,7 @@ Found 429 candidate features active on day prompts</code></pre>
 </section>
 </div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="cell-16" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:30:07.143448Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:30:07.144284Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:30:33.037349Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:30:07.144250Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:30:33.036638Z&quot;}}" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>LAYERS <span class="op">=</span> [<span class="dv">8</span>, <span class="dv">14</span>, <span class="dv">20</span>, <span class="dv">25</span>]<span class="kw">def</span> last_token_resid(prompt: <span class="bu">str</span>, layer: <span class="bu">int</span>):    tokens <span class="op">=</span> model.to_tokens(prompt)    _, cache <span class="op">=</span> model.run_with_cache(        tokens,        names_filter<span class="op">=</span><span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>,        return_type<span class="op">=</span><span class="va">None</span>,    )    <span class="cf">return</span> cache[<span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>][<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>].<span class="bu">float</span>()<span class="co"># Compute category means at every layerORDERED_CATS = ["past", "present", "future", "counterfactual", "hypothetical"]resid_means_by_layer = {}  # layer -&gt; {cat: tensor(d_model,)}for L in LAYERS:    resid_means_by_layer[L] = {}    for cat in ORDERED_CATS:        vecs = [last_token_resid(p, L) for p in ALL_TEMPORAL_CATEGORIES[cat]]        resid_means_by_layer[L][cat] = torch.stack(vecs).mean(0)    print(f"Layer {L} done")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>LAYERS <span class="op">=</span> [<span class="dv">8</span>, <span class="dv">14</span>, <span class="dv">20</span>, <span class="dv">25</span>]<span class="kw">def</span> last_token_resid(prompt: <span class="bu">str</span>, layer: <span class="bu">int</span>):    tokens <span class="op">=</span> model.to_tokens(prompt)    _, cache <span class="op">=</span> model.run_with_cache(        tokens,        names_filter<span class="op">=</span><span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>,        return_type<span class="op">=</span><span class="va">None</span>,    )    <span class="cf">return</span> cache[<span class="ss">f"blocks.</span><span class="sc">{</span>layer<span class="sc">}</span><span class="ss">.hook_resid_post"</span>][<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>].<span class="bu">float</span>()<span class="co"># Compute category means at every layerORDERED_CATS = ["past", "present", "future", "counterfactual", "hypothetical"]resid_means_by_layer = {}  # layer -&gt; {cat: tensor(d_model,)}for L in LAYERS:    resid_means_by_layer[L] = {}    for cat in ORDERED_CATS:        vecs = [last_token_resid(p, L) for p in ALL_TEMPORAL_CATEGORIES[cat]]        resid_means_by_layer[L][cat] = torch.stack(vecs).mean(0)    print(f"Layer {L} done")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Layer 8 done
 Layer 14 done
@@ -565,12 +609,36 @@ Layer 20 done
 Layer 25 done</code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-17" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:31:49.518327Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:31:49.519158Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:31:50.288769Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:31:49.519123Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:31:50.288102Z&quot;}}" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot PCA grid: 2x2 layers, PC1/PC2 eachimport numpy as npfrom sklearn.decomposition import PCAimport matplotlib.pyplot as pltcolors = ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728", "#9467bd"]fig, axes = plt.subplots(2, 2, figsize=(14, 14))for ax, L in zip(axes.flat, LAYERS):    M = torch.stack([resid_means_by_layer[L][c] for c in ORDERED_CATS]).cpu().numpy()    M = M - M.mean(0, keepdims=True)    pca = PCA(n_components=2)    P = pca.fit_transform(M)    for i, cat in enumerate(ORDERED_CATS):        ax.scatter(P[i, 0], P[i, 1], s=400, c=colors[i])        ax.annotate(cat, (P[i, 0], P[i, 1]),                    fontsize=11, xytext=(10, 10), textcoords="offset points")    ax.set_title(f"Layer {L} — PC1 {pca.explained_variance_ratio_[0]:.0%}, "                 f"PC2 {pca.explained_variance_ratio_[1]:.0%}")    ax.axhline(0, color="k", lw=0.4); ax.axvline(0, color="k", lw=0.4)    ax.grid(alpha=0.3); ax.set_aspect("equal")plt.tight_layout()plt.show()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-layers-pca-grid" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:31:49.518327Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:31:49.519158Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:31:50.288769Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:31:49.519123Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:31:50.288102Z&quot;}}" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot PCA grid: 2x2 layers, PC1/PC2 each</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"#1f77b4"</span>, <span class="st">"#2ca02c"</span>, <span class="st">"#ff7f0e"</span>, <span class="st">"#d62728"</span>, <span class="st">"#9467bd"</span>]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">14</span>))</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, L <span class="kw">in</span> <span class="bu">zip</span>(axes.flat, LAYERS):</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    M <span class="op">=</span> torch.stack([resid_means_by_layer[L][c] <span class="cf">for</span> c <span class="kw">in</span> ORDERED_CATS]).cpu().numpy()</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    M <span class="op">=</span> M <span class="op">-</span> M.mean(<span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> pca.fit_transform(M)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, cat <span class="kw">in</span> <span class="bu">enumerate</span>(ORDERED_CATS):</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        ax.scatter(P[i, <span class="dv">0</span>], P[i, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">400</span>, c<span class="op">=</span>colors[i])</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>        ax.annotate(cat, (P[i, <span class="dv">0</span>], P[i, <span class="dv">1</span>]),</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>                    fontsize<span class="op">=</span><span class="dv">11</span>, xytext<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>), textcoords<span class="op">=</span><span class="st">"offset points"</span>)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"Layer </span><span class="sc">{</span>L<span class="sc">}</span><span class="ss"> — PC1 </span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[<span class="dv">0</span>]<span class="sc">:.0%}</span><span class="ss">, "</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>                 <span class="ss">f"PC2 </span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[<span class="dv">1</span>]<span class="sc">:.0%}</span><span class="ss">"</span>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="fl">0.4</span>)<span class="op">;</span> ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)<span class="op">;</span> ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="">
 <figure class="figure">
-<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/layers-pca-grid-output-1.png" id="layers-pca-grid" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -581,7 +649,7 @@ Layer 25 done</code></pre>
 </section>
 </div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-19" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:02.520185Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:02.520519Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:18.757960Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:02.520491Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:18.756956Z&quot;}}" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === STEP 1: Compute category means (last-token aggregation) ===from temporal import ALL_TEMPORAL_CATEGORIEScategory_means_sae = {}  # category -&gt; mean SAE activation vector (d_sae,)category_means_resid = {}  # category -&gt; mean residual stream vector (d_model,)for cat_name, prompts in ALL_TEMPORAL_CATEGORIES.items():    sae_vecs = []    resid_vecs = []    for p in prompts:        # SAE features (uses your existing get_feature_acts)        acts, _ = get_feature_acts(p, layer=20)        sae_vecs.append(acts[-1])        # Raw residual (for the Engels-style PCA)        tokens = model.to_tokens(p)        _, cache = model.run_with_cache(            tokens, names_filter="blocks.20.hook_resid_post", return_type=None,        )        resid_vecs.append(cache["blocks.20.hook_resid_post"][0, -1].float())    category_means_sae[cat_name]   = torch.stack(sae_vecs).mean(0)    category_means_resid[cat_name] = torch.stack(resid_vecs).mean(0)    print(f"{cat_name:&gt;15}: {len(prompts)} prompts processed")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === STEP 1: Compute category means (last-token aggregation) ===from temporal import ALL_TEMPORAL_CATEGORIEScategory_means_sae = {}  # category -&gt; mean SAE activation vector (d_sae,)category_means_resid = {}  # category -&gt; mean residual stream vector (d_model,)for cat_name, prompts in ALL_TEMPORAL_CATEGORIES.items():    sae_vecs = []    resid_vecs = []    for p in prompts:        # SAE features (uses your existing get_feature_acts)        acts, _ = get_feature_acts(p, layer=20)        sae_vecs.append(acts[-1])        # Raw residual (for the Engels-style PCA)        tokens = model.to_tokens(p)        _, cache = model.run_with_cache(            tokens, names_filter="blocks.20.hook_resid_post", return_type=None,        )        resid_vecs.append(cache["blocks.20.hook_resid_post"][0, -1].float())    category_means_sae[cat_name]   = torch.stack(sae_vecs).mean(0)    category_means_resid[cat_name] = torch.stack(resid_vecs).mean(0)    print(f"{cat_name:&gt;15}: {len(prompts)} prompts processed")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>max act: 2040.0 | nonzero: 7539
 max act: 2040.0 | nonzero: 7409
@@ -717,7 +785,7 @@ max act: 2040.0 | nonzero: 7594
 </section>
 </div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-21" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:27.158065Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:27.158881Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:27.263793Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:27.158848Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:27.263061Z&quot;}}" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === STEP 2: Find candidate features per category (vs neutral timeless) ===NP_URL = "https://neuronpedia.org/gemma-2-2b/20-gemmascope-res-16k/"def top_features_vs_neutral(category_name, k=15):    diff = category_means_sae[category_name] - category_means_sae["neutral"]    top = torch.topk(diff, k)    return pd.DataFrame({        "feature_id":      top.indices.tolist(),        "diff_score":      top.values.tolist(),        f"{category_name}_mean": [category_means_sae[category_name][i].item() for i in top.indices],        "neutral_mean":    [category_means_sae["neutral"][i].item()         for i in top.indices],        "neuronpedia":     [NP_URL + str(i.item()) for i in top.indices],    })# For each temporal category, what are the top candidate features?for cat in ["past", "present", "future", "counterfactual", "hypothetical"]:    print(f"\n=== {cat.upper()} ===")    print(top_features_vs_neutral(cat).to_string(index=False))    </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === STEP 2: Find candidate features per category (vs neutral timeless) ===NP_URL = "https://neuronpedia.org/gemma-2-2b/20-gemmascope-res-16k/"def top_features_vs_neutral(category_name, k=15):    diff = category_means_sae[category_name] - category_means_sae["neutral"]    top = torch.topk(diff, k)    return pd.DataFrame({        "feature_id":      top.indices.tolist(),        "diff_score":      top.values.tolist(),        f"{category_name}_mean": [category_means_sae[category_name][i].item() for i in top.indices],        "neutral_mean":    [category_means_sae["neutral"][i].item()         for i in top.indices],        "neuronpedia":     [NP_URL + str(i.item()) for i in top.indices],    })# For each temporal category, what are the top candidate features?for cat in ["past", "present", "future", "counterfactual", "hypothetical"]:    print(f"\n=== {cat.upper()} ===")    print(top_features_vs_neutral(cat).to_string(index=False))    </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 === PAST ===
@@ -816,18 +884,53 @@ max act: 2040.0 | nonzero: 7594
 <h2 class="anchored" data-anchor-id="temporal-geometry-pca">temporal geometry PCA</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-23" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:48.240229Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:48.241055Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:48.693917Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:48.241020Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:48.693210Z&quot;}}" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === STEP 3: Geometry — PCA on category means ===import numpy as npfrom sklearn.decomposition import PCAimport matplotlib.pyplot as pltORDERED_CATS = ["past", "present", "future", "counterfactual", "hypothetical"]# Stack residual stream means → (5, d_model)M = torch.stack([category_means_resid[c] for c in ORDERED_CATS]).cpu().numpy()# Center (recommended for PCA)M_centered = M - M.mean(0, keepdims=True)pca = PCA(n_components=4)M_pca = pca.fit_transform(M_centered)# Plot PC1/PC2fig, axes = plt.subplots(1, 2, figsize=(14, 7))colors = ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728", "#9467bd"]for ax_idx, (px, py) in enumerate([(0, 1), (2, 3)]):    ax = axes[ax_idx]    for i, cat in enumerate(ORDERED_CATS):        ax.scatter(M_pca[i, px], M_pca[i, py], s=400, c=colors[i], label=cat)        ax.annotate(cat, (M_pca[i, px], M_pca[i, py]),                    fontsize=13, xytext=(12, 12), textcoords="offset points")    ax.set_xlabel(f"PC{px+1} ({pca.explained_variance_ratio_[px]:.1%} var)")    ax.set_ylabel(f"PC{py+1} ({pca.explained_variance_ratio_[py]:.1%} var)")    ax.set_title(f"Temporal categories, layer 20 residual (PC{px+1}/PC{py+1})")    ax.set_aspect("equal")    ax.grid(alpha=0.3)    ax.axhline(0, color="k", lw=0.5)    ax.axvline(0, color="k", lw=0.5)plt.tight_layout()plt.show()print(f"Variance explained: {pca.explained_variance_ratio_}")print(f"Cumulative:         {np.cumsum(pca.explained_variance_ratio_)}")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-temporal-category-pca" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:48.240229Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:48.241055Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:32:48.693917Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:48.241020Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:32:48.693210Z&quot;}}" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === STEP 3: Geometry — PCA on category means ===</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>ORDERED_CATS <span class="op">=</span> [<span class="st">"past"</span>, <span class="st">"present"</span>, <span class="st">"future"</span>, <span class="st">"counterfactual"</span>, <span class="st">"hypothetical"</span>]</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Stack residual stream means → (5, d_model)</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> torch.stack([category_means_resid[c] <span class="cf">for</span> c <span class="kw">in</span> ORDERED_CATS]).cpu().numpy()</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Center (recommended for PCA)</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>M_centered <span class="op">=</span> M <span class="op">-</span> M.mean(<span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>M_pca <span class="op">=</span> pca.fit_transform(M_centered)</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot PC1/PC2</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"#1f77b4"</span>, <span class="st">"#2ca02c"</span>, <span class="st">"#ff7f0e"</span>, <span class="st">"#d62728"</span>, <span class="st">"#9467bd"</span>]</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax_idx, (px, py) <span class="kw">in</span> <span class="bu">enumerate</span>([(<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">2</span>, <span class="dv">3</span>)]):</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> axes[ax_idx]</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, cat <span class="kw">in</span> <span class="bu">enumerate</span>(ORDERED_CATS):</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>        ax.scatter(M_pca[i, px], M_pca[i, py], s<span class="op">=</span><span class="dv">400</span>, c<span class="op">=</span>colors[i], label<span class="op">=</span>cat)</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>        ax.annotate(cat, (M_pca[i, px], M_pca[i, py]),</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>                    fontsize<span class="op">=</span><span class="dv">13</span>, xytext<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>), textcoords<span class="op">=</span><span class="st">"offset points"</span>)</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="ss">f"PC</span><span class="sc">{</span>px<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[px]<span class="sc">:.1%}</span><span class="ss"> var)"</span>)</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="ss">f"PC</span><span class="sc">{</span>py<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[py]<span class="sc">:.1%}</span><span class="ss"> var)"</span>)</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"Temporal categories, layer 20 residual (PC</span><span class="sc">{</span>px<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">/PC</span><span class="sc">{</span>py<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>    ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Variance explained: </span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cumulative:         </span><span class="sc">{</span>np<span class="sc">.</span>cumsum(pca.explained_variance_ratio_)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="">
 <figure class="figure">
-<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/temporal-category-pca-output-1.png" id="temporal-category-pca" class="img-fluid figure-img"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Variance explained: [0.4102727  0.33915818 0.13833533 0.11223382]
-Cumulative:         [0.4102727  0.7494309  0.88776624 1.        ]</code></pre>
 </div>
 </div></div>
 <div id="cell-24" class="cell markdown">
@@ -835,45 +938,119 @@ Cumulative:         [0.4102727  0.7494309  0.88776624 1.        ]</code></pre>
 <h2 class="anchored" data-anchor-id="pre-prompt-scatter">Pre-prompt scatter</h2>
 </section>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="cell-25" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:52.727429Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:52.727785Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:33:00.203572Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:52.727756Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:33:00.202737Z&quot;}}" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> npfrom sklearn.decomposition <span class="im">import</span> PCAfrom sklearn.metrics <span class="im">import</span> silhouette_scoreimport matplotlib.pyplot <span class="im">as</span> pltORDERED_CATS <span class="op">=</span> [<span class="st">"past"</span>, <span class="st">"present"</span>, <span class="st">"future"</span>, <span class="st">"counterfactual"</span>, <span class="st">"hypothetical"</span>]colors <span class="op">=</span> [<span class="st">"#1f77b4"</span>, <span class="st">"#2ca02c"</span>, <span class="st">"#ff7f0e"</span>, <span class="st">"#d62728"</span>, <span class="st">"#9467bd"</span>]<span class="co"># Collect all 100 prompts' last-token residuals at layer 20all_vecs, all_labels = [], []for cat in ORDERED_CATS:    for p in ALL_TEMPORAL_CATEGORIES[cat]:        tokens = model.to_tokens(p)        _, cache = model.run_with_cache(            tokens, names_filter="blocks.20.hook_resid_post", return_type=None,        )        all_vecs.append(cache["blocks.20.hook_resid_post"][0, -1].float())        all_labels.append(cat)    print(f"{cat}: done")X = torch.stack(all_vecs).cpu().numpy()X_centered = X - X.mean(0, keepdims=True)pca = PCA(n_components=4)P = pca.fit_transform(X_centered)# Plotfig, axes = plt.subplots(1, 2, figsize=(16, 8))for ax_idx, (px, py) in enumerate([(0, 1), (2, 3)]):    ax = axes[ax_idx]    for i, cat in enumerate(ORDERED_CATS):        mask = np.array([l == cat for l in all_labels])        # Individual points        ax.scatter(P[mask, px], P[mask, py], s=60, c=colors[i],                   alpha=0.5, label=cat, edgecolors="white", linewidth=0.5)        # Centroid as black-bordered X        cx, cy = P[mask, px].mean(), P[mask, py].mean()        ax.scatter(cx, cy, s=400, c=colors[i], edgecolors="black",                   linewidth=2, marker="X", zorder=5)    ax.set_xlabel(f"PC{px+1} ({pca.explained_variance_ratio_[px]:.1%} var)")    ax.set_ylabel(f"PC{py+1} ({pca.explained_variance_ratio_[py]:.1%} var)")    ax.set_title(f"All 100 prompts, layer 20 (PC{px+1}/PC{py+1})")    ax.legend(loc="best", framealpha=0.9)    ax.grid(alpha=0.3)    ax.axhline(0, color="k", lw=0.4); ax.axvline(0, color="k", lw=0.4)plt.tight_layout()plt.show()# Cluster separation metricslabel_ids = np.array([ORDERED_CATS.index(l) for l in all_labels])sil_2d = silhouette_score(P[:, :2], label_ids)sil_4d = silhouette_score(P[:, :4], label_ids)print(f"\nSilhouette score in PC1-2: {sil_2d:.3f}")print(f"Silhouette score in PC1-4: {sil_4d:.3f}")print("Interpretation: &gt; 0.25 = clear cluster structure, "      "0.1-0.25 = weak structure, &lt; 0.1 = mostly overlapping")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>past: done
-present: done
-future: done
-counterfactual: done
-hypothetical: done</code></pre>
-</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="cell-per-prompt-scatter" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:32:52.727429Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:32:52.727785Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:33:00.203572Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:32:52.727756Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:33:00.202737Z&quot;}}" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_score</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>ORDERED_CATS <span class="op">=</span> [<span class="st">"past"</span>, <span class="st">"present"</span>, <span class="st">"future"</span>, <span class="st">"counterfactual"</span>, <span class="st">"hypothetical"</span>]</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"#1f77b4"</span>, <span class="st">"#2ca02c"</span>, <span class="st">"#ff7f0e"</span>, <span class="st">"#d62728"</span>, <span class="st">"#9467bd"</span>]</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Collect all 100 prompts' last-token residuals at layer 20</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>all_vecs, all_labels <span class="op">=</span> [], []</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> ORDERED_CATS:</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> ALL_TEMPORAL_CATEGORIES[cat]:</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> model.to_tokens(p)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>        _, cache <span class="op">=</span> model.run_with_cache(</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>            tokens, names_filter<span class="op">=</span><span class="st">"blocks.20.hook_resid_post"</span>, return_type<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>        all_vecs.append(cache[<span class="st">"blocks.20.hook_resid_post"</span>][<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>].<span class="bu">float</span>())</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>        all_labels.append(cat)</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">: done"</span>)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.stack(all_vecs).cpu().numpy()</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>X_centered <span class="op">=</span> X <span class="op">-</span> X.mean(<span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> pca.fit_transform(X_centered)</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">8</span>))</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax_idx, (px, py) <span class="kw">in</span> <span class="bu">enumerate</span>([(<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">2</span>, <span class="dv">3</span>)]):</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> axes[ax_idx]</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, cat <span class="kw">in</span> <span class="bu">enumerate</span>(ORDERED_CATS):</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> np.array([l <span class="op">==</span> cat <span class="cf">for</span> l <span class="kw">in</span> all_labels])</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Individual points</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>        ax.scatter(P[mask, px], P[mask, py], s<span class="op">=</span><span class="dv">60</span>, c<span class="op">=</span>colors[i],</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>                   alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span>cat, edgecolors<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Centroid as black-bordered X</span></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>        cx, cy <span class="op">=</span> P[mask, px].mean(), P[mask, py].mean()</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>        ax.scatter(cx, cy, s<span class="op">=</span><span class="dv">400</span>, c<span class="op">=</span>colors[i], edgecolors<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>                   linewidth<span class="op">=</span><span class="dv">2</span>, marker<span class="op">=</span><span class="st">"X"</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="ss">f"PC</span><span class="sc">{</span>px<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[px]<span class="sc">:.1%}</span><span class="ss"> var)"</span>)</span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="ss">f"PC</span><span class="sc">{</span>py<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[py]<span class="sc">:.1%}</span><span class="ss"> var)"</span>)</span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"All 100 prompts, layer 20 (PC</span><span class="sc">{</span>px<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">/PC</span><span class="sc">{</span>py<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>    ax.legend(loc<span class="op">=</span><span class="st">"best"</span>, framealpha<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>    ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="fl">0.4</span>)<span class="op">;</span> ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Cluster separation metrics</span></span>
+<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a>label_ids <span class="op">=</span> np.array([ORDERED_CATS.index(l) <span class="cf">for</span> l <span class="kw">in</span> all_labels])</span>
+<span id="cb23-51"><a href="#cb23-51" aria-hidden="true" tabindex="-1"></a>sil_2d <span class="op">=</span> silhouette_score(P[:, :<span class="dv">2</span>], label_ids)</span>
+<span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a>sil_4d <span class="op">=</span> silhouette_score(P[:, :<span class="dv">4</span>], label_ids)</span>
+<span id="cb23-53"><a href="#cb23-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Silhouette score in PC1-2: </span><span class="sc">{</span>sil_2d<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb23-54"><a href="#cb23-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Silhouette score in PC1-4: </span><span class="sc">{</span>sil_4d<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb23-55"><a href="#cb23-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Interpretation: &gt; 0.25 = clear cluster structure, "</span></span>
+<span id="cb23-56"><a href="#cb23-56" aria-hidden="true" tabindex="-1"></a>      <span class="st">"0.1-0.25 = weak structure, &lt; 0.1 = mostly overlapping"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="">
 <figure class="figure">
-<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-14-output-2.png" class="img-fluid figure-img"></p>
+<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/per-prompt-scatter-output-1.png" id="per-prompt-scatter" class="img-fluid figure-img"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Silhouette score in PC1-2: -0.119
-Silhouette score in PC1-4: 0.010
-Interpretation: &gt; 0.25 = clear cluster structure, 0.1-0.25 = weak structure, &lt; 0.1 = mostly overlapping</code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div id="cell-26" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:33:04.979557Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:33:04.980542Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:33:05.730309Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:33:04.980505Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:33:05.729400Z&quot;}}" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA basis from category means; project individual prompts into itcat_means_raw = np.stack([    X[np.array(all_labels) == cat].mean(0)    for cat in ORDERED_CATS])# Center on grand mean of category meansgrand_mean = cat_means_raw.mean(0, keepdims=True)pca_means = PCA(n_components=4)pca_means.fit(cat_means_raw - grand_mean)# Project individual prompts into the same basisP_mb = pca_means.transform(X - grand_mean)# Plotfig, axes = plt.subplots(1, 2, figsize=(16, 8))for ax_idx, (px, py) in enumerate([(0, 1), (2, 3)]):    ax = axes[ax_idx]    for i, cat in enumerate(ORDERED_CATS):        mask = np.array([l == cat for l in all_labels])        ax.scatter(P_mb[mask, px], P_mb[mask, py], s=60, c=colors[i],                   alpha=0.5, label=cat, edgecolors="white", linewidth=0.5)        cx, cy = P_mb[mask, px].mean(), P_mb[mask, py].mean()        ax.scatter(cx, cy, s=400, c=colors[i], edgecolors="black",                   linewidth=2, marker="X", zorder=5)    ax.set_xlabel(f"PC{px+1} ({pca_means.explained_variance_ratio_[px]:.1%} of between-category var)")    ax.set_ylabel(f"PC{py+1} ({pca_means.explained_variance_ratio_[py]:.1%} of between-category var)")    ax.set_title(f"Prompts in category-means basis (PC{px+1}/PC{py+1})")    ax.legend(loc="best", framealpha=0.9)    ax.grid(alpha=0.3)    ax.axhline(0, color="k", lw=0.4); ax.axvline(0, color="k", lw=0.4)plt.tight_layout()plt.show()sil_mb = silhouette_score(P_mb[:, :2], label_ids)print(f"Silhouette in means-basis (PC1-2): {sil_mb:.3f}")print(f"Silhouette in means-basis (PC1-4): {silhouette_score(P_mb[:, :4], label_ids):.3f}")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div id="cell-per-prompt-projection" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-19T11:33:04.979557Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-19T11:33:04.980542Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-19T11:33:05.730309Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-19T11:33:04.980505Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-19T11:33:05.729400Z&quot;}}" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA basis from category means; project individual prompts into it</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>cat_means_raw <span class="op">=</span> np.stack([</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    X[np.array(all_labels) <span class="op">==</span> cat].mean(<span class="dv">0</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> cat <span class="kw">in</span> ORDERED_CATS</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Center on grand mean of category means</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>grand_mean <span class="op">=</span> cat_means_raw.mean(<span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>pca_means <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>pca_means.fit(cat_means_raw <span class="op">-</span> grand_mean)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Project individual prompts into the same basis</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>P_mb <span class="op">=</span> pca_means.transform(X <span class="op">-</span> grand_mean)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">8</span>))</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax_idx, (px, py) <span class="kw">in</span> <span class="bu">enumerate</span>([(<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">2</span>, <span class="dv">3</span>)]):</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> axes[ax_idx]</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, cat <span class="kw">in</span> <span class="bu">enumerate</span>(ORDERED_CATS):</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> np.array([l <span class="op">==</span> cat <span class="cf">for</span> l <span class="kw">in</span> all_labels])</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        ax.scatter(P_mb[mask, px], P_mb[mask, py], s<span class="op">=</span><span class="dv">60</span>, c<span class="op">=</span>colors[i],</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>                   alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span>cat, edgecolors<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        cx, cy <span class="op">=</span> P_mb[mask, px].mean(), P_mb[mask, py].mean()</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        ax.scatter(cx, cy, s<span class="op">=</span><span class="dv">400</span>, c<span class="op">=</span>colors[i], edgecolors<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>                   linewidth<span class="op">=</span><span class="dv">2</span>, marker<span class="op">=</span><span class="st">"X"</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="ss">f"PC</span><span class="sc">{</span>px<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>pca_means<span class="sc">.</span>explained_variance_ratio_[px]<span class="sc">:.1%}</span><span class="ss"> of between-category var)"</span>)</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="ss">f"PC</span><span class="sc">{</span>py<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>pca_means<span class="sc">.</span>explained_variance_ratio_[py]<span class="sc">:.1%}</span><span class="ss"> of between-category var)"</span>)</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"Prompts in category-means basis (PC</span><span class="sc">{</span>px<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">/PC</span><span class="sc">{</span>py<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    ax.legend(loc<span class="op">=</span><span class="st">"best"</span>, framealpha<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>    ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="fl">0.4</span>)<span class="op">;</span> ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>sil_mb <span class="op">=</span> silhouette_score(P_mb[:, :<span class="dv">2</span>], label_ids)</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Silhouette in means-basis (PC1-2): </span><span class="sc">{</span>sil_mb<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Silhouette in means-basis (PC1-4): </span><span class="sc">{</span>silhouette_score(P_mb[:, :<span class="dv">4</span>], label_ids)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="">
 <figure class="figure">
-<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
+<p class=""><img src="copy_temporal-interp-research-01_with_output_cells_files/figure-html/per-prompt-projection-output-1.png" id="per-prompt-projection" class="img-fluid figure-img"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Silhouette in means-basis (PC1-2): 0.196
-Silhouette in means-basis (PC1-4): 0.310</code></pre>
 </div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="cell-27" class="cell" data-trusted="true">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 
 

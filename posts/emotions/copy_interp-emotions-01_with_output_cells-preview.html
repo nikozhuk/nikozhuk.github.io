@@ -929,18 +929,32 @@ feature 1673
 <div id="cell-17" class="cell markdown">
 <p>Visualisation</p>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [20]:</pre></div><div id="cell-18" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-04T19:07:55.539785Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-04T19:07:55.540250Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-04T19:08:01.007712Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-04T19:07:55.540217Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-04T19:08:01.006912Z&quot;}}" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#%pip install -q circuitsvisimport circuitsvis as cvfrom IPython.display import display# Pick your top joy featurefid = int(diff_joy_vs_neutral.iloc[0]["feature_id"])print(f"Visualizing feature {fid}")def viz_feature_on_prompt(prompt: str, fid: int, layer: int = 20):    """Color each token by its activation on a single SAE feature."""    acts, str_tokens = get_feature_acts(prompt, layer=layer)    # acts: (n_tokens, d_sae). We want column `fid` -&gt; (n_tokens,)    values = acts[:, fid].cpu().tolist()    return cv.tokens.colored_tokens(tokens=str_tokens, values=values)# Show on 5 joy promptsfor p in JOY_PROMPTS[:5]:    display(viz_feature_on_prompt(p, fid))# And 5 neutral prompts — should be visually mutedprint("\n--- Neutral controls ---")for p in NEUTRAL_PROMPTS[:5]:    display(viz_feature_on_prompt(p, fid))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<div class="ansi-escaped-output">
-<pre>   <span class="ansi-bright-black-fg">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-green-fg">1.8/1.8 MB</span> <span class="ansi-red-fg">24.9 MB/s</span> eta <span class="ansi-cyan-fg">0:00:00</span>00:0100:01
-Note: you may need to restart the kernel to use updated packages.
-Visualizing feature 1673
-max act: 2040.0 | nonzero: 7842
-</pre>
-</div>
-</div>
-<div class="cell-output cell-output-display">
+<div class="cell-container"><div class="cell-decorator"><pre>In [20]:</pre></div><div id="joy-prompts-top-feature" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-04T19:07:55.539785Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-04T19:07:55.540250Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-04T19:08:01.007712Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-04T19:07:55.540217Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-04T19:08:01.006912Z&quot;}}" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#%pip install -q circuitsvis</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> circuitsvis <span class="im">as</span> cv</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Pick your top joy feature</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>fid <span class="op">=</span> <span class="bu">int</span>(diff_joy_vs_neutral.iloc[<span class="dv">0</span>][<span class="st">"feature_id"</span>])</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Visualizing feature </span><span class="sc">{</span>fid<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> viz_feature_on_prompt(prompt: <span class="bu">str</span>, fid: <span class="bu">int</span>, layer: <span class="bu">int</span> <span class="op">=</span> <span class="dv">20</span>):</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Color each token by its activation on a single SAE feature."""</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    acts, str_tokens <span class="op">=</span> get_feature_acts(prompt, layer<span class="op">=</span>layer)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># acts: (n_tokens, d_sae). We want column `fid` -&gt; (n_tokens,)</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> acts[:, fid].cpu().tolist()</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cv.tokens.colored_tokens(tokens<span class="op">=</span>str_tokens, values<span class="op">=</span>values)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Show on 5 joy prompts</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> JOY_PROMPTS[:<span class="dv">5</span>]:</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    display(viz_feature_on_prompt(p, fid))</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="co"># And 5 neutral prompts — should be visually muted</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- Neutral controls ---"</span>)</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> NEUTRAL_PROMPTS[:<span class="dv">5</span>]:</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>    display(viz_feature_on_prompt(p, fid))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="joy-prompts-top-feature-1" class="cell-output cell-output-display">
 <div id="circuits-vis-cf254d21-0124" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -951,10 +965,7 @@ max act: 2040.0 | nonzero: 7842
     )
     </script>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 8167</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div id="joy-prompts-top-feature-2" class="cell-output cell-output-display">
 <div id="circuits-vis-b489c7f3-65ad" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -965,10 +976,7 @@ max act: 2040.0 | nonzero: 7842
     )
     </script>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 8086</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div id="joy-prompts-top-feature-3" class="cell-output cell-output-display">
 <div id="circuits-vis-b65289e0-2dfe" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -979,10 +987,7 @@ max act: 2040.0 | nonzero: 7842
     )
     </script>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 7672</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div id="joy-prompts-top-feature-4" class="cell-output cell-output-display">
 <div id="circuits-vis-7ab01ec4-6508" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -993,10 +998,7 @@ max act: 2040.0 | nonzero: 7842
     )
     </script>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 7986</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div id="joy-prompts-top-feature-5" class="cell-output cell-output-display">
 <div id="circuits-vis-cc10c3f9-2a95" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -1007,12 +1009,10 @@ max act: 2040.0 | nonzero: 7842
     )
     </script>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
---- Neutral controls ---
-max act: 2040.0 | nonzero: 7676</code></pre>
 </div>
-<div class="cell-output cell-output-display">
+<div class="cell-container"><div class="cell-decorator"><pre>In [20]:</pre></div><div id="neutral-prompts-top-feature" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-04T19:07:55.539785Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-04T19:07:55.540250Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-04T19:08:01.007712Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-04T19:07:55.540217Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-04T19:08:01.006912Z&quot;}}" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Neutral controls: second half of the outputs of the cell above (split for the blog post).</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="neutral-prompts-top-feature-1" class="cell-output cell-output-display">
 <div id="circuits-vis-9a20c794-1200" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -1023,10 +1023,7 @@ max act: 2040.0 | nonzero: 7676</code></pre>
     )
     </script>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 7702</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div id="neutral-prompts-top-feature-2" class="cell-output cell-output-display">
 <div id="circuits-vis-4d6b33bf-aabd" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -1037,10 +1034,7 @@ max act: 2040.0 | nonzero: 7676</code></pre>
     )
     </script>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 7743</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div id="neutral-prompts-top-feature-3" class="cell-output cell-output-display">
 <div id="circuits-vis-7de4c743-d5d0" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -1051,10 +1045,7 @@ max act: 2040.0 | nonzero: 7676</code></pre>
     )
     </script>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 7497</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div id="neutral-prompts-top-feature-4" class="cell-output cell-output-display">
 <div id="circuits-vis-3612b4fc-564b" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -1065,10 +1056,7 @@ max act: 2040.0 | nonzero: 7676</code></pre>
     )
     </script>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 7816</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div id="neutral-prompts-top-feature-5" class="cell-output cell-output-display">
 <div id="circuits-vis-b924b5d5-7483" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokens } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -1080,12 +1068,23 @@ max act: 2040.0 | nonzero: 7676</code></pre>
     </script>
 </div>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [24]:</pre></div><div id="cell-19" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-04T19:28:47.099869Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-04T19:28:47.100363Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-04T19:28:47.272491Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-04T19:28:47.100331Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-04T19:28:47.271896Z&quot;}}" data-execution_count="24">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># comparing top3 featuresdef viz_topk_features_on_prompt(prompt: str, fids: list, layer: int = 20):      """One prompt, multiple features, colored side-by-side."""      acts, str_tokens = get_feature_acts(prompt, layer=layer)      values = torch.stack([acts[:, fid] for fid in fids], dim=1)  # [n_tokens, k]      labels = [f"feat {fid}" for fid in fids]      return cv.tokens.colored_tokens_multi(          tokens=str_tokens,          values=values.cpu().float(),          labels=labels,      )top3 = diff_joy_vs_neutral.iloc[:3]["feature_id"].astype(int).tolist()display(viz_topk_features_on_prompt(JOY_PROMPTS[0], top3))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>max act: 2040.0 | nonzero: 7842</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div class="cell-container"><div class="cell-decorator"><pre>In [24]:</pre></div><div id="cell-top3-features-joy-prompt" class="cell" data-trusted="true" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.status.busy&quot;:&quot;2026-06-04T19:28:47.099869Z&quot;,&quot;iopub.execute_input&quot;:&quot;2026-06-04T19:28:47.100363Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-06-04T19:28:47.272491Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2026-06-04T19:28:47.100331Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-06-04T19:28:47.271896Z&quot;}}" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># comparing top3 features</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> viz_topk_features_on_prompt(prompt: <span class="bu">str</span>, fids: <span class="bu">list</span>, layer: <span class="bu">int</span> <span class="op">=</span> <span class="dv">20</span>):</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>      <span class="co">"""One prompt, multiple features, colored side-by-side."""</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>      acts, str_tokens <span class="op">=</span> get_feature_acts(prompt, layer<span class="op">=</span>layer)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>      values <span class="op">=</span> torch.stack([acts[:, fid] <span class="cf">for</span> fid <span class="kw">in</span> fids], dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># [n_tokens, k]</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>      labels <span class="op">=</span> [<span class="ss">f"feat </span><span class="sc">{</span>fid<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> fid <span class="kw">in</span> fids]</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> cv.tokens.colored_tokens_multi(</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>          tokens<span class="op">=</span>str_tokens,</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>          values<span class="op">=</span>values.cpu().<span class="bu">float</span>(),</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>          labels<span class="op">=</span>labels,</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>top3 <span class="op">=</span> diff_joy_vs_neutral.iloc[:<span class="dv">3</span>][<span class="st">"feature_id"</span>].astype(<span class="bu">int</span>).tolist()</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>display(viz_topk_features_on_prompt(JOY_PROMPTS[<span class="dv">0</span>], top3))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="top3-features-joy-prompt" class="cell-output cell-output-display">
 <div id="circuits-vis-28944c6c-ab33" style="margin: 15px 0;">
     <script crossorigin="" type="module">
     import { render, ColoredTokensMulti } from "https://unpkg.com/circuitsvis@1.43.3/dist/cdn/esm.js";
@@ -1097,12 +1096,12 @@ max act: 2040.0 | nonzero: 7676</code></pre>
     </script>
 </div>
 </div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-20" class="cell" data-trusted="true">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-21" class="cell" data-trusted="true">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 
 
-     </div></div></div></div></div></div></div></div></div></div></div></div></div></main> <!-- /main -->  <script id="quarto-html-after-body" type="application/javascript">
+     </div></div></div></div></div></div></div></div></div></div></div></div></div></div></main> <!-- /main -->  <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
