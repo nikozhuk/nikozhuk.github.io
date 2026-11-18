@@ -67,14 +67,14 @@
     "href": "posts/pets_challenge/index.html",
     "title": "Pet’s Facial Expression Detection App",
     "section": "",
-    "text": "that classify a pet’s emotions by a photo. Upload an image, get the predicted emotion + confidence. Trained EfficientNetB5 CNN on Kaggle’s pet’s facial expression dataset.\n\n\nEnd-to-end pipeline:\n1. Training of model\n2. Wrapping in web interface\n3. Deployment"
+    "text": "that classify a pet’s emotions by a photo. Upload an image, get the predicted emotion + confidence. Trained EfficientNetB5 CNN on Kaggle’s pet’s facial expression dataset.\n\n\nDemo not loading? The free Space may be asleep — open it on Hugging Face to wake it, then reload this page.\nEnd-to-end pipeline:\n1. Training of model\n2. Wrapping in web interface\n3. Deployment"
   },
   {
     "objectID": "posts/pets_challenge/index.html#a-tiny-web-app",
     "href": "posts/pets_challenge/index.html#a-tiny-web-app",
     "title": "Pet’s Facial Expression Detection App",
     "section": "",
-    "text": "that classify a pet’s emotions by a photo. Upload an image, get the predicted emotion + confidence. Trained EfficientNetB5 CNN on Kaggle’s pet’s facial expression dataset.\n\n\nEnd-to-end pipeline:\n1. Training of model\n2. Wrapping in web interface\n3. Deployment"
+    "text": "that classify a pet’s emotions by a photo. Upload an image, get the predicted emotion + confidence. Trained EfficientNetB5 CNN on Kaggle’s pet’s facial expression dataset.\n\n\nDemo not loading? The free Space may be asleep — open it on Hugging Face to wake it, then reload this page.\nEnd-to-end pipeline:\n1. Training of model\n2. Wrapping in web interface\n3. Deployment"
   },
   {
     "objectID": "posts/pets_challenge/index.html#training",
