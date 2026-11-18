@@ -142,30 +142,72 @@
   {
     "objectID": "books.html",
     "href": "books.html",
-    "title": "📚 ML, Graph ML",
+    "title": "📚, ML, Graph ML",
     "section": "",
-    "text": "🖥️ Introduction to Graph Neural Networks by Zak Jost\n\n📘 Deep learning with graph-structured representations by Thomas Kipf 2020\n📘 Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges by Michael Bronstein et al., 2021\n🎨 Graph Neural Networks for Novice Math Fanatic by Rishabh Anand"
+    "text": "Reading list"
   },
   {
     "objectID": "books.html#gnns-books-and-courses",
     "href": "books.html#gnns-books-and-courses",
-    "title": "📚 ML, Graph ML",
-    "section": "",
-    "text": "🖥️ Introduction to Graph Neural Networks by Zak Jost\n\n📘 Deep learning with graph-structured representations by Thomas Kipf 2020\n📘 Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges by Michael Bronstein et al., 2021\n🎨 Graph Neural Networks for Novice Math Fanatic by Rishabh Anand"
+    "title": "📚, ML, Graph ML",
+    "section": "GNNs books and courses:",
+    "text": "GNNs books and courses:\n\n🖥️ Introduction to Graph Neural Networks by Zak Jost\n\n📘 Deep learning with graph-structured representations by Thomas Kipf 2020\n📘 Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges by Michael Bronstein et al., 2021\n🎨 Graph Neural Networks for Novice Math Fanatic by Rishabh Anand"
   },
   {
     "objectID": "books.html#mldl",
     "href": "books.html#mldl",
-    "title": "📚 ML, Graph ML",
+    "title": "📚, ML, Graph ML",
     "section": "ML/DL",
     "text": "ML/DL\n\nMachine Learning, Zhi-Hua Zhou (2021)\nA compact mathematical explanation of the ML basics.\nAI and Machine Learning for Coders, Laurence Moroney (2020)\nA great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.\nDesigning Machine Learning Systems, Chip Huyen (2022)\nJust a very useful for ML- practitioners in industry.\nDeep Learning with Python, François Chollet (2nd edition 2021)\nThe most understandable explanation of concepts in textual format, which is interesting to read. By the way, I’ll give the second copy to someone who’ll take good care of it.\nDeep Learning, Jan Goodfellow (2016)\nComprehensive mathematical and conceptual explanation, insights for the open research fields.\nDeep Learning for Vision Systems, Mohamed Elgendy (2020)\nDetailed explanation for baseline’s Computer Vision backbones/architectures.\nDeep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)\nA view on Deep Learning from practitioners. Practical Data Ethics!\nDeep Learning: A Visual Approach, Andrew-Glassner (2021)\nAdditional dimension for concept’s understanding.\nComputer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)\nConstantly updated meta-survey.\nInterpretable Machine Learning, Christoph Molnar (2019)\nSurvey, good starting point on the topic. Shapley Values."
+  },
+  {
+    "objectID": "books.html#general",
+    "href": "books.html#general",
+    "title": "📚, ML, Graph ML",
+    "section": "General",
+    "text": "General\n\nNonviolent Communication by M.Rosenberg\nLearn how to learn by Barbara Oakley\nThinking, Fast and Slow by Daniel Kahneman\nOn Intelligence by Jeff Hawkins\nOn Complexity by Edgar Morin\nA Mathematician’s Apology by G. H. Hardy\nWhat’s Whole in Whole Language in the 21st Century? by Kenneth Goodman\nWhen the Body Says No by Gabor Maté\nTiny Habits by BJ Fogg"
+  },
+  {
+    "objectID": "books.html#computer-science-programming-languages",
+    "href": "books.html#computer-science-programming-languages",
+    "title": "📚, ML, Graph ML",
+    "section": "Computer Science (programming languages)",
+    "text": "Computer Science (programming languages)\n\nData Structures and Algorithms by Michael T. Goodrich, Roberto Tamassia, Michael H. Goldwasser\nClean Architecture by Robert C. Martin\nLearning Python by Mark Lutz\nFluent Python by Luciano Ramalho\nC Primer Plus by Stephen Prata"
+  },
+  {
+    "objectID": "books.html#data-science",
+    "href": "books.html#data-science",
+    "title": "📚, ML, Graph ML",
+    "section": "Data Science",
+    "text": "Data Science\n\nThe Art of Data Science by Roger D. Peng and Elizabeth Matsui\nAll of Statistics by Larry Wasserman\nThe Book of Why by Judea Pearl and Dana Mackenzie\n\n\nData Science in Sport\n\nMatch Analysis by Daniel Memmert\nNeural Networks for Chess by Dominik Klein\nMoneyball by Michael Lewis"
+  },
+  {
+    "objectID": "books.html#visualisation",
+    "href": "books.html#visualisation",
+    "title": "📚, ML, Graph ML",
+    "section": "Visualisation",
+    "text": "Visualisation\n\nPencil Me In by Christina Wodtke\nData Sketches by Nadieh Bremer and Shirley Wu\nUnflattening by Nick Sousanis\nDraw to Win by Dan Roam"
+  },
+  {
+    "objectID": "books.html#idea-generation-processes",
+    "href": "books.html#idea-generation-processes",
+    "title": "📚, ML, Graph ML",
+    "section": "Idea generation processes",
+    "text": "Idea generation processes\n\nBusiness Model Generation by Alexander Osterwalder and Yves Pigneur\nThe Invincible Company by Alexander Osterwalder et al.\nOpen Innovation Results by Henry Chesbrough\nExponential Organizations by Salim Ismail\nНайти идею by Генрих Альтшуллер"
+  },
+  {
+    "objectID": "books.html#business",
+    "href": "books.html#business",
+    "title": "📚, ML, Graph ML",
+    "section": "Business",
+    "text": "Business\n\nGeneral\n\nSteve Jobs by Walter Isaacson\nHumor, Seriously by Jennifer Aaker and Naomi Bagdonas\nThe Mom Test by Rob Fitzpatrick\n\n\n\nStrategy\n\nZero to One by Peter Thiel\n\n\n\nManagement\n\nRadical Focus by Christina Wodtke\nThe Fearless Organization by Amy Edmondson\nHow to Lead in Data Science by Jike Chong and Yue Cathy Chang"
   },
   {
     "objectID": "about_more.html",
     "href": "about_more.html",
     "title": "About more",
     "section": "",
-    "text": "I speak four languages every day : German, English, Czech and Russian.\nI love everything about idea- generation processes: TRIZ, lateral thinking, …\nI love travelling. Friends asked me to publish photos from my travel around the Europe since 2011… At some point I will start publishing my photo archives.\nHere I post photos of everyday moments.\nHere I tried adding music created by Suno AI to poems(in English, Czech, Ukrainian and Russian)."
+    "text": "I speak four languages every day : German, English, Czech and Russian.\nI love reading books\nI love everything about idea- generation processes: TRIZ, lateral thinking, …\nI love travelling. Friends asked me to publish photos from my travel around the Europe since 2011… At some point I will start publishing my photo archives.\nHere I post photos of everyday moments.\nHere I tried adding music created by Suno AI to poems(in English, Czech, Ukrainian and Russian)."
   },
   {
     "objectID": "about.html",
