@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="On Gemma 4 E2B open-weight transformer model.">
 
-<title>Understanding Per Layer Embeddings Method – Nikolai Zhukov</title>
+<title>Understanding Per-Layer Embeddings Parameters Caching – Nikolai Zhukov</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -96,11 +97,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Understanding Per Layer Embeddings Method – Nikolai Zhukov">
-<meta property="og:description" content="Mathematician,researcher, and ML practioner. Based in Germany.">
+<meta property="og:title" content="Understanding Per-Layer Embeddings Parameters Caching – Nikolai Zhukov">
+<meta property="og:description" content="On Gemma 4 E2B open-weight transformer model.">
 <meta property="og:site_name" content="Nikolai Zhukov">
-<meta name="twitter:title" content="Understanding Per Layer Embeddings Method – Nikolai Zhukov">
-<meta name="twitter:description" content="Mathematician,researcher, and ML practioner. Based in Germany.">
+<meta name="twitter:title" content="Understanding Per-Layer Embeddings Parameters Caching – Nikolai Zhukov">
+<meta name="twitter:description" content="On Gemma 4 E2B open-weight transformer model.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -151,9 +152,13 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Understanding Per Layer Embeddings Method</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">interpretability</div>
+      <h1 class="title">Understanding Per-Layer Embeddings Parameters Caching</h1>
+                  <div>
+        <div class="description">
+          On Gemma 4 E2B open-weight transformer model.
+        </div>
+      </div>
+                          <div class="quarto-categories">
                 <div class="quarto-category">text</div>
               </div>
                   </div>
@@ -185,10 +190,14 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Per-layer residual embedding injection used in <a href="https://ai.google.dev/gemma/docs/core/model_card_4">Gemma4 models</a>.</p>
-<p>In a few words the idea - to fix a separate small vector of meaning representations (embeddings) for each layer of the artificial neural network, for every token. At the very first inference (generating an answer on the device) call, all of these per-layer vectors are looked up at once, only one time (which is one of the reasons the first model call is longer than the subsequent ones). The dimensionality of these per-layer vectors is much smaller than the main hidden state (e.g.&nbsp;256 dimensions vs.&nbsp;1536 or 2560). At each layer, the small per-layer vector is injected into the residual stream - so the layer is “reminded” of what this token is about, adding the “shades” of meaning when it’s relevant.&nbsp; And most importantly - this whole lookup table can be stored in flash memory rather than in RAM! (RAM is needed for computing operations over vectors and is therefore the bottleneck).</p>
-<p>Instead of,&nbsp;during inference, the incoming token getting looked up in the embedding table at the input layer, and the that single embedding having to “drag” all of the token’s semantic context along with it through every layer of the network (how it was in most transformer-like models).</p>
-<p>Thank you <a href="https://x.com/MaartenGr">Maarten Grootendorst</a> for <a href="https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-gemma-4">visual explanation</a>!</p>
+<p>Caching of per-Layer embedding parameters outside of the model’s operating memory to fast storage for efficient inference was introduced in open-weight <a href="https://gemma.ai/models/gemma-3n/#model-parameters-and-effective-parameters">Gemma 3n</a> (2025) models and then in <a href="https://ai.google.dev/gemma/docs/core/model_card_4">Gemma 4</a> models (April 2, 2026). Together with other techniques, this makes it practical to run capable multimodal models on local resource-constrained devices like phones or Raspberry Pi.</p>
+<p>In a few words the idea - to fix a separate small vector of meaning representations (embeddings) for each layer of the neural network, for every token, looked up by token ID.</p>
+<p>The vectors for all layers can be fetched at once.</p>
+<p>The dimensionality of these per-layer vectors is smaller than original lookup table: 256 dimensions vs.&nbsp;1536 in Gemma4 E2B model.</p>
+<p>At each layer, the small per-layer vector is injected into the residual stream - so the layer is “reminded” of what this token is about, adding the “shades” of meaning when it’s relevant.&nbsp;</p>
+<p>Not as in vanila transformer that single embedding having to “drag” all of the token’s semantic context along with it through every layer of the network.</p>
+<p>And this relativ smaller lookup table (262144 tokens x 35 layers x 256 dimensions ~) is offloaded to flash memory instead of keeping it in RAM.</p>
+<p>Credits to <a href="https://x.com/MaartenGr">Maarten Grootendorst</a> for <a href="https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-gemma-4">visual explanation</a>!</p>
 
 
 
