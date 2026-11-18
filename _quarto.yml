@@ -5,12 +5,13 @@ project:
     - "*.qmd"
     - "posts/**/*.qmd"
     - "!posts/**/*.ipynb"
+    - "!posts/delegation_boundary/"   # hidden for now; remove this line to publish
   resources:
     - llms.txt
     - assets/cube-logo.js
 
 website:
-  draft-mode: unlinked
+  draft-mode: gone
   title: "Nikolai Zhukov"
   description: "Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany."
   site-url: https://nikozhuk.github.io
