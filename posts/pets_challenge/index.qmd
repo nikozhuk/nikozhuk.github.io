@@ -8,11 +8,13 @@ categories: [code]
 that classify a pet's emotions by a photo.
 Upload an image, get the predicted emotion + confidence. Trained [EfficientNetB5](https://www.tensorflow.org/api_docs/python/tf/keras/applications/EfficientNetB5) CNN on [Kaggle's pet's facial expression dataset](https://www.kaggle.com/datasets/anshtanwar/pets-facial-expression-dataset).
 
-<script type="module"
-    src="https://gradio.s3-us-west-2.amazonaws.com/6.15.2/gradio.js"></script>
+<iframe
+  src="https://happybugsbunny-pets-emotion-classification.hf.space/"
+  title="Pets emotion classification demo"
+  width="100%" height="900" frameborder="0"
+  allow="clipboard-write" loading="lazy"></iframe>
 
-  <gradio-app 
-  src="https://happybugsbunny-pets-emotion-classification.hf.space/"></gradio-app>
+<small>Demo not loading? The free Space may be asleep — [open it on Hugging Face](https://huggingface.co/spaces/HappyBugsBunny/pets-emotion-classification) to wake it, then reload this page.</small>
 
 End-to-end pipeline:  
 1. Training of model  

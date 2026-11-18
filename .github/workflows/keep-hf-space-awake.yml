@@ -1,0 +1,45 @@
+name: Keep HF Space awake
+
+# Free (cpu-basic) Spaces sleep after 48 h without traffic. Pinging every
+# 36 h keeps the embedded demo on /posts/pets_challenge/ responsive.
+# No token or other credentials are used: the ping is a plain public request.
+#
+# Cron can't express "every 36 h", so the trigger fires every 12 h and the job
+# runs only on every 3rd 12-hour slot (counted from the Unix epoch).
+on:
+  schedule:
+    - cron: "17 */12 * * *"   # every 12 h (UTC); off the hour to avoid queue spikes
+  workflow_dispatch:           # allow manual runs from the Actions tab (always run)
+
+permissions: {}                # the job needs no access to this repo
+
+env:
+  SPACE_ID: HappyBugsBunny/pets-emotion-classification
+  SPACE_URL: https://happybugsbunny-pets-emotion-classification.hf.space
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the Space
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            slot=$(( $(date -u +%s) / 43200 ))   # 12-hour slots since epoch
+            if [ $(( slot % 3 )) -ne 0 ]; then
+              echo "Not a 36-hour slot (slot $slot); skipping."
+              exit 0
+            fi
+          fi
+
+          stage=$(curl -s "https://huggingface.co/api/spaces/$SPACE_ID/runtime" | jq -r .stage)
+          echo "Space stage: $stage"
+
+          # Real traffic to the app resets the idle timer (and wakes a sleeping Space).
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 "$SPACE_URL/config")
+            echo "Attempt $i: HTTP $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 30
+          done
+          echo "::error::Space did not respond (stage: $stage). Open https://huggingface.co/spaces/$SPACE_ID to restart it."
+          exit 1
