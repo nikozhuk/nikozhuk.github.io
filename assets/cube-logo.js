@@ -4,6 +4,7 @@
  *          solved (~3.5 s) while a panel shows the same walk in the Cayley
  *          graph of the cube group (nodes = cube states, edges = face turns).
  * Click 2: scramble again (and stay scrambled).  Click 3: solve.  And so on.
+ * After 1 scramble -> solve cycle, the next click navigates to the main page.
  *
  * The panel opens on the "sticker circles" view (54 stickers as the crossings
  * of 9 circles, where a face turn slides one circle); a toggle switches it to
@@ -457,6 +458,7 @@
 
     // ---- animation state ----
     var cubies = solvedCube(), graph = null, scrambled = false, busy = false;
+    var cycles = 0, MAX_CYCLES = 1;   // after this many solves, the logo link works normally
     var gPos = 0, gBuilt = 0, gSolving = false;
 
     function render(turning, angle, e) {
@@ -505,6 +507,7 @@
       }
       setHead("solved in " + n + " moves:", sol, n, -1);
       scrambled = false;
+      cycles++;
     }
 
     async function onClick() {
@@ -526,6 +529,7 @@
 
     link.addEventListener("click", function (ev) {
       if (ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;
+      if (!busy && !scrambled && cycles >= MAX_CYCLES) return;   // let the link go to the main page
       ev.preventDefault();
       onClick();
     });
