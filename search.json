@@ -347,7 +347,7 @@
     "href": "posts/time/index.html",
     "title": "SAEs dilution of geometrical structure for temporal representations",
     "section": "",
-    "text": "Geometric structure of temporal concepts and the limits of sparse autoencoders decompostion. PCA vs SAE features in Gemma 2 2B.\nBased on “Not all language model features are one-dimensionally linear” paper.\nRead the notebook on Kaggle\n\nDays of the week: PCA\n\n\n\n\n\n\n\n\n\n\nSource: Kaggle's defaults\n\n\nDays of the week: SAE decoder PCA\n\n\n\n\n\n\n\n\n\n\n\n\n\nGeometry at layers 8, 14, 20, 25\n\n\n\n\n\n\n\n\n\n\n\n\n\nTemporal categories: PCA of category means (layer 20)\n\n\n\n\n\n\n\n\n\n\n\n\n\nPer-prompt scatter\n\n\n\n\n\n\n\n\n\n\n\n\n\nPrompts projected onto the category-mean PCA"
+    "text": "Geometric structure of temporal concepts and the limits of sparse autoencoders decompostion. PCA vs SAE features in Gemma 2 2B.\nRead the notebook on Kaggle\nBased on “Not all language model features are one-dimensionally linear” paper.\n\nDays of the week: PCA\n\n\n\n\n\n\n\n\n\n\nSource: Kaggle's defaults\n\n\nDays of the week: SAE decoder PCA\n\n\n\n\n\n\n\n\n\n\n\n\n\nGeometry at layers 8, 14, 20, 25\n\n\n\n\n\n\n\n\n\n\n\n\n\nTemporal categories: PCA of category means (layer 20)\n\n\n\n\n\n\n\n\n\n\n\n\n\nPer-prompt scatter\n\n\n\n\n\n\n\n\n\n\n\n\n\nPrompts projected onto the category-mean PCA"
   },
   {
     "objectID": "posts/tt_mediapipe/index.html",
