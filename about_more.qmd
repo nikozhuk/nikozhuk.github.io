@@ -4,6 +4,8 @@ title: "About more"
 
 I speak four languages every day : German, English, Czech and Russian.
 
+I love reading [books](books.qmd).
+
 I love everything about idea- generation processes: TRIZ, lateral thinking, ...
 
 I love travelling. Friends asked me to publish photos from my travel around the Europe since 2011... At some point I will start publishing my photo archives.

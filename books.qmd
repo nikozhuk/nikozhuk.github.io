@@ -1,5 +1,5 @@
 ---                                                                        
-title: "📚 ML, Graph ML"
+title: "📚, ML, Graph ML"
 title-block-banner: images/ml_books_banner_split_horizontal_320h.png
 ---
 
@@ -7,7 +7,7 @@ title-block-banner: images/ml_books_banner_split_horizontal_320h.png
 .quarto-title h1.title {
   display: none;
 }
-</style>                                                                             
+</style>                                                Reading list                             
 ## GNNs books and courses:
 - 🖥️ [Introduction to Graph Neural Networks](https://t.co/9f2qvXcQsP) by [Zak Jost](https://x.com/ZakJost)                                                   
 - 📘 [Deep learning with graph-structured representations](https://pure.uva.nl/ws/files/46900201/Thesis.pdf) by [Thomas Kipf](https://x.com/tkipf) 2020
@@ -17,24 +17,94 @@ title-block-banner: images/ml_books_banner_split_horizontal_320h.png
 
 ## ML/DL
 
-- [Machine Learning, Zhi-Hua Zhou (2021)]()  
+- [Machine Learning](), Zhi-Hua Zhou (2021)  
   A compact mathematical explanation of the ML basics. 
-- [AI and Machine Learning for Coders, Laurence Moroney (2020)]()  
+- [AI and Machine Learning for Coders](), Laurence Moroney (2020)  
   A great collection of code implementations with TensorFlow, TensorFlow Lite, TensorFlow.js and many more.
-- [Designing Machine Learning Systems, Chip Huyen (2022)]()  
+- [Designing Machine Learning Systems](), Chip Huyen (2022)  
 Just a very useful for ML- practitioners in industry.
-- [Deep Learning with Python, François Chollet (2nd edition 2021)]()  
-The most understandable explanation of concepts in textual format, which is interesting to read. By the way, I'll give the second copy to someone who'll take good care of it.
-- [Deep Learning, Jan Goodfellow (2016)]()  
-Comprehensive mathematical and conceptual explanation, insights for the open research fields.
-- [Deep Learning for Vision Systems, Mohamed Elgendy (2020)]()  
+- [Deep Learning with Python](), François Chollet (2nd edition 2021)\
+  The most understandable explanation of concepts in textual format, which is interesting to read. By the way, I'll give the second copy to someone who'll take good care of it.
+- [Deep Learning](), Jan Goodfellow (2016)  
+  Comprehensive mathematical and conceptual explanation, insights for the open research fields.
+- [Deep Learning for Vision Systems](), Mohamed Elgendy (2020)  
   Detailed explanation for baseline’s Computer Vision backbones/architectures.
-- [Deep Learning for Coders with fastai and PyTorch, Jeremy Howard and Sylvain Gugger (2020)]()    
+- [Deep Learning for Coders with fastai and PyTorch](), Jeremy Howard and Sylvain Gugger (2020)    
 A view on Deep Learning from practitioners. Practical Data Ethics!
 
-- [Deep Learning: A Visual Approach, Andrew-Glassner (2021)]()  
+- [Deep Learning: A Visual Approach](), Andrew-Glassner (2021)  
 Additional dimension for concept’s understanding.
-- [Computer Vision: Algorithms and Applications, Richard Szeliski (2nd edition, 2021)]()  
+- [Computer Vision: Algorithms and Applications](), Richard Szeliski (2nd edition, 2021)  
 Constantly updated meta-survey.
-- [Interpretable Machine Learning, Christoph Molnar (2019)]()  
+- [Interpretable Machine Learning](), Christoph Molnar (2019)  
 Survey, good starting point on the topic. Shapley Values.
+
+## General
+
+- [Nonviolent Communication]() by [Marshall Rosenberg](https://www.cnvc.org/about/marshall)
+- [Learn how to learn](https://barbaraoakley.com/books/learning-how-to-learn/) by [Barbara Oakley](https://barbaraoakley.com/)
+- [Thinking, Fast and Slow]() by [Daniel Kahneman](https://en.wikipedia.org/wiki/Daniel_Kahneman)
+- [On Intelligence]() by [Jeff Hawkins](https://en.wikipedia.org/wiki/Jeff_Hawkins)
+- [On Complexity]() by [Edgar Morin](https://en.wikipedia.org/wiki/Edgar_Morin)
+- [A Mathematician's Apology]() by [G. H. Hardy](https://mathshistory.st-andrews.ac.uk/Biographies/Hardy/)
+- [What's Whole in Whole Language in the 21st Century?]() by [Ken Goodman](https://en.wikipedia.org/wiki/Ken_Goodman)
+- [When the Body Says No]() by [Gabor Maté](https://drgabormate.com/)
+- [Tiny Habits]() by [BJ Fogg](https://www.bjfogg.com/)
+
+## Computer Science (programming languages)
+
+- [Data Structures and Algorithms]() by Michael T. Goodrich, Roberto Tamassia, Michael H. Goldwasser
+- [Clean Architecture]() by Robert C. Martin
+- [Learning Python]() by Mark Lutz
+- [Fluent Python]() by Luciano Ramalho
+- [C Primer Plus]() by Stephen Prata
+
+
+
+## Data Science
+
+- [The Art of Data Science]() by Roger D. Peng and Elizabeth Matsui
+- [All of Statistics]() by Larry Wasserman
+- [The Book of Why]() by Judea Pearl and Dana Mackenzie
+
+
+#### Data Science in Sport
+
+- [Match Analysis]() by Daniel Memmert
+- [Neural Networks for Chess]() by Dominik Klein
+- [Moneyball]() by Michael Lewis
+
+## Visualisation
+
+- [Pencil Me In]() by Christina Wodtke
+- [Data Sketches]() by Nadieh Bremer and Shirley Wu
+- [Unflattening]() by Nick Sousanis
+- [Draw to Win]() by Dan Roam
+
+
+
+## Idea generation processes
+- [Business Model Generation]() by Alexander Osterwalder and Yves Pigneur
+- [The Invincible Company]() by Alexander Osterwalder et al.
+- [Open Innovation Results]() by Henry Chesbrough
+- [Exponential Organizations]() by Salim Ismail
+- [Найти идею]() by Генрих Альтшуллер
+
+## Business
+
+#### General
+
+- [Steve Jobs]() by Walter Isaacson
+- [Humor, Seriously]() by Jennifer Aaker and Naomi Bagdonas
+- [The Mom Test]() by Rob Fitzpatrick
+
+#### Strategy
+
+- [Zero to One]() by Peter Thiel
+
+#### Management
+
+- [Radical Focus]() by Christina Wodtke
+- [The Fearless Organization]() by Amy Edmondson
+- [How to Lead in Data Science]() by Jike Chong and Yue Cathy Chang
+

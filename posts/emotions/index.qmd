@@ -1,9 +1,11 @@
 ---
-title: "Finding Joy in Gemma2 2B (1)"
+title: "Emotion-concept features on an open-weight model with pretrained Sparse Autoencoder (SAE)"
+description: "Finding which Gemma 2 2B SAE features represent joy. Visualisation where in the text it fires."
 date: "2026-06-01"
 date-format: "MMMM YYYY"
 categories: [interpretability,code,visualisation]
 image: emotions_vizualisation.png
+notebook-links: false
 comments:                
     giscus:
       repo: nikozhuk/nikozhuk.github.io                                                                  
@@ -16,12 +18,27 @@ comments:
       theme: preferred_color_scheme
       language: en
 ---
-## Reproducing emotion-concept features on an open-weight model with Sparse Autoencoder (SAE). 
-Based on latest paper ["Emotion Concepts and their Function in a Large Language Model"](https://transformer-circuits.pub/2026/emotions).
+ 
+Based on ["Emotion Concepts and their Function in a Large Language Model"](https://transformer-circuits.pub/2026/emotions) paper.
 
+[Read the notebook on Kaggle](https://www.kaggle.com/code/nikolazhuk/interp-emotions-01)
 
- {{< embed copy_interp-emotions-01_with_output_cells.ipynb >}}
+### Top 20 features: joy vs neutral
 
-[Run in Kaggle](https://github.com/nikozhuk/interp_emotions/blob/main/interp-emotions-01.ipynb)
+SAE features (layer 20) ranked by mean activation on joy prompts minus neutral prompts. Click a feature id to open it on Neuronpedia.
 
- //just for info here, what [enjoyment](https://atlasofemotions.org/#triggers/enjoyment) is really is 🤲
+{{< embed copy_interp-emotions-01_with_output_cells.ipynb#joy-features-neuronpedia-table >}}
+
+### Top joy feature on joy prompts
+
+Each token is coloured by how strongly the top joy feature fires on it. Joy and neutral prompts share one colour scale (0 – 69.5), so their colours are directly comparable.
+
+{{< embed copy_interp-emotions-01_with_output_cells.ipynb#joy-prompts-top-feature >}}
+
+### Same feature on neutral prompts (control)
+
+{{< embed copy_interp-emotions-01_with_output_cells.ipynb#neutral-prompts-top-feature >}}
+
+### Top 3 joy features on one joy prompt
+
+{{< embed copy_interp-emotions-01_with_output_cells.ipynb#top3-features-joy-prompt >}}

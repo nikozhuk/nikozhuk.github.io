@@ -13,7 +13,7 @@ project:
 website:
   draft-mode: gone
   title: "Nikolai Zhukov"
-  description: "Mathematician,researcher, and ML engineer researching mechanistic interpretability - how transformer models represent time. Based in Germany."
+  description: "Mathematician,researcher, and ML practioner. Based in Germany."
   site-url: https://nikozhuk.github.io
   open-graph: true
   twitter-card: true

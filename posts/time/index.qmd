@@ -1,6 +1,6 @@
 ---
-title: "Towards Understanding Geometry of Time (2)"
-description: "How Gemma 2 2B represents time: PCA finds a clean two-axis temporal structure at layer 20 that individual GemmaScope SAE features dilute across many latents."
+title: "SAEs dilution of geometrical structure for temporal representations"
+description: "Visualisation how Gemma 2 2B represents days-of-week: PCA finds a clean two-axis temporal structure at layer 20 that individual GemmaScope SAE features dilute across many latents."
 date: "2026-06-05"
 date-format: "MMMM YYYY"
 categories: [interpretability,code,visualisation]
@@ -17,15 +17,41 @@ comments:
       theme: preferred_color_scheme
       language: en
 ---
-## Geometric structure of temporal concepts and the limits of sparse autoencoders decompostion. 
+Geometric structure of temporal concepts and the limits of sparse autoencoders decompostion. PCA vs SAE features in Gemma 2 2B.
 
-Dilution of "time": PCA vs SAE features in Gemma 2 2B
+[Read the notebook on Kaggle](https://www.kaggle.com/code/nikolazhuk/temporal-interp-research-01)
 
-(details to be described).
+Based on ["Not all language model features are one-dimensionally linear"](https://arxiv.org/pdf/2405.14860) paper.
 
 
 
- {{< embed copy_temporal-interp-research-01_with_output_cells.ipynb >}}
 
-[Run in Kaggle](https://github.com/nikozhuk/interp_emotions/blob/main/temporal-interp-research-01.ipynb)
+
+
+
+### Days of the week: PCA
+
+{{< embed copy_temporal-interp-research-01_with_output_cells.ipynb#days-of-week-pca >}}
+
+### Days of the week: SAE decoder PCA
+
+{{< embed copy_temporal-interp-research-01_with_output_cells.ipynb#days-of-week-sae-decoder-pca >}}
+
+### Geometry at layers 8, 14, 20, 25
+
+{{< embed copy_temporal-interp-research-01_with_output_cells.ipynb#layers-pca-grid >}}
+
+### Temporal categories: PCA of category means (layer 20)
+
+{{< embed copy_temporal-interp-research-01_with_output_cells.ipynb#temporal-category-pca >}}
+
+### Per-prompt scatter
+
+{{< embed copy_temporal-interp-research-01_with_output_cells.ipynb#per-prompt-scatter >}}
+
+### Prompts projected onto the category-mean PCA
+
+{{< embed copy_temporal-interp-research-01_with_output_cells.ipynb#per-prompt-projection >}}
+
+
 
