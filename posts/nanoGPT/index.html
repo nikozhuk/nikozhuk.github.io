@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Training A. Karpathy/nanoGPT on W. Shakespeare and A. Puhskin’s poems text corpuses.">
 
-<title>NanoGPT for Poetry – Nikolai Zhukov</title>
+<title>Training Character-Level Transformer Model – Nikolai Zhukov</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -96,11 +97,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="NanoGPT for Poetry – Nikolai Zhukov">
-<meta property="og:description" content="Mathematician,researcher, and ML practioner. Based in Germany.">
+<meta property="og:title" content="Training Character-Level Transformer Model – Nikolai Zhukov">
+<meta property="og:description" content="Training A. Karpathy/nanoGPT on W. Shakespeare and A. Puhskin’s poems text corpuses.">
 <meta property="og:site_name" content="Nikolai Zhukov">
-<meta name="twitter:title" content="NanoGPT for Poetry – Nikolai Zhukov">
-<meta name="twitter:description" content="Mathematician,researcher, and ML practioner. Based in Germany.">
+<meta name="twitter:title" content="Training Character-Level Transformer Model – Nikolai Zhukov">
+<meta name="twitter:description" content="Training A. Karpathy/nanoGPT on W. Shakespeare and A. Puhskin’s poems text corpuses.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -151,8 +152,13 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">NanoGPT for Poetry</h1>
-                                <div class="quarto-categories">
+      <h1 class="title">Training Character-Level Transformer Model</h1>
+                  <div>
+        <div class="description">
+          Training A. Karpathy/nanoGPT on W. Shakespeare and A. Puhskin’s poems text corpuses.
+        </div>
+      </div>
+                          <div class="quarto-categories">
                 <div class="quarto-category">code</div>
               </div>
                   </div>
@@ -184,13 +190,105 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Nano Generative Pre-trained Transformer (GPT) on W.Shakespeare and A. Pushkin datasets.</p>
-<iframe src="NanoGPT_on_W.pdf" width="100%" height="600px">
-</iframe>
-<p>To be described.</p>
-<p><a href="https://github.com/nikozhuk/nanoGPT_tiny_pushkin">GitHub repository</a></p>
+<p>Training a ~10M-parameter character-level GPT on Shakespeare and Pushkin poetry with Karpathy’s nanoGPT, on a 4 GB laptop GPU.</p>
+<p><a href="https://github.com/nikozhuk/nanoGPT_tiny_pushkin">Source code</a></p>
+<p>nanoGPT is <a href="https://github.com/karpathy/nanogpt">A. Karpathy’s minimal GPT-2 reimplementation</a>.</p>
+<p>The idea was to see what a tiny GPT learns from poetry in English and Russian languages. As a tiny example to quick show for non-ML audience.</p>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p><strong>tiny_shakespeare</strong>: 1,115,394 characters, 65-character (Latin) vocabulary</p>
+<pre class="text"><code>First Citizen:
+Before we proceed any further, hear me speak.
+
+All:
+Speak, speak.
+
+First Citizen:
+You are all resolved rather to die than to famish?</code></pre>
+<p><strong>tiny_pushkin</strong>: 630,739 characters, 154-character vocabulary (Cyrillic + Latin)</p>
+<pre class="text"><code>Воспоминания в Царском Селе
+
+Навис покров угрюмой нощи
+На своде дремлющих небес;
+В безмолвной тишине почили дол и рощи,
+В седом тумане дальний лес;</code></pre>
+<p><a href="https://github.com/nikozhuk/nanoGPT_tiny_pushkin/blob/main/data/pushkin_char/input.txt">Full dataset</a> <a href="https://github.com/nikozhuk/nanoGPT_tiny_pushkin/blob/main/data/pushkin_char/prepare.py">preparation script</a></p>
+</section>
+<section id="model" class="level2">
+<h2 class="anchored" data-anchor-id="model">Model</h2>
+<p>The same architecture for both languages, trained from scratch: it starts with random weights and learns only from the poems. It reads text <strong>one character at a time</strong> and learns to predict the next character.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Shakespeare</th>
+<th>Pushkin</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Parameters</td>
+<td>~10.6M</td>
+<td>10.68M</td>
+</tr>
+<tr class="even">
+<td>Layers / attention heads / embedding size</td>
+<td>6 / 6 / 384</td>
+<td>6 / 6 / 384</td>
+</tr>
+<tr class="odd">
+<td>Vocabulary (characters)</td>
+<td>65</td>
+<td>154</td>
+</tr>
+<tr class="even">
+<td>Context (characters the model sees at once)</td>
+<td>256</td>
+<td>512</td>
+</tr>
+<tr class="odd">
+<td>Dropout / learning rate</td>
+<td>0.2 / 1e-3</td>
+<td>0.2 / 1e-3</td>
+</tr>
+<tr class="even">
+<td>Best validation loss (iteration)</td>
+<td>1.79 (250)</td>
+<td>1.82 (500)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>fine-tuning on english pretrained GPT-2 small model didn’t fit into 4GB GPU’s memory.</li>
+<li>a tiny model already learns the form of poetry (for better meaning need bigger text corpuses)</li>
+<li>The tokenizer matters. GPT-2’s tokenizer was built for English. It packs ~3.3 English characters into one token, but Russian needs ~1 token per character</li>
+</ul>
+</section>
+<section id="generated-samples" class="level2">
+<h2 class="anchored" data-anchor-id="generated-samples">Generated samples</h2>
+<p>Pushkin, character-level model trained from scratch (validation loss 1.82):</p>
+<pre class="text"><code>Покоенник прекрасной святой предатель —
+А ты храбронную счастливую дева
+И тихий с миром всевышину,
+В неведом темных стихах
+Мне смерти в гордохнуть наслажденье.
+
+О муж ты, вдохновенье,
+О друг мне ты царей природливой,</code></pre>
+<p><a href="posts/nanoGPT/samples_pushkin_char.txt">Full generation</a></p>
+<ul>
+<li><p>Only pretrained stage (no instruction tuning, no RLHF).</p></li>
+<li><p>For comparison: GPT-2 small has 124M parameters, and GPT-3 has 175B parameters.</p></li>
+</ul>
+<p><a href="NanoGPT_on_W.pdf">Tiny slides (PDF)</a></p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
